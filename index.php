@@ -118,6 +118,10 @@ if (isset($_POST['get_weather'])) {
 
     // Determinar qué botón se debe mostrar
     $current_button_class = isset($weather_buttons[$weather_description_es]) ? $weather_buttons[$weather_description_es] : null;
+
+    $slider_active = $current_button_class;
+} else {
+    $slider_active = "";
 }
 
 ?>
@@ -1051,7 +1055,7 @@ if (isset($_POST['get_weather'])) {
 
     <h2> Climas</h2>
     <div class="slider-container">
-        <div class="slider">
+        <div class="<?php echo ($slider_active != '') ? '' : 'slider'; ?>">
             <button class="sunny-button" style="<?php echo ($current_button_class == 'sunny-button') ? '' : 'display: none;'; ?>">
                 <div class="sun-rays">
                     <div class="ray"></div>
