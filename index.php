@@ -136,13 +136,70 @@ if (isset($_POST['get_weather'])) {
     <title>Hora y Clima</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+        }
+
+        .section-title {
+            color: #2c3e50;
+            border-bottom: 2px solid #e0e6ed;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        .weather-form {
+            margin-top: 20px;
+        }
+
+        .weather-input {
+            display: flex;
+            gap: 10px;
+            max-width: 500px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
         }
 
         button {
-            margin: 5px;
-            padding: 10px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 12px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        .weather-results {
+            margin-top: 30px;
         }
 
         .sunrise-button {
@@ -984,169 +1041,317 @@ if (isset($_POST['get_weather'])) {
         .slider:hover {
             animation-play-state: paused;
         }
+
+        .snowy-button {
+            position: relative;
+            width: 200px;
+            height: 60px;
+            border: none;
+            border-radius: 30px;
+            overflow: hidden;
+            cursor: pointer;
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
+            font-size: 18px;
+            color: #2C3E50;
+            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);
+            box-shadow: 0 7px 20px rgba(200, 200, 255, 0.4), inset 0 -2px 5px rgba(0, 0, 0, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .snowy-button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom,
+                    #F5F7FA,
+                    /* Blanco azulado */
+                    #E4EBF5,
+                    /* Gris muy claro */
+                    #D7DDE8
+                    /* Gris azulado claro */
+                );
+            z-index: -1;
+        }
+
+        .snowy-button:active {
+            transform: translateY(1px);
+            box-shadow: 0 3px 10px rgba(200, 200, 255, 0.3), inset 0 -1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .snowflake {
+            position: absolute;
+            color: white;
+            text-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+            user-select: none;
+            animation: snowfall linear infinite;
+        }
+
+        @keyframes snowfall {
+            0% {
+                transform: translateY(-10px) rotate(0deg);
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(60px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .snow-1 {
+            left: 20px;
+            font-size: 14px;
+            animation-duration: 3s;
+            animation-delay: 0.2s;
+        }
+
+        .snow-2 {
+            left: 35px;
+            font-size: 10px;
+            animation-duration: 2.5s;
+            animation-delay: 0.5s;
+        }
+
+        .snow-3 {
+            left: 50px;
+            font-size: 12px;
+            animation-duration: 3.2s;
+            animation-delay: 0.1s;
+        }
+
+        .snow-4 {
+            left: 170px;
+            font-size: 14px;
+            animation-duration: 2.8s;
+            animation-delay: 0.3s;
+        }
+
+        .snow-5 {
+            left: 150px;
+            font-size: 9px;
+            animation-duration: 3.5s;
+            animation-delay: 0.7s;
+        }
+
+        .snow-6 {
+            left: 130px;
+            font-size: 11px;
+            animation-duration: 3s;
+            animation-delay: 0.4s;
+        }
+
+        .snow-pile {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 12px;
+            background: white;
+            border-radius: 0 0 30px 30px;
+            box-shadow: inset 0 2px 7px rgba(0, 0, 0, 0.07);
+        }
+
+        .snow-pile:before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 30px;
+            width: 30px;
+            height: 18px;
+            background: white;
+            border-radius: 30px 30px 0 0;
+            transform: translateY(-50%);
+        }
+
+        .snow-pile:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 40px;
+            width: 25px;
+            height: 15px;
+            background: white;
+            border-radius: 25px 25px 0 0;
+            transform: translateY(-40%);
+        }
+
+        .button-text {
+            position: relative;
+            z-index: 2;
+        }
+
+        .winter-icon {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background: white;
+            border-radius: 50%;
+            margin-right: 8px;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5);
+            position: relative;
+            top: 1px;
+        }
+
+        .day-moments{
+            margin: 0 auto;
+            text-align: center;
+        }
     </style>
 </head>
 
 <body>
-    <h2>Momentos del Día</h2>
 
+    <section>
+        <h2 class="section-title">Momentos del Día</h2>
+        <!-- Contenido para momentos del día -->
+        <div class="day-moments">
+            <?php
+            if (isset($_POST['get_weather'])) {
 
-    <?php
-    if (isset($_POST['get_weather'])) {
-
-        echo "<h3>Fecha y Hora Actual: $formatted_date</h3>";
-        if ($temperature !== 'N/A') {
-            echo "<h3>Clima actual en $city</h3>";
-            echo "<p><strong>Temperatura: $temperature °C</strong></p>";
-            echo "<p><strong>Descripción: $weather_description_es</strong></p>";
-            if ($weather_icon) {
-                echo "<p><img src='$weather_icon' alt='Clima icon'></p>";
+                echo "<h3>Fecha y Hora Actual: $formatted_date</h3>";
+                if ($temperature !== 'N/A') {
+                    echo "<h3>Clima actual en $city</h3>";
+                    echo "<p><strong>Temperatura: $temperature °C</strong></p>";
+                    echo "<p><strong>Descripción: $weather_description_es</strong></p>";
+                    if ($weather_icon) {
+                        echo "<p><img src='$weather_icon' alt='Clima icon'></p>";
+                    }
+                } else {
+                    echo "<p>No se encontraron datos de clima disponibles para $city.</p>";
+                }
             }
-        } else {
-            echo "<p>No se encontraron datos de clima disponibles para $city.</p>";
-        }
-    }
-    ?>
+            ?>
 
-    <div class="button-container-wrapper">
-        <div class="button-container" style="<?php echo ($current_button == 'sunrise-button') ? '' : 'display: none;'; ?>">
-            <div class="time-label">06:00 - 12:00</div>
-            <button class="sunrise-button">
-                <span class="sun"></span>
-                Amanecer
-            </button>
-        </div>
-
-        <div class="button-container" style="<?php echo ($current_button == 'day-button') ? '' : 'display: none;'; ?>">
-            <div class="time-label">12:00 - 18:00</div>
-            <button class="day-button">
-                <span class="sun-day"></span>
-                Día Soleado
-                <span class="cloud cloud-1"></span>
-                <span class="cloud cloud-2"></span>
-            </button>
-        </div>
-
-        <div class="button-container" style="<?php echo ($current_button == 'sunset-button') ? '' : 'display: none;'; ?>">
-            <div class="time-label">18:00 - 20:00</div>
-            <button class="sunset-button">
-                <span class="sunset-sun"></span>
-                Atardecer
-                <span class="horizon"></span>
-            </button>
-        </div>
-
-        <div class="button-container" style="<?php echo ($current_button == 'night-button') ? '' : 'display: none;'; ?>">
-            <div class="time-label">20:00 - 6:00</div>
-            <button class="night-button">
-                <span class="moon"></span>
-                Noche
-                <span class="stars star-1"></span>
-                <span class="stars star-2"></span>
-                <span class="stars star-3"></span>
-                <span class="stars star-4"></span>
-                <span class="stars star-5"></span>
-                <span class="stars star-6"></span>
-                <span class="stars star-7"></span>
-            </button>
-        </div>
-    </div>
-
-
-    <h2> Climas</h2>
-    <div class="slider-container">
-        <div class="<?php echo ($slider_active != '') ? '' : 'slider'; ?>">
-            <button class="sunny-button" style="<?php echo ($current_button_class == 'sunny-button') ? '' : 'display: none;'; ?>">
-                <div class="sun-rays">
-                    <div class="ray"></div>
-                    <div class="ray"></div>
-                    <div class="ray"></div>
-                    <div class="ray"></div>
-                    <div class="ray"></div>
-                    <div class="ray"></div>
-                    <div class="ray"></div>
-                    <div class="ray"></div>
-                    <div class="sun-center"></div>
+            <div class="button-container-wrapper">
+                <div class="button-container" style="<?php echo ($current_button == 'sunrise-button') ? '' : 'display: none;'; ?>">
+                    <div class="time-label">06:00 - 12:00</div>
+                    <button class="sunrise-button">
+                        <span class="sun"></span>
+                        Amanecer
+                    </button>
                 </div>
-                <span class="button-text">Soleado</span>
-                <div class="heat-wave heat-wave-1"></div>
-                <div class="heat-wave heat-wave-2"></div>
-            </button>
 
-            <button class="rainy-button" style="<?php echo ($current_button_class == 'rainy-button') ? '' : 'display: none;'; ?>">
-                <div class="cloud"></div>
-                <div class="rain rain-1"></div>
-                <div class="rain rain-2"></div>
-                <div class="rain rain-3"></div>
-                <div class="rain rain-4"></div>
-                <div class="puddle"></div>
-                <div class="splash splash-1"></div>
-                <div class="splash splash-2"></div>
-                <div class="splash splash-3"></div>
-                <span class="button-text">Lluvioso</span>
-            </button>
-
-            <button class="cloudy-button" style="<?php echo ($current_button_class == 'cloudy-button') ? '' : 'display: none;'; ?>">
-                <div class="cloud-group">
-                    <div class="cloud-1"></div>
-                    <div class="cloud-2"></div>
-                    <div class="cloud-3"></div>
+                <div class="button-container" style="<?php echo ($current_button == 'day-button') ? '' : 'display: none;'; ?>">
+                    <div class="time-label">12:00 - 18:00</div>
+                    <button class="day-button">
+                        <span class="sun-day"></span>
+                        Día Soleado
+                        <span class="cloud cloud-1"></span>
+                        <span class="cloud cloud-2"></span>
+                    </button>
                 </div>
-                <span class="button-text">Nublado</span>
-                <div class="light-beam"></div>
-            </button>
 
-            <button class="snowy-button" style="<?php echo ($current_button_class == 'snowy-button') ? '' : 'display: none;'; ?>">
-                Nevado
-            </button>
+                <div class="button-container" style="<?php echo ($current_button == 'sunset-button') ? '' : 'display: none;'; ?>">
+                    <div class="time-label">18:00 - 20:00</div>
+                    <button class="sunset-button">
+                        <span class="sunset-sun"></span>
+                        Atardecer
+                        <span class="horizon"></span>
+                    </button>
+                </div>
 
-            <button class="snowy-button" style="<?php echo ($current_button_class == 'snowy-button') ? '' : 'display: none;'; ?>">
-                Nevado
-            </button>
-
-            <button class="snowy-button" style="<?php echo ($current_button_class == 'snowy-button') ? '' : 'display: none;'; ?>">
-                Nevado
-            </button>
-
-            <button class="snowy-button" style="<?php echo ($current_button_class == 'snowy-button') ? '' : 'display: none;'; ?>">
-                Nevado
-            </button>
-
-            <button class="snowy-button" style="<?php echo ($current_button_class == 'snowy-button') ? '' : 'display: none;'; ?>">
-                Nevado
-            </button>
-
-            <button class="snowy-button" style="<?php echo ($current_button_class == 'snowy-button') ? '' : 'display: none;'; ?>">
-                Nevado
-            </button>
-            <button class="snowy-button" style="<?php echo ($current_button_class == 'snowy-button') ? '' : 'display: none;'; ?>">
-                Nevado
-            </button>
-            <button class="snowy-button" style="<?php echo ($current_button_class == 'snowy-button') ? '' : 'display: none;'; ?>">
-                Nevado
-            </button>
-            <button class="snowy-button" style="<?php echo ($current_button_class == 'snowy-button') ? '' : 'display: none;'; ?>">
-                Nevado
-            </button>
-            <button class="snowy-button" style="<?php echo ($current_button_class == 'snowy-button') ? '' : 'display: none;'; ?>">
-                Nevado
-            </button>
-            <button class="snowy-button" style="<?php echo ($current_button_class == 'snowy-button') ? '' : 'display: none;'; ?>">
-                Nevado
-            </button>
+                <div class="button-container" style="<?php echo ($current_button == 'night-button') ? '' : 'display: none;'; ?>">
+                    <div class="time-label">20:00 - 6:00</div>
+                    <button class="night-button">
+                        <span class="moon"></span>
+                        Noche
+                        <span class="stars star-1"></span>
+                        <span class="stars star-2"></span>
+                        <span class="stars star-3"></span>
+                        <span class="stars star-4"></span>
+                        <span class="stars star-5"></span>
+                        <span class="stars star-6"></span>
+                        <span class="stars star-7"></span>
+                    </button>
+                </div>
+            </div>
         </div>
-    </div>
-    <form method="post">
-        <input type="text" name="city" placeholder="Ingresa una ciudad" value="Santiago">
-        <button type="submit" name="get_weather">Obtener Clima</button>
-    </form>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            let slider = document.querySelector(".slider");
-            let clone = slider.innerHTML;
-            slider.innerHTML += clone; // Duplicamos el contenido para el efecto continuo
-        });
-    </script>
+    </section>
+
+
+
+    <section>
+        <h2 class="section-title">Clima</h2>
+        <div class="weather-form">
+            <form method="post">
+                <div class="weather-input">
+                    <input type="text" name="city" placeholder="Ingresa una ciudad" value="Santiago" class="city-input">
+                    <button type="submit" name="get_weather">Obtener Clima</button>
+                </div>
+            </form>
+        </div>
+        <div class="weather-results">
+            <div class="slider-container">
+                <div class="<?php echo ($slider_active != '') ? 'day-moments' : 'slider'; ?>">
+                    <button class="sunny-button" style="<?php echo ($current_button_class == 'sunny-button') ? '' : 'display: none;'; ?>">
+                        <div class="sun-rays">
+                            <div class="ray"></div>
+                            <div class="ray"></div>
+                            <div class="ray"></div>
+                            <div class="ray"></div>
+                            <div class="ray"></div>
+                            <div class="ray"></div>
+                            <div class="ray"></div>
+                            <div class="ray"></div>
+                            <div class="sun-center"></div>
+                        </div>
+                        <span class="button-text">Soleado</span>
+                        <div class="heat-wave heat-wave-1"></div>
+                        <div class="heat-wave heat-wave-2"></div>
+                    </button>
+
+                    <button class="rainy-button" style="<?php echo ($current_button_class == 'rainy-button') ? '' : 'display: none;'; ?>">
+                        <div class="cloud"></div>
+                        <div class="rain rain-1"></div>
+                        <div class="rain rain-2"></div>
+                        <div class="rain rain-3"></div>
+                        <div class="rain rain-4"></div>
+                        <div class="puddle"></div>
+                        <div class="splash splash-1"></div>
+                        <div class="splash splash-2"></div>
+                        <div class="splash splash-3"></div>
+                        <span class="button-text">Lluvioso</span>
+                    </button>
+
+                    <button class="cloudy-button" style="<?php echo ($current_button_class == 'cloudy-button') ? '' : 'display: none;'; ?>">
+                        <div class="cloud-group">
+                            <div class="cloud-1"></div>
+                            <div class="cloud-2"></div>
+                            <div class="cloud-3"></div>
+                        </div>
+                        <span class="button-text">Nublado</span>
+                        <div class="light-beam"></div>
+                    </button>
+
+                    <button class="snowy-button" style="<?php echo ($current_button_class == 'snowy-button') ? '' : 'display: none;'; ?>">
+                        <div class="snow-pile"></div>
+                        <span class="snowflake snow-1">❄</span>
+                        <span class="snowflake snow-2">❅</span>
+                        <span class="snowflake snow-3">❆</span>
+                        <span class="snowflake snow-4">❄</span>
+                        <span class="snowflake snow-5">❅</span>
+                        <span class="snowflake snow-6">❆</span>
+                        <span class="button-text"><span class="winter-icon"></span>Nevado</span>
+                    </button>
+                </div>
+            </div>
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    let slider = document.querySelector(".slider");
+                    let clone = slider.innerHTML;
+                    slider.innerHTML += clone; // Duplicamos el contenido para el efecto continuo
+                });
+            </script>
+        </div>
+    </section>
 </body>
 
 </html>
