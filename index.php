@@ -3,7 +3,7 @@ if (isset($_POST['get_weather'])) {
 
     // Definir la ciudad y la URL de la API
     $city = $_POST['city'] ?? 'Santiago';
-    $api_key="410f454b9ebb63e2a46e6dc2aa04554e";
+    $api_key = "410f454b9ebb63e2a46e6dc2aa04554e";
     $api_url = "https://api.weatherstack.com/current?access_key=$api_key&query=$city";
 
     // Obtener los datos JSON de la API
@@ -954,6 +954,32 @@ if (isset($_POST['get_weather'])) {
             opacity: 0.6;
             filter: blur(3px);
         }
+
+
+        .slider-container {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .slider {
+            animation: scroll 10s linear infinite;
+        }
+
+        @keyframes scroll {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-100%);
+            }
+        }
+
+        .slider:hover {
+            animation-play-state: paused;
+        }
     </style>
 </head>
 
@@ -1024,56 +1050,99 @@ if (isset($_POST['get_weather'])) {
 
 
     <h2> Climas</h2>
+    <div class="slider-container">
+        <div class="slider">
+            <button class="sunny-button" style="<?php echo ($current_button_class == 'sunny-button') ? '' : 'display: none;'; ?>">
+                <div class="sun-rays">
+                    <div class="ray"></div>
+                    <div class="ray"></div>
+                    <div class="ray"></div>
+                    <div class="ray"></div>
+                    <div class="ray"></div>
+                    <div class="ray"></div>
+                    <div class="ray"></div>
+                    <div class="ray"></div>
+                    <div class="sun-center"></div>
+                </div>
+                <span class="button-text">Soleado</span>
+                <div class="heat-wave heat-wave-1"></div>
+                <div class="heat-wave heat-wave-2"></div>
+            </button>
 
-    <button class="sunny-button" style="<?php echo ($current_button_class == 'sunny-button') ? '' : 'display: none;'; ?>">
-        <div class="sun-rays">
-            <div class="ray"></div>
-            <div class="ray"></div>
-            <div class="ray"></div>
-            <div class="ray"></div>
-            <div class="ray"></div>
-            <div class="ray"></div>
-            <div class="ray"></div>
-            <div class="ray"></div>
-            <div class="sun-center"></div>
+            <button class="rainy-button" style="<?php echo ($current_button_class == 'rainy-button') ? '' : 'display: none;'; ?>">
+                <div class="cloud"></div>
+                <div class="rain rain-1"></div>
+                <div class="rain rain-2"></div>
+                <div class="rain rain-3"></div>
+                <div class="rain rain-4"></div>
+                <div class="puddle"></div>
+                <div class="splash splash-1"></div>
+                <div class="splash splash-2"></div>
+                <div class="splash splash-3"></div>
+                <span class="button-text">Lluvioso</span>
+            </button>
+
+            <button class="cloudy-button" style="<?php echo ($current_button_class == 'cloudy-button') ? '' : 'display: none;'; ?>">
+                <div class="cloud-group">
+                    <div class="cloud-1"></div>
+                    <div class="cloud-2"></div>
+                    <div class="cloud-3"></div>
+                </div>
+                <span class="button-text">Nublado</span>
+                <div class="light-beam"></div>
+            </button>
+
+            <button class="snowy-button" style="<?php echo ($current_button_class == 'snowy-button') ? '' : 'display: none;'; ?>">
+                Nevado
+            </button>
+
+            <button class="snowy-button" style="<?php echo ($current_button_class == 'snowy-button') ? '' : 'display: none;'; ?>">
+                Nevado
+            </button>
+
+            <button class="snowy-button" style="<?php echo ($current_button_class == 'snowy-button') ? '' : 'display: none;'; ?>">
+                Nevado
+            </button>
+
+            <button class="snowy-button" style="<?php echo ($current_button_class == 'snowy-button') ? '' : 'display: none;'; ?>">
+                Nevado
+            </button>
+
+            <button class="snowy-button" style="<?php echo ($current_button_class == 'snowy-button') ? '' : 'display: none;'; ?>">
+                Nevado
+            </button>
+
+            <button class="snowy-button" style="<?php echo ($current_button_class == 'snowy-button') ? '' : 'display: none;'; ?>">
+                Nevado
+            </button>
+            <button class="snowy-button" style="<?php echo ($current_button_class == 'snowy-button') ? '' : 'display: none;'; ?>">
+                Nevado
+            </button>
+            <button class="snowy-button" style="<?php echo ($current_button_class == 'snowy-button') ? '' : 'display: none;'; ?>">
+                Nevado
+            </button>
+            <button class="snowy-button" style="<?php echo ($current_button_class == 'snowy-button') ? '' : 'display: none;'; ?>">
+                Nevado
+            </button>
+            <button class="snowy-button" style="<?php echo ($current_button_class == 'snowy-button') ? '' : 'display: none;'; ?>">
+                Nevado
+            </button>
+            <button class="snowy-button" style="<?php echo ($current_button_class == 'snowy-button') ? '' : 'display: none;'; ?>">
+                Nevado
+            </button>
         </div>
-        <span class="button-text">Soleado</span>
-        <div class="heat-wave heat-wave-1"></div>
-        <div class="heat-wave heat-wave-2"></div>
-    </button>
-
-    <button class="rainy-button" style="<?php echo ($current_button_class == 'rainy-button') ? '' : 'display: none;'; ?>">
-        <div class="cloud"></div>
-        <div class="rain rain-1"></div>
-        <div class="rain rain-2"></div>
-        <div class="rain rain-3"></div>
-        <div class="rain rain-4"></div>
-        <div class="puddle"></div>
-        <div class="splash splash-1"></div>
-        <div class="splash splash-2"></div>
-        <div class="splash splash-3"></div>
-        <span class="button-text">Lluvioso</span>
-    </button>
-
-    <button class="cloudy-button" style="<?php echo ($current_button_class == 'cloudy-button') ? '' : 'display: none;'; ?>">
-        <div class="cloud-group">
-            <div class="cloud-1"></div>
-            <div class="cloud-2"></div>
-            <div class="cloud-3"></div>
-        </div>
-        <span class="button-text">Nublado</span>
-        <div class="light-beam"></div>
-    </button>
-
-    <button class="snowy-button" style="<?php echo ($current_button_class == 'snowy-button') ? '' : 'display: none;'; ?>">
-        Nevado
-    </button>
-
+    </div>
     <form method="post">
         <input type="text" name="city" placeholder="Ingresa una ciudad" value="Santiago">
         <button type="submit" name="get_weather">Obtener Clima</button>
     </form>
-
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let slider = document.querySelector(".slider");
+            let clone = slider.innerHTML;
+            slider.innerHTML += clone; // Duplicamos el contenido para el efecto continuo
+        });
+    </script>
 </body>
 
 </html>
