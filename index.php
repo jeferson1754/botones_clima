@@ -101,7 +101,9 @@ if (isset($_POST['get_weather'])) {
         'Cold' => 'Frío',  // Temperatura baja, generalmente por debajo de los 10°C.
         'Hot' => 'Caluroso',  // Temperatura alta, generalmente por encima de los 30°C.
         'Storm' => 'Tormenta',  // Condiciones meteorológicas extremas, incluyendo lluvia, viento y relámpagos. Temperatura variable.
-        'Heatwave' => 'Ola de calor'  // Período de calor extremo. Temperatura generalmente por encima de los 35°C.
+        'Heatwave' => 'Ola de calor',  // Período de calor extremo. Temperatura generalmente por encima de los 35°C.
+        'Light snow' => 'Nieve ligera', // Caída suave de nieve, sin acumulación significativa. Rango de temperatura: -5°C a 2°C.
+
     ];
 
 
@@ -113,7 +115,33 @@ if (isset($_POST['get_weather'])) {
         "Soleado" => "sunny-button",
         "Lluvia" => "rainy-button",
         "Nublado" => "cloudy-button",
-        "Nieve" => "snowy-button"
+        "Nieve" => "snowy-button",
+        "Parcialmente nublado" => "partly-cloudy-button",
+        "Viento" => "wind-button",
+        "Despejado" => "clear-sky-button",
+        "Cubierto" => "overcast-sky-button",
+        "Chubascos" => "",
+        "Tormenta eléctrica" => "",
+        "Niebla" => "",
+        "Niebla espesa" => "",
+        "Granizo" => "",
+        "Parche de niebla" => "",
+        "Tormenta de nieve" => "",
+        "Aguacero congelado" => "",
+        "Llovizna" => "",
+        "Lluvia helada" => "",
+        "Tornado" => "",
+        "Huracán" => "",
+        "Sequía" => "",
+        "Polvo" => "",
+        "Tormenta de arena" => "",
+        "Hielo" => "",
+        "Ráfaga" => "",
+        "Tormenta tropical" => "",
+        "Frío" => "",
+        "Caluroso" => "",
+        "Tormenta" => "",
+        "Ola de calor" => "",
     ];
 
     // Determinar qué botón se debe mostrar
@@ -272,7 +300,7 @@ if (isset($_POST['get_weather'])) {
                         <span class="button-text"><span class="winter-icon"></span>Nevado</span>
                     </button>
 
-                    <button class="partly-cloudy-button">
+                    <button class="partly-cloudy-button" style="<?php echo ($current_button_class == 'partly-cloudy-button') ? '' : 'display: none;'; ?>">
                         <div class="sun-container">
                             <div class="ray"></div>
                             <div class="ray"></div>
