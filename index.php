@@ -1025,7 +1025,9 @@ if (isset($_POST['get_weather'])) {
         }
 
         .slider {
-            animation: scroll 10s linear infinite;
+            animation: scroll 30s linear infinite;
+            min-width: 200%;
+            /* Asegura espacio suficiente */
         }
 
         @keyframes scroll {
@@ -1034,7 +1036,7 @@ if (isset($_POST['get_weather'])) {
             }
 
             to {
-                transform: translateX(-100%);
+                transform: translateX(-240%);
             }
         }
 
@@ -1200,9 +1202,691 @@ if (isset($_POST['get_weather'])) {
             top: 1px;
         }
 
-        .day-moments{
+        .day-moments {
             margin: 0 auto;
             text-align: center;
+        }
+
+        .partly-cloudy-button {
+            position: relative;
+            width: 200px;
+            height: 60px;
+            background: linear-gradient(to bottom, #87CEEB, #5b9bd5);
+            border: none;
+            border-radius: 30px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .partly-cloudy-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+        }
+
+        .partly-cloudy-button.sun-container {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+        }
+
+        .partly-cloudy-button.sun-center {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: #FFC107;
+            border-radius: 50%;
+            top: 10px;
+            left: 10px;
+            box-shadow: 0 0 20px rgba(255, 193, 7, 0.8);
+            animation: glow 3s infinite alternate;
+        }
+
+        .partly-cloudy-button.ray {
+            position: absolute;
+            background-color: #FFC107;
+            height: 3px;
+            width: 20px;
+            top: 23.5px;
+            left: 45px;
+            transform-origin: left center;
+        }
+
+        .ray:nth-child(1) {
+            transform: rotate(0deg);
+        }
+
+        .partly-cloudy-button.ray:nth-child(2) {
+            transform: rotate(45deg);
+        }
+
+        .partly-cloudy-button.ray:nth-child(3) {
+            transform: rotate(90deg);
+        }
+
+        .partly-cloudy-button.ray:nth-child(4) {
+            transform: rotate(135deg);
+        }
+
+        .partly-cloudy-button.ray:nth-child(5) {
+            transform: rotate(180deg);
+        }
+
+        .partly-cloudy-button.ray:nth-child(6) {
+            transform: rotate(225deg);
+        }
+
+        .partly-cloudy-button.ray:nth-child(7) {
+            transform: rotate(270deg);
+        }
+
+        .partly-cloudy-button.ray:nth-child(8) {
+            transform: rotate(315deg);
+        }
+
+        .partly-cloudy-button.cloud {
+            position: absolute;
+            background-color: white;
+            border-radius: 50px;
+            filter: drop-shadow(2px 5px 5px rgba(0, 0, 0, 0.2));
+            animation: float 5s infinite alternate ease-in-out;
+        }
+
+        .partly-cloudy-button.cloud-1 {
+            width: 70px;
+            height: 30px;
+            top: 40px;
+            right: 20px;
+        }
+
+        .partly-cloudy-button.cloud-2 {
+            width: 40px;
+            height: 20px;
+            top: 30px;
+            right: 30px;
+            opacity: 0.8;
+            animation-delay: 0.5s;
+        }
+
+        .partly-cloudy-button.cloud-3 {
+            width: 60px;
+            height: 25px;
+            top: 60px;
+            right: 40px;
+            opacity: 0.9;
+            animation-delay: 1s;
+        }
+
+        .partly-cloudy-button.cloud:before,
+        .partly-cloudy-button.cloud:after {
+            content: '';
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+        }
+
+        .partly-cloudy-button.cloud-1:before {
+            width: 25px;
+            height: 25px;
+            top: -10px;
+            left: 15px;
+        }
+
+        .partly-cloudy-button.cloud-1:after {
+            width: 25px;
+            height: 25px;
+            top: -8px;
+            right: 15px;
+        }
+
+        .partly-cloudy-button.cloud-2:before {
+            width: 15px;
+            height: 15px;
+            top: -8px;
+            left: 10px;
+        }
+
+        .partly-cloudy-button.cloud-2:after {
+            width: 15px;
+            height: 15px;
+            top: -6px;
+            right: 10px;
+        }
+
+        .partly-cloudy-button.cloud-3:before {
+            width: 20px;
+            height: 20px;
+            top: -8px;
+            left: 12px;
+        }
+
+        .partly-cloudy-button.cloud-3:after {
+            width: 20px;
+            height: 20px;
+            top: -7px;
+            right: 12px;
+        }
+
+        .partly-cloudy-button.button-text {
+            position: absolute;
+            bottom: 15px;
+            width: 100%;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+            left: 0;
+        }
+
+        @keyframes glow {
+            0% {
+                box-shadow: 0 0 10px rgba(255, 193, 7, 0.6);
+            }
+
+            100% {
+                box-shadow: 0 0 25px rgba(255, 193, 7, 0.9);
+            }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-10px);
+            }
+        }
+
+        /* Contenedor principal del botón */
+        .wx-wind-btn-container {
+            display: inline-block;
+            position: relative;
+        }
+
+        /* Estilo base del botón de viento */
+        .wx-wind-btn {
+            position: relative;
+            width: 200px;
+            height: 60px;
+            background: linear-gradient(to right, #e8f4f8, #c9e6f2);
+            border-radius: 30px;
+            border: none;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        /* Efecto hover del botón */
+        .wx-wind-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Contenedor de los elementos de viento */
+        .wx-wind-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        /* Líneas de viento */
+        .wx-wind-line {
+            position: absolute;
+            height: 2px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 4px;
+        }
+
+        .wx-wind-line-1 {
+            width: 60px;
+            top: 30px;
+            left: 20px;
+            animation: wx-wind-blow 3s infinite;
+        }
+
+        .wx-wind-line-2 {
+            width: 40px;
+            top: 50px;
+            left: 15px;
+            animation: wx-wind-blow 3s infinite 0.2s;
+        }
+
+        .wx-wind-line-3 {
+            width: 70px;
+            top: 70px;
+            left: 25px;
+            animation: wx-wind-blow 3s infinite 0.4s;
+        }
+
+        .wx-wind-line-4 {
+            width: 50px;
+            top: 90px;
+            left: 10px;
+            animation: wx-wind-blow 3s infinite 0.6s;
+        }
+
+        /* Hojas flotando en el viento */
+        .wx-wind-leaf {
+            position: absolute;
+            width: 10px;
+            height: 6px;
+            background-color: #8BC34A;
+            border-radius: 50% 20% 50% 20%;
+            opacity: 0.7;
+        }
+
+        .wx-wind-leaf-1 {
+            top: 40px;
+            left: -10px;
+            animation: wx-wind-leaf-blow 6s infinite linear;
+        }
+
+        .wx-wind-leaf-2 {
+            top: 65px;
+            left: -10px;
+            animation: wx-wind-leaf-blow 7s infinite 1s linear;
+            transform: rotate(30deg);
+        }
+
+        .wx-wind-leaf-3 {
+            top: 85px;
+            left: -10px;
+            animation: wx-wind-leaf-blow 8s infinite 2s linear;
+            transform: rotate(-20deg);
+        }
+
+        /* Texto del botón */
+        .wx-wind-btn-text {
+            position: absolute;
+            bottom: 15px;
+            width: 100%;
+            text-align: center;
+            color: #546E7A;
+            font-weight: bold;
+            left: 0;
+            font-size: 14px;
+        }
+
+        /* Animaciones */
+        @keyframes wx-wind-blow {
+            0% {
+                transform: translateX(0) scaleX(1);
+                opacity: 0;
+            }
+
+            5% {
+                opacity: 0.8;
+            }
+
+            95% {
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: translateX(100px) scaleX(1.2);
+                opacity: 0;
+            }
+        }
+
+        @keyframes wx-wind-leaf-blow {
+            0% {
+                transform: translateX(0) translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.7;
+            }
+
+            90% {
+                opacity: 0.7;
+            }
+
+            100% {
+                transform: translateX(160px) translateY(10px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Contenedor principal del botón */
+        .wx-clear-container {
+            display: inline-block;
+            position: relative;
+        }
+
+        /* Estilo base del botón de cielo despejado */
+        .wx-clear-btn {
+            position: relative;
+            width: 200px;
+            height: 60px;
+            background: linear-gradient(to bottom, #87CEEB, #1E90FF);
+            border-radius: 30px;
+            border: none;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        /* Efecto hover del botón */
+        .wx-clear-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Sol central */
+        .wx-clear-sun {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle, #FFEF00, #FFA500);
+            border-radius: 50%;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+            animation: wx-clear-sun-pulse 4s infinite alternate;
+        }
+
+        /* Rayos de sol */
+        .wx-clear-ray {
+            position: absolute;
+            background: linear-gradient(to right, rgba(255, 215, 0, 0.8), rgba(255, 215, 0, 0));
+            height: 3px;
+            width: 30px;
+            top: 60px;
+            left: 50%;
+            transform-origin: left center;
+        }
+
+        .wx-clear-ray-1 {
+            transform: translateX(-1px) rotate(0deg);
+        }
+
+        .wx-clear-ray-2 {
+            transform: translateX(-1px) rotate(45deg);
+        }
+
+        .wx-clear-ray-3 {
+            transform: translateX(-1px) rotate(90deg);
+        }
+
+        .wx-clear-ray-4 {
+            transform: translateX(-1px) rotate(135deg);
+        }
+
+        .wx-clear-ray-5 {
+            transform: translateX(-1px) rotate(180deg);
+        }
+
+        .wx-clear-ray-6 {
+            transform: translateX(-1px) rotate(225deg);
+        }
+
+        .wx-clear-ray-7 {
+            transform: translateX(-1px) rotate(270deg);
+        }
+
+        .wx-clear-ray-8 {
+            transform: translateX(-1px) rotate(315deg);
+        }
+
+        /* Pequeñas estrellas (representando el brillo y claridad) */
+        .wx-clear-sparkle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background-color: white;
+            border-radius: 50%;
+        }
+
+        .wx-clear-sparkle-1 {
+            top: 20px;
+            left: 40px;
+            animation: wx-clear-twinkle 2s infinite 0.2s;
+        }
+
+        .wx-clear-sparkle-2 {
+            top: 35px;
+            left: 110px;
+            animation: wx-clear-twinkle 2s infinite 0.5s;
+        }
+
+        .wx-clear-sparkle-3 {
+            top: 70px;
+            left: 30px;
+            animation: wx-clear-twinkle 2s infinite 0.8s;
+        }
+
+        .wx-clear-sparkle-4 {
+            top: 60px;
+            left: 120px;
+            animation: wx-clear-twinkle 2s infinite 1.1s;
+        }
+
+        .wx-clear-sparkle-5 {
+            top: 90px;
+            left: 80px;
+            animation: wx-clear-twinkle 2s infinite 1.4s;
+        }
+
+        /* Texto del botón */
+        .wx-clear-text {
+            position: absolute;
+            bottom: 15px;
+            width: 100%;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+            left: 0;
+        }
+
+        /* Animaciones */
+        @keyframes wx-clear-sun-pulse {
+            0% {
+                box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
+                transform: translateX(-50%) scale(1);
+            }
+
+            100% {
+                box-shadow: 0 0 40px rgba(255, 215, 0, 0.9);
+                transform: translateX(-50%) scale(1.05);
+            }
+        }
+
+        @keyframes wx-clear-twinkle {
+            0% {
+                opacity: 0.2;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.5);
+            }
+
+            100% {
+                opacity: 0.2;
+                transform: scale(1);
+            }
+        }
+
+        /* Contenedor principal del botón */
+        .wx-overcast-container {
+            display: inline-block;
+            position: relative;
+        }
+
+        /* Estilo base del botón de cielo cubierto */
+        .wx-overcast-btn {
+            position: relative;
+            width: 200px;
+            height: 60px;
+            background: linear-gradient(to bottom, #a3a3a3, #6e6e6e);
+            border-radius: 30px;
+            border: none;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        /* Efecto hover del botón */
+        .wx-overcast-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Nubes de fondo */
+        .wx-overcast-cloud {
+            position: absolute;
+            background-color: #8a8a8a;
+            border-radius: 50px;
+        }
+
+        .wx-overcast-cloud-1 {
+            width: 100px;
+            height: 40px;
+            top: 30px;
+            left: 20px;
+            animation: wx-overcast-float 15s infinite alternate ease-in-out;
+            opacity: 0.8;
+        }
+
+        .wx-overcast-cloud-2 {
+            width: 70px;
+            height: 30px;
+            top: 20px;
+            right: 25px;
+            animation: wx-overcast-float 18s infinite alternate-reverse ease-in-out;
+            opacity: 0.7;
+        }
+
+        .wx-overcast-cloud-3 {
+            width: 120px;
+            height: 45px;
+            top: 60px;
+            left: 10px;
+            animation: wx-overcast-float 20s infinite alternate ease-in-out;
+            opacity: 0.9;
+        }
+
+        .wx-overcast-cloud-4 {
+            width: 90px;
+            height: 35px;
+            top: 70px;
+            right: 10px;
+            animation: wx-overcast-float 17s infinite alternate-reverse ease-in-out;
+            opacity: 0.75;
+        }
+
+        /* Formas redondeadas para las nubes */
+        .wx-overcast-cloud:before,
+        .wx-overcast-cloud:after {
+            content: '';
+            position: absolute;
+            background-color: inherit;
+            border-radius: 50%;
+        }
+
+        .wx-overcast-cloud-1:before {
+            width: 35px;
+            height: 35px;
+            top: -15px;
+            left: 20px;
+        }
+
+        .wx-overcast-cloud-1:after {
+            width: 35px;
+            height: 35px;
+            top: -10px;
+            right: 25px;
+        }
+
+        .wx-overcast-cloud-2:before {
+            width: 25px;
+            height: 25px;
+            top: -10px;
+            left: 15px;
+        }
+
+        .wx-overcast-cloud-2:after {
+            width: 25px;
+            height: 25px;
+            top: -8px;
+            right: 15px;
+        }
+
+        .wx-overcast-cloud-3:before {
+            width: 40px;
+            height: 40px;
+            top: -18px;
+            left: 25px;
+        }
+
+        .wx-overcast-cloud-3:after {
+            width: 40px;
+            height: 40px;
+            top: -15px;
+            right: 30px;
+        }
+
+        .wx-overcast-cloud-4:before {
+            width: 30px;
+            height: 30px;
+            top: -12px;
+            left: 20px;
+        }
+
+        .wx-overcast-cloud-4:after {
+            width: 30px;
+            height: 30px;
+            top: -10px;
+            right: 20px;
+        }
+
+        /* Indicador de temperatura */
+        .wx-overcast-temp {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: #f0f0f0;
+            background-color: rgba(60, 60, 60, 0.7);
+            padding: 3px 8px;
+            border-radius: 10px;
+        }
+
+        /* Texto del botón */
+        .wx-overcast-text {
+            position: absolute;
+            bottom: 15px;
+            width: 100%;
+            text-align: center;
+            color: #f0f0f0;
+            font-weight: bold;
+            left: 0;
+        }
+
+        /* Animaciones */
+        @keyframes wx-overcast-float {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(10px);
+            }
         }
     </style>
 </head>
@@ -1341,7 +2025,95 @@ if (isset($_POST['get_weather'])) {
                         <span class="snowflake snow-6">❆</span>
                         <span class="button-text"><span class="winter-icon"></span>Nevado</span>
                     </button>
+
+                    <button class="partly-cloudy-button">
+                        <div class="sun-container">
+                            <div class="ray"></div>
+                            <div class="ray"></div>
+                            <div class="ray"></div>
+                            <div class="ray"></div>
+                            <div class="ray"></div>
+                            <div class="ray"></div>
+                            <div class="ray"></div>
+                            <div class="ray"></div>
+                            <div class="sun-center"></div>
+                        </div>
+
+                        <div class="cloud cloud-1"></div>
+                        <div class="cloud cloud-2"></div>
+                        <div class="cloud cloud-3"></div>
+                        <span class="button-text">Parcialmente nublado</span>
+                    </button>
+                    <div class="wx-wind-btn-container">
+                        <button class="wx-wind-btn" style="<?php echo ($current_button_class == 'wind-button') ? '' : 'display: none;'; ?>">
+                            <div class="wx-wind-elements">
+                                <div class="wx-wind-line wx-wind-line-1"></div>
+                                <div class="wx-wind-line wx-wind-line-2"></div>
+                                <div class="wx-wind-line wx-wind-line-3"></div>
+                                <div class="wx-wind-line wx-wind-line-4"></div>
+
+                                <div class="wx-wind-leaf wx-wind-leaf-1"></div>
+                                <div class="wx-wind-leaf wx-wind-leaf-2"></div>
+                                <div class="wx-wind-leaf wx-wind-leaf-3"></div>
+                            </div>
+                            <span class="wx-wind-btn-text">Ventoso</span>
+                        </button>
+                    </div>
+                    <div class="wx-clear-container">
+                        <button class="wx-clear-btn" style="<?php echo ($current_button_class == 'clear-sky-button') ? '' : 'display: none;'; ?>">
+                            <div class="wx-clear-sun"></div>
+                            <div class="wx-clear-ray wx-clear-ray-1"></div>
+                            <div class="wx-clear-ray wx-clear-ray-2"></div>
+                            <div class="wx-clear-ray wx-clear-ray-3"></div>
+                            <div class="wx-clear-ray wx-clear-ray-4"></div>
+                            <div class="wx-clear-ray wx-clear-ray-5"></div>
+                            <div class="wx-clear-ray wx-clear-ray-6"></div>
+                            <div class="wx-clear-ray wx-clear-ray-7"></div>
+                            <div class="wx-clear-ray wx-clear-ray-8"></div>
+
+                            <div class="wx-clear-sparkle wx-clear-sparkle-1"></div>
+                            <div class="wx-clear-sparkle wx-clear-sparkle-2"></div>
+                            <div class="wx-clear-sparkle wx-clear-sparkle-3"></div>
+                            <div class="wx-clear-sparkle wx-clear-sparkle-4"></div>
+                            <div class="wx-clear-sparkle wx-clear-sparkle-5"></div>
+
+                            <span class="wx-clear-text">Cielo Despejado</span>
+                        </button>
+                    </div>
+                    <div class="wx-overcast-container">
+                        <button class="wx-overcast-btn" style="<?php echo ($current_button_class == 'overcast-sky-button') ? '' : 'display: none;'; ?>">
+                            <div class="wx-overcast-cloud wx-overcast-cloud-1"></div>
+                            <div class="wx-overcast-cloud wx-overcast-cloud-2"></div>
+                            <div class="wx-overcast-cloud wx-overcast-cloud-3"></div>
+                            <div class="wx-overcast-cloud wx-overcast-cloud-4"></div>
+                            <span class="wx-overcast-text">Cielo Cubierto</span>
+                        </button>
+                    </div>
+                    <button>Chubascos</button>
+                    <button>Tormenta eléctrica</button>
+                    <button>Niebla</button>
+                    <button>Niebla espesa</button>
+                    <button>Granizo</button>
+                    <button>Parche de niebla</button>
+                    <button>Tormenta de nieve</button>
+                    <button>Aguacero congelado</button>
+                    <button>Llovizna</button>
+                    <button>Lluvia helada</button>
+                    <button>Tornado</button>
+                    <button>Huracán</button>
+                    <button>Sequía</button>
+                    <button>Polvo</button>
+                    <button>Tormenta de arena</button>
+                    <button>Hielo</button>
+                    <button>Ráfaga</button>
+                    <button>Tormenta tropical</button>
+                    <button>Frío</button>
+                    <button>Caluroso</button>
+                    <button>Tormenta</button>
+                    <button>Ola de calor</button>
+
                 </div>
+
             </div>
             <script>
                 document.addEventListener("DOMContentLoaded", function() {
