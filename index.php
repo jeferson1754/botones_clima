@@ -162,7 +162,8 @@ if (isset($_POST['get_weather'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hora y Clima</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=<?= filemtime('style.css') ?>">
+
 </head>
 
 <body>
@@ -318,6 +319,7 @@ if (isset($_POST['get_weather'])) {
                         <div class="cloud cloud-3"></div>
                         <span class="button-text">Parcialmente nublado</span>
                     </button>
+
                     <div class="wx-wind-btn-container">
                         <button class="wx-wind-btn" style="<?php echo ($current_button_class == 'wind-button') ? '' : 'display: none;'; ?>">
                             <div class="wx-wind-elements">
@@ -333,6 +335,7 @@ if (isset($_POST['get_weather'])) {
                             <span class="wx-wind-btn-text">Ventoso</span>
                         </button>
                     </div>
+
                     <div class="wx-clear-container">
                         <button class="wx-clear-btn" style="<?php echo ($current_button_class == 'clear-sky-button') ? '' : 'display: none;'; ?>">
                             <div class="wx-clear-sun"></div>
@@ -354,6 +357,7 @@ if (isset($_POST['get_weather'])) {
                             <span class="wx-clear-text">Cielo Despejado</span>
                         </button>
                     </div>
+
                     <div class="wx-overcast-container">
                         <button class="wx-overcast-btn" style="<?php echo ($current_button_class == 'overcast-sky-button') ? '' : 'display: none;'; ?>">
                             <div class="wx-overcast-cloud wx-overcast-cloud-1"></div>
@@ -363,7 +367,10 @@ if (isset($_POST['get_weather'])) {
                             <span class="wx-overcast-text">Cielo Cubierto</span>
                         </button>
                     </div>
-                    <button>Chubascos</button>
+                    <button class="boton-chubasco" style="<?php echo ($current_button_class == 'overcast-sky-button') ? '' : 'display: none;'; ?>" onclick="animarChubasco(this)">
+                        Chubasco
+                        <div class="gotas"></div>
+                    </button>
                     <button>Tormenta eléctrica</button>
                     <button>Niebla</button>
                     <button>Niebla espesa</button>
@@ -394,6 +401,32 @@ if (isset($_POST['get_weather'])) {
                     let slider = document.querySelector(".slider");
                     let clone = slider.innerHTML;
                     slider.innerHTML += clone; // Duplicamos el contenido para el efecto continuo
+                });
+            </script>
+            <script>
+                function crearGotas(boton) {
+                    const contGotas = boton.querySelector('.gotas');
+                    contGotas.innerHTML = '';
+
+                    // Crear gotas de lluvia
+                    for (let i = 0; i < 15; i++) {
+                        const gota = document.createElement('div');
+                        gota.className = 'gota';
+                        gota.style.left = Math.random() * 100 + '%';
+                        gota.style.animationDelay = Math.random() * 1 + 's';
+                        gota.style.animationDuration = 0.5 + Math.random() * 0.5 + 's';
+                        contGotas.appendChild(gota);
+                    }
+                }
+
+                function animarChubasco(boton) {
+                    crearGotas(boton);
+                }
+
+                // Inicializar gotas al cargar
+                document.addEventListener('DOMContentLoaded', function() {
+                    const boton = document.querySelector('.boton-chubasco');
+                    crearGotas(boton);
                 });
             </script>
         </div>
