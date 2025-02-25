@@ -1810,3 +1810,72 @@ button:hover {
         opacity: 0;
     }
 }
+
+.boton-tormenta {
+    width: 200px;
+    height: 60px;
+    border: none;
+    border-radius: 30px;
+    background: linear-gradient(135deg, #34495e, #2c3e50);
+    color: white;
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(52, 73, 94, 0.5);
+    transition: transform 0.3s;
+}
+
+.boton-tormenta:hover {
+    transform: translateY(-3px);
+}
+
+.boton-tormenta:active {
+    transform: translateY(1px);
+}
+
+.boton-tormenta::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, transparent 50%, rgba(255, 255, 255, 0.1) 50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.boton-tormenta:hover::before {
+    opacity: 1;
+}
+
+.relampago {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.9);
+    transform: rotate(20deg);
+    opacity: 0;
+    z-index: 1;
+}
+
+@keyframes flash {
+    0%, 100% {
+        opacity: 0;
+    }
+    10%, 15% {
+        opacity: 1;
+    }
+    20%, 80% {
+        opacity: 0;
+    }
+    85%, 90% {
+        opacity: 0.6;
+    }
+}
+
+.texto {
+    position: relative;
+    z-index: 2;
+}

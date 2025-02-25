@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Botón Chubasco</title>
+    <title>Botón Tormenta Eléctrica</title>
     <style>
-        .boton-chubasco {
+        .boton-tormenta {
             width: 200px;
             height: 60px;
             border: none;
             border-radius: 30px;
-            background: linear-gradient(135deg, #3498db, #2980b9);
+            background: linear-gradient(135deg, #34495e, #2c3e50);
             color: white;
             font-family: Arial, sans-serif;
             font-size: 18px;
@@ -18,82 +18,113 @@
             cursor: pointer;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(41, 128, 185, 0.5);
-            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(52, 73, 94, 0.5);
+            transition: transform 0.3s;
         }
 
-        .boton-chubasco:hover {
+        .boton-tormenta:hover {
             transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(41, 128, 185, 0.7);
         }
 
-        .boton-chubasco:active {
+        .boton-tormenta:active {
             transform: translateY(1px);
         }
 
-        .boton-chubasco .gotas {
+        .boton-tormenta::before {
+            content: "";
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none;
+            background: radial-gradient(circle, transparent 50%, rgba(255, 255, 255, 0.1) 50%);
+            opacity: 0;
+            transition: opacity 0.3s;
         }
 
-        .boton-chubasco .gota {
+        .boton-tormenta:hover::before {
+            opacity: 1;
+        }
+
+        .relampago {
             position: absolute;
-            width: 4px;
-            height: 10px;
-            background-color: rgba(255, 255, 255, 0.7);
-            border-radius: 50% 50% 50% 50% / 80% 80% 20% 20%;
-            animation: caer-lluvia 1s linear infinite;
+            background-color: rgba(255, 255, 255, 0.9);
+            transform: rotate(20deg);
+            opacity: 0;
+            z-index: 1;
         }
 
-        @keyframes caer-lluvia {
-            0% {
-                transform: translateY(-15px) translateX(0);
+        @keyframes flash {
+            0%, 100% {
                 opacity: 0;
             }
-            50% {
+            10%, 15% {
                 opacity: 1;
             }
-            100% {
-                transform: translateY(60px) translateX(10px);
+            20%, 80% {
                 opacity: 0;
             }
+            85%, 90% {
+                opacity: 0.6;
+            }
+        }
+
+        .texto {
+            position: relative;
+            z-index: 2;
         }
     </style>
 </head>
 <body>
-    <button class="boton-chubasco" onclick="animarChubasco(this)">
-        Chubasco
-        <div class="gotas"></div>
+    <button id="botonTormenta" class="boton-tormenta">
+        <span class="texto">Tormenta eléctrica</span>
     </button>
 
     <script>
-        function crearGotas(boton) {
-            const contGotas = boton.querySelector('.gotas');
-            contGotas.innerHTML = '';
+        const boton = document.getElementById('botonTormenta');
+        
+        function crearRelampagos() {
+            // Eliminar relámpagos anteriores
+            const relampagosExistentes = document.querySelectorAll('.relampago');
+            relampagosExistentes.forEach(rel => rel.remove());
             
-            // Crear gotas de lluvia
-            for (let i = 0; i < 15; i++) {
-                const gota = document.createElement('div');
-                gota.className = 'gota';
-                gota.style.left = Math.random() * 100 + '%';
-                gota.style.animationDelay = Math.random() * 1 + 's';
-                gota.style.animationDuration = 0.5 + Math.random() * 0.5 + 's';
-                contGotas.appendChild(gota);
+            // Crear nuevos relámpagos
+            const numRelampagos = 3 + Math.floor(Math.random() * 3);
+            
+            for (let i = 0; i < numRelampagos; i++) {
+                const relampago = document.createElement('div');
+                relampago.className = 'relampago';
+                
+                // Posición y tamaño aleatorios
+                const ancho = 3 + Math.random() * 4;
+                const alto = 10 + Math.random() * 30;
+                const izquierda = 20 + Math.random() * 160;
+                const arriba = 5 + Math.random() * 40;
+                const rotacion = -30 + Math.random() * 60;
+                
+                relampago.style.width = ancho + 'px';
+                relampago.style.height = alto + 'px';
+                relampago.style.left = izquierda + 'px';
+                relampago.style.top = arriba + 'px';
+                relampago.style.transform = `rotate(${rotacion}deg)`;
+                
+                // Animación
+                relampago.style.animation = `flash ${1 + Math.random() * 2}s ease-out`;
+                relampago.style.animationDelay = `${Math.random() * 0.5}s`;
+                
+                boton.appendChild(relampago);
             }
+            
+            // Programar siguiente destello
+            setTimeout(crearRelampagos, 3000 + Math.random() * 2000);
         }
-
-        function animarChubasco(boton) {
-            crearGotas(boton);
-        }
-
-        // Inicializar gotas al cargar
-        document.addEventListener('DOMContentLoaded', function() {
-            const boton = document.querySelector('.boton-chubasco');
-            crearGotas(boton);
+        
+        // Iniciar animación cuando la página cargue
+        document.addEventListener('DOMContentLoaded', crearRelampagos);
+        
+        // Reiniciar animación al hacer clic
+        boton.addEventListener('click', () => {
+            crearRelampagos();
         });
     </script>
 </body>

@@ -120,8 +120,8 @@ if (isset($_POST['get_weather'])) {
         "Viento" => "wind-button",
         "Despejado" => "clear-sky-button",
         "Cubierto" => "overcast-sky-button",
-        "Chubascos" => "",
-        "Tormenta eléctrica" => "",
+        "Chubascos" => "boton-chubasco",
+        "Tormenta eléctrica" => "boton-tormenta",
         "Niebla" => "",
         "Niebla espesa" => "",
         "Granizo" => "",
@@ -367,11 +367,15 @@ if (isset($_POST['get_weather'])) {
                             <span class="wx-overcast-text">Cielo Cubierto</span>
                         </button>
                     </div>
-                    <button class="boton-chubasco" style="<?php echo ($current_button_class == 'overcast-sky-button') ? '' : 'display: none;'; ?>" onclick="animarChubasco(this)">
+
+                    <button class="boton-chubasco" style="<?php echo ($current_button_class == 'boton-chubasco') ? '' : 'display: none;'; ?>" onclick="animarChubasco(this)">
                         Chubasco
                         <div class="gotas"></div>
                     </button>
-                    <button>Tormenta eléctrica</button>
+
+                    <button id="botonTormenta" class="boton-tormenta" style="<?php echo ($current_button_class == 'boton-tormenta') ? '' : 'display: none;'; ?>">
+                        <span class="texto">Tormenta eléctrica</span>
+                    </button>
                     <button>Niebla</button>
                     <button>Niebla espesa</button>
                     <button>Granizo</button>
@@ -427,6 +431,53 @@ if (isset($_POST['get_weather'])) {
                 document.addEventListener('DOMContentLoaded', function() {
                     const boton = document.querySelector('.boton-chubasco');
                     crearGotas(boton);
+                });
+            </script>
+            <script>
+                const boton = document.getElementById('botonTormenta');
+
+                function crearRelampagos() {
+                    // Eliminar relámpagos anteriores
+                    const relampagosExistentes = document.querySelectorAll('.relampago');
+                    relampagosExistentes.forEach(rel => rel.remove());
+
+                    // Crear nuevos relámpagos
+                    const numRelampagos = 3 + Math.floor(Math.random() * 3);
+
+                    for (let i = 0; i < numRelampagos; i++) {
+                        const relampago = document.createElement('div');
+                        relampago.className = 'relampago';
+
+                        // Posición y tamaño aleatorios
+                        const ancho = 3 + Math.random() * 4;
+                        const alto = 10 + Math.random() * 30;
+                        const izquierda = 20 + Math.random() * 160;
+                        const arriba = 5 + Math.random() * 40;
+                        const rotacion = -30 + Math.random() * 60;
+
+                        relampago.style.width = ancho + 'px';
+                        relampago.style.height = alto + 'px';
+                        relampago.style.left = izquierda + 'px';
+                        relampago.style.top = arriba + 'px';
+                        relampago.style.transform = `rotate(${rotacion}deg)`;
+
+                        // Animación
+                        relampago.style.animation = `flash ${1 + Math.random() * 2}s ease-out`;
+                        relampago.style.animationDelay = `${Math.random() * 0.5}s`;
+
+                        boton.appendChild(relampago);
+                    }
+
+                    // Programar siguiente destello
+                    setTimeout(crearRelampagos, 3000 + Math.random() * 2000);
+                }
+
+                // Iniciar animación cuando la página cargue
+                document.addEventListener('DOMContentLoaded', crearRelampagos);
+
+                // Reiniciar animación al hacer clic
+                boton.addEventListener('click', () => {
+                    crearRelampagos();
                 });
             </script>
         </div>
