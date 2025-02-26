@@ -1879,3 +1879,71 @@ button:hover {
     position: relative;
     z-index: 2;
 }
+
+.fog-container {
+    display: inline-block;
+  }
+  
+  .fog-button {
+    padding: 16px 40px;
+    font-size: 18px;
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 30px;
+    cursor: pointer;
+    outline: none;
+    z-index: 2;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+  
+  .fog-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+    transform: translateY(-3px);
+  }
+  
+  .fog {
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    top: -50%;
+    left: -50%;
+    background: radial-gradient(ellipse at center, 
+                rgba(255, 255, 255, 0.3) 0%, 
+                rgba(255, 255, 255, 0) 70%);
+    filter: blur(20px);
+    opacity: 0;
+    z-index: 1;
+    animation: fogAnimation 8s infinite alternate;
+    pointer-events: none;
+  }
+  
+  .fog-2 {
+    animation-delay: 2s;
+    animation-duration: 10s;
+  }
+  
+  .fog-3 {
+    animation-delay: 4s;
+    animation-duration: 12s;
+  }
+  
+  @keyframes fogAnimation {
+    0% {
+      opacity: 0;
+      transform: translateX(-10%) translateY(5%) scale(0.9);
+    }
+    50% {
+      opacity: 0.5;
+    }
+    100% {
+      opacity: 0;
+      transform: translateX(10%) translateY(-5%) scale(1.1);
+    }
+  }

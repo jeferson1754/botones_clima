@@ -150,6 +150,7 @@ if (isset($_POST['get_weather'])) {
     $slider_active = $current_button_class;
 } else {
     $slider_active = "";
+    $current_button_class="";
 }
 
 ?>
@@ -376,7 +377,12 @@ if (isset($_POST['get_weather'])) {
                     <button id="botonTormenta" class="boton-tormenta" style="<?php echo ($current_button_class == 'boton-tormenta') ? '' : 'display: none;'; ?>">
                         <span class="texto">Tormenta eléctrica</span>
                     </button>
-                    <button>Niebla</button>
+                    <div class="fog-container">
+                        <div class="fog"></div>
+                        <div class="fog fog-2"></div>
+                        <div class="fog fog-3"></div>
+                        <button class="fog-button">Niebla</button>
+                    </div>
                     <button>Niebla espesa</button>
                     <button>Granizo</button>
                     <button>Parche de niebla</button>
@@ -478,6 +484,19 @@ if (isset($_POST['get_weather'])) {
                 // Reiniciar animación al hacer clic
                 boton.addEventListener('click', () => {
                     crearRelampagos();
+                });
+            </script>
+            <script>
+                document.querySelector('.fog-button').addEventListener('mouseover', function() {
+                    document.querySelectorAll('.fog').forEach(fog => {
+                        fog.style.opacity = '0.5';
+                    });
+                });
+
+                document.querySelector('.fog-button').addEventListener('mouseout', function() {
+                    document.querySelectorAll('.fog').forEach(fog => {
+                        fog.style.opacity = '';
+                    });
                 });
             </script>
         </div>
