@@ -122,8 +122,8 @@ if (isset($_POST['get_weather'])) {
         "Cubierto" => "overcast-sky-button",
         "Chubascos" => "boton-chubasco",
         "Tormenta eléctrica" => "boton-tormenta",
-        "Niebla" => "",
-        "Niebla espesa" => "",
+        "Niebla" => "boton-niebla",
+        "Niebla espesa" => "boton-niebla-espesa",
         "Granizo" => "",
         "Parche de niebla" => "",
         "Tormenta de nieve" => "",
@@ -150,7 +150,7 @@ if (isset($_POST['get_weather'])) {
     $slider_active = $current_button_class;
 } else {
     $slider_active = "";
-    $current_button_class="";
+    $current_button_class = "";
 }
 
 ?>
@@ -377,13 +377,16 @@ if (isset($_POST['get_weather'])) {
                     <button id="botonTormenta" class="boton-tormenta" style="<?php echo ($current_button_class == 'boton-tormenta') ? '' : 'display: none;'; ?>">
                         <span class="texto">Tormenta eléctrica</span>
                     </button>
-                    <div class="fog-container">
+                    <div class="fog-container" style="<?php echo ($current_button_class == 'boton-niebla') ? '' : 'display: none;'; ?>">
                         <div class="fog"></div>
                         <div class="fog fog-2"></div>
                         <div class="fog fog-3"></div>
                         <button class="fog-button">Niebla</button>
                     </div>
-                    <button>Niebla espesa</button>
+                    <button id="botonNiebla" class="boton-niebla" style="<?php echo ($current_button_class == 'boton-niebla-espesa') ? '' : 'display: none;'; ?>">
+                        <span class="texto">Niebla espesa</span>
+                        <div class="niebla-contenedor"></div>
+                    </button>
                     <button>Granizo</button>
                     <button>Parche de niebla</button>
                     <button>Tormenta de nieve</button>
@@ -440,7 +443,7 @@ if (isset($_POST['get_weather'])) {
                 });
             </script>
             <script>
-                const boton = document.getElementById('botonTormenta');
+                const boton1 = document.getElementById('botonTormenta');
 
                 function crearRelampagos() {
                     // Eliminar relámpagos anteriores
@@ -471,7 +474,7 @@ if (isset($_POST['get_weather'])) {
                         relampago.style.animation = `flash ${1 + Math.random() * 2}s ease-out`;
                         relampago.style.animationDelay = `${Math.random() * 0.5}s`;
 
-                        boton.appendChild(relampago);
+                        boton1.appendChild(relampago);
                     }
 
                     // Programar siguiente destello
@@ -482,7 +485,7 @@ if (isset($_POST['get_weather'])) {
                 document.addEventListener('DOMContentLoaded', crearRelampagos);
 
                 // Reiniciar animación al hacer clic
-                boton.addEventListener('click', () => {
+                boton1.addEventListener('click', () => {
                     crearRelampagos();
                 });
             </script>
@@ -497,6 +500,65 @@ if (isset($_POST['get_weather'])) {
                     document.querySelectorAll('.fog').forEach(fog => {
                         fog.style.opacity = '';
                     });
+                });
+            </script>
+            <script>
+                const boton2 = document.getElementById('botonNiebla');
+                const contenedor = boton2.querySelector('.niebla-contenedor');
+
+                function crearNiebla() {
+                    // Limpiar niebla anterior
+                    contenedor.innerHTML = '';
+
+                    // Crear capas de niebla
+                    const numCapas = 15;
+
+                    for (let i = 0; i < numCapas; i++) {
+                        const niebla = document.createElement('div');
+                        niebla.className = 'niebla';
+
+                        // Tamaño aleatorio
+                        const tamaño = 30 + Math.random() * 100;
+
+                        // Posición aleatoria
+                        const izquierda = -20 + Math.random() * 240;
+                        const arriba = -20 + Math.random() * 100;
+
+                        niebla.style.width = tamaño + 'px';
+                        niebla.style.height = tamaño + 'px';
+                        niebla.style.left = izquierda + 'px';
+                        niebla.style.top = arriba + 'px';
+
+                        // Animación
+                        niebla.style.transition = 'transform ' + (5 + Math.random() * 5) + 's linear, opacity ' + (3 + Math.random() * 3) + 's ease-in-out';
+                        niebla.style.opacity = 0.1 + Math.random() * 0.5;
+
+                        contenedor.appendChild(niebla);
+
+                        // Animar después de un pequeño retraso para que la transición funcione
+                        setTimeout(() => {
+                            const desplazamientoX = -30 + Math.random() * 60;
+                            const desplazamientoY = -10 + Math.random() * 20;
+                            niebla.style.transform = `translate(${desplazamientoX}px, ${desplazamientoY}px)`;
+
+                            if (Math.random() > 0.5) {
+                                niebla.style.opacity = 0.05 + Math.random() * 0.3;
+                            } else {
+                                niebla.style.opacity = 0.3 + Math.random() * 0.4;
+                            }
+                        }, 10);
+                    }
+
+                    // Reiniciar niebla periódicamente
+                    setTimeout(crearNiebla, 4000);
+                }
+
+                // Iniciar efectos de niebla
+                document.addEventListener('DOMContentLoaded', crearNiebla);
+
+                // Reiniciar al hacer clic
+                boton2.addEventListener('click', () => {
+                    crearNiebla();
                 });
             </script>
         </div>
