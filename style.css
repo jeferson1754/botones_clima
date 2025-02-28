@@ -8,6 +8,115 @@ body {
     color: #333;
 }
 
+
+.weather-container {
+    max-width: 500px;
+    margin: 20px auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(to bottom, #f7f9fc, #e3e8f0);
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+}
+
+.date-time-section {
+    text-align: center;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.date-time-section h3 {
+    color: #555;
+    font-size: 16px;
+    margin: 0;
+}
+
+.highlight {
+    color: #4a89dc;
+    font-weight: bold;
+}
+
+.weather-card {
+    padding: 15px;
+    border-radius: 8px;
+    background-color: white;
+}
+
+.weather-card h3 {
+    text-align: center;
+    margin-top: 0;
+    color: #333;
+    font-size: 18px;
+}
+
+.city-name {
+    color: #4a89dc;
+    font-weight: bold;
+}
+
+.weather-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-top: 15px;
+}
+
+.weather-temp {
+    text-align: center;
+}
+
+.temp-value {
+    font-size: 32px;
+    font-weight: bold;
+    margin: 0;
+    color: #333;
+}
+
+.temp-unit {
+    font-size: 18px;
+    color: #666;
+}
+
+.weather-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.weather-icon {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 5px;
+}
+
+.weather-desc {
+    margin: 5px 0 0;
+    text-align: center;
+    color: #555;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.error-message {
+    padding: 15px;
+    background-color: #fff3f3;
+    border-radius: 8px;
+    text-align: center;
+    color: #e74c3c;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .weather-info {
+        flex-direction: column;
+    }
+
+    .weather-temp {
+        margin-bottom: 15px;
+    }
+}
+
 .container {
     background-color: white;
     border-radius: 10px;
@@ -1991,3 +2100,72 @@ button:hover {
     background: rgba(255, 255, 255, 0.8);
     filter: blur(8px);
 }
+
+.button-container2 {
+    text-align: center;
+  }
+
+.granizo-button {
+    position: relative;
+    display: inline-block;
+    padding: 15px 40px;
+    background: linear-gradient(to right, #e0eafc, #cfdef3);
+    color: #5a7bce;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(176, 190, 224, 0.4);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    outline: none;
+  }
+  
+  .granizo-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(176, 190, 224, 0.6);
+    color: #4266c9;
+  }
+  
+  .granizo-button:active {
+    transform: translateY(1px);
+  }
+  
+  .hail-drop {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
+  }
+  
+  @keyframes fallAndFade {
+    0% {
+      transform: translateY(-10px);
+      opacity: 0;
+    }
+    50% {
+      opacity: 0.9;
+    }
+    100% {
+      transform: translateY(30px);
+      opacity: 0;
+    }
+  }
+  
+  .ripple {
+    position: absolute;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.7);
+    transform: scale(0);
+    animation: ripple 0.8s linear;
+  }
+  
+  @keyframes ripple {
+    to {
+      transform: scale(2.5);
+      opacity: 0;
+    }
+  }

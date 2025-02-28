@@ -1,14 +1,19 @@
 <?php
-if (isset($_POST['get_weather'])) {
+// Definir la ciudad y la URL de la API
+$city = $_POST['city'] ?? 'Santiago';
+$api_key = "410f454b9ebb63e2a46e6dc2aa04554e";
+$api_url = "https://api.weatherstack.com/current?access_key=$api_key&query=$city";
 
-    // Definir la ciudad y la URL de la API
-    $city = $_POST['city'] ?? 'Santiago';
-    $api_key = "410f454b9ebb63e2a46e6dc2aa04554e";
-    $api_url = "https://api.weatherstack.com/current?access_key=$api_key&query=$city";
+// Obtener los datos JSON de la API
+$response = @file_get_contents($api_url);
+if ($response === FALSE) {
+    die('Error al obtener datos de la API');
+}
 
-    // Obtener los datos JSON de la API
-    $weather_data = json_decode(file_get_contents($api_url), true);
+$weather_data = json_decode($response, true);
 
+// Verificar que la respuesta de la API contenga los datos necesarios
+if (isset($weather_data['current'])) {
     // Extraer la información de la temperatura, el icono y la descripción
     $temperature = $weather_data['current']['temperature'] ?? 'N/A';
     $weather_icon = $weather_data['current']['weather_icons'][0] ?? '';
@@ -53,6 +58,7 @@ if (isset($_POST['get_weather'])) {
 
         // Manejo de los rangos que cruzan medianoche (20:00-06:00)
         if ($start_minutes > $end_minutes) {
+            // Si el rango cruza medianoche, compararlo
             return ($current_minutes >= $start_minutes || $current_minutes < $end_minutes);
         } else {
             return ($current_minutes >= $start_minutes && $current_minutes < $end_minutes);
@@ -68,7 +74,7 @@ if (isset($_POST['get_weather'])) {
         }
     }
 
-
+    // Aquí puedes utilizar $temperature, $weather_icon, $weather_description, etc., según lo necesites
 
     // Mapa de traducciones
     $translations = [
@@ -153,6 +159,7 @@ if (isset($_POST['get_weather'])) {
     $current_button_class = "";
 }
 
+
 ?>
 
 
@@ -175,20 +182,48 @@ if (isset($_POST['get_weather'])) {
         <div class="day-moments">
             <?php
             if (isset($_POST['get_weather'])) {
+                // Inicio del contenedor principal
+                echo '<div class="weather-container">';
 
-                echo "<h3>Fecha y Hora Actual: $formatted_date</h3>";
+                // Sección de fecha y hora
+                echo '<div class="date-time-section">';
+                echo "<h3>Fecha y Hora Actual: <span class='highlight'>$formatted_date</span></h3>";
+                echo '</div>';
+
                 if ($temperature !== 'N/A') {
-                    echo "<h3>Clima actual en $city</h3>";
-                    echo "<p><strong>Temperatura: $temperature °C</strong></p>";
-                    echo "<p><strong>Descripción: $weather_description_es</strong></p>";
+                    // Sección principal del clima
+                    echo '<div class="weather-card">';
+                    echo "<h3>Clima actual en <span class='city-name'>$city</span></h3>";
+
+                    // Contenedor flexible para la información del clima
+                    echo '<div class="weather-info">';
+
+                    // Columna izquierda con la temperatura
+                    echo '<div class="weather-temp">';
+                    echo "<p class='temp-value'>$temperature<span class='temp-unit'>°C</span></p>";
+                    echo '</div>';
+
+                    // Columna derecha con la descripción e icono
+                    echo '<div class="weather-details">';
                     if ($weather_icon) {
-                        echo "<p><img src='$weather_icon' alt='Clima icon'></p>";
+                        echo "<img src='$weather_icon' alt='Clima' class='weather-icon'>";
                     }
+                    echo "<p class='weather-desc'>$weather_description_es</p>";
+                    echo '</div>';
+
+                    echo '</div>'; // Cierre de weather-info
+                    echo '</div>'; // Cierre de weather-card
                 } else {
-                    echo "<p>No se encontraron datos de clima disponibles para $city.</p>";
+                    // Mensaje de error
+                    echo '<div class="error-message">';
+                    echo "<p>No se encontraron datos de clima disponibles para <span class='city-name'>$city</span>.</p>";
+                    echo '</div>';
                 }
+
+                echo '</div>'; // Cierre del contenedor principal
             }
             ?>
+
 
             <div class="button-container-wrapper">
                 <div class="button-container" style="<?php echo ($current_button == 'sunrise-button') ? '' : 'display: none;'; ?>">

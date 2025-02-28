@@ -1,126 +1,163 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Botón Niebla Espesa</title>
-    <style>
-        .boton-niebla {
-            width: 200px;
-            height: 60px;
-            border: none;
-            border-radius: 30px;
-            background: linear-gradient(135deg, #b8c6db, #f5f7fa);
-            color: #333;
-            font-family: Arial, sans-serif;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(184, 198, 219, 0.5);
-            transition: all 0.3s ease;
-        }
-
-        .boton-niebla:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(184, 198, 219, 0.7);
-        }
-
-        .boton-niebla:active {
-            transform: translateY(1px);
-        }
-
-        .niebla-contenedor {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            pointer-events: none;
-            opacity: 0.6;
-            border-radius: 30px;
-        }
-
-        .niebla {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.8);
-            filter: blur(8px);
-        }
-
-        .texto {
-            position: relative;
-            z-index: 2;
-            mix-blend-mode: darken;
-        }
-    </style>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f5f7fa;
+      font-family: 'Arial', sans-serif;
+    }
+    
+    .button-container {
+      text-align: center;
+    }
+    
+    .granizo-button {
+      position: relative;
+      display: inline-block;
+      padding: 15px 40px;
+      background: linear-gradient(to right, #e0eafc, #cfdef3);
+      color: #5a7bce;
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(176, 190, 224, 0.4);
+      overflow: hidden;
+      transition: all 0.3s ease;
+      outline: none;
+    }
+    
+    .granizo-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(176, 190, 224, 0.6);
+      color: #4266c9;
+    }
+    
+    .granizo-button:active {
+      transform: translateY(1px);
+    }
+    
+    .hail-drop {
+      position: absolute;
+      background-color: rgba(255, 255, 255, 0.8);
+      border-radius: 50%;
+      pointer-events: none;
+      opacity: 0;
+    }
+    
+    @keyframes fallAndFade {
+      0% {
+        transform: translateY(-10px);
+        opacity: 0;
+      }
+      50% {
+        opacity: 0.9;
+      }
+      100% {
+        transform: translateY(30px);
+        opacity: 0;
+      }
+    }
+    
+    .ripple {
+      position: absolute;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.7);
+      transform: scale(0);
+      animation: ripple 0.8s linear;
+    }
+    
+    @keyframes ripple {
+      to {
+        transform: scale(2.5);
+        opacity: 0;
+      }
+    }
+  </style>
 </head>
 <body>
-    <button id="botonNiebla" class="boton-niebla">
-        <span class="texto">Niebla espesa</span>
-        <div class="niebla-contenedor"></div>
-    </button>
+  <div class="button-container">
+    <button id="granizo-btn" class="granizo-button">Granizo</button>
+  </div>
 
-    <script>
-        const boton = document.getElementById('botonNiebla');
-        const contenedor = boton.querySelector('.niebla-contenedor');
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const button = document.getElementById('granizo-btn');
+      
+      // Crear efecto de granizo inicial
+      createInitialHailEffect();
+      
+      // Crear efecto de granizo cada 2 segundos
+      setInterval(createInitialHailEffect, 2000);
+      
+      // Efecto al hacer hover
+      button.addEventListener('mouseover', function() {
+        createHailEffect();
+      });
+      
+      // Efecto de ripple al hacer clic
+      button.addEventListener('click', function(e) {
+        const rect = button.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
         
-        function crearNiebla() {
-            // Limpiar niebla anterior
-            contenedor.innerHTML = '';
-            
-            // Crear capas de niebla
-            const numCapas = 15;
-            
-            for (let i = 0; i < numCapas; i++) {
-                const niebla = document.createElement('div');
-                niebla.className = 'niebla';
-                
-                // Tamaño aleatorio
-                const tamaño = 30 + Math.random() * 100;
-                
-                // Posición aleatoria
-                const izquierda = -20 + Math.random() * 240;
-                const arriba = -20 + Math.random() * 100;
-                
-                niebla.style.width = tamaño + 'px';
-                niebla.style.height = tamaño + 'px';
-                niebla.style.left = izquierda + 'px';
-                niebla.style.top = arriba + 'px';
-                
-                // Animación
-                niebla.style.transition = 'transform ' + (5 + Math.random() * 5) + 's linear, opacity ' + (3 + Math.random() * 3) + 's ease-in-out';
-                niebla.style.opacity = 0.1 + Math.random() * 0.5;
-                
-                contenedor.appendChild(niebla);
-                
-                // Animar después de un pequeño retraso para que la transición funcione
-                setTimeout(() => {
-                    const desplazamientoX = -30 + Math.random() * 60;
-                    const desplazamientoY = -10 + Math.random() * 20;
-                    niebla.style.transform = `translate(${desplazamientoX}px, ${desplazamientoY}px)`;
-                    
-                    if (Math.random() > 0.5) {
-                        niebla.style.opacity = 0.05 + Math.random() * 0.3;
-                    } else {
-                        niebla.style.opacity = 0.3 + Math.random() * 0.4;
-                    }
-                }, 10);
-            }
-            
-            // Reiniciar niebla periódicamente
-            setTimeout(crearNiebla, 4000);
+        const ripple = document.createElement('span');
+        ripple.classList.add('ripple');
+        ripple.style.left = `${x}px`;
+        ripple.style.top = `${y}px`;
+        
+        button.appendChild(ripple);
+        
+        setTimeout(() => {
+          ripple.remove();
+        }, 800);
+      });
+      
+      function createHailEffect() {
+        for (let i = 0; i < 8; i++) {
+          setTimeout(() => {
+            createHailDrop();
+          }, i * 100);
         }
+      }
+      
+      function createInitialHailEffect() {
+        for (let i = 0; i < 3; i++) {
+          setTimeout(() => {
+            createHailDrop();
+          }, i * 300);
+        }
+      }
+      
+      function createHailDrop() {
+        const hailDrop = document.createElement('span');
+        hailDrop.classList.add('hail-drop');
         
-        // Iniciar efectos de niebla
-        document.addEventListener('DOMContentLoaded', crearNiebla);
+        const size = Math.random() * 4 + 3;
+        const xPos = Math.random() * button.offsetWidth;
         
-        // Reiniciar al hacer clic
-        boton.addEventListener('click', () => {
-            crearNiebla();
-        });
-    </script>
+        hailDrop.style.width = `${size}px`;
+        hailDrop.style.height = `${size}px`;
+        hailDrop.style.left = `${xPos}px`;
+        hailDrop.style.top = '0';
+        
+        const animDuration = Math.random() * 0.5 + 0.8;
+        hailDrop.style.animation = `fallAndFade ${animDuration}s ease forwards`;
+        
+        button.appendChild(hailDrop);
+        
+        setTimeout(() => {
+          hailDrop.remove();
+        }, animDuration * 1000);
+      }
+    });
+  </script>
 </body>
 </html>
