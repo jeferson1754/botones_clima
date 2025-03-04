@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Botón Niebla Atmosférico</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #1c2b4a, #0a1128);
+            font-family: 'Inter', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .fog-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 200px;
+            height: 60px;
+        }
+  
+        .fog-button {
+            position: relative;
+            padding: 20px 50px;
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.9);
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 40px;
+            cursor: pointer;
+            outline: none;
+            z-index: 10;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+            box-shadow: 
+                0 0 20px rgba(255, 255, 255, 0.1),
+                inset 0 0 15px rgba(255, 255, 255, 0.05);
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            transform-style: preserve-3d;
+            transform: translateZ(50px);
+        }
+  
+        .fog-button::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(
+                circle at center, 
+                rgba(255,255,255,0.1) 0%, 
+                transparent 70%
+            );
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: -1;
+        }
+  
+        .fog-button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 
+                0 0 40px rgba(255, 255, 255, 0.2),
+                inset 0 0 25px rgba(255, 255, 255, 0.1);
+            transform: translateZ(80px) translateY(-5px);
+            color: white;
+        }
+  
+        .fog-button:active {
+            transform: translateZ(30px) scale(0.95);
+        }
+  
+        .fog {
+            position: absolute;
+            width: 300%;
+            height: 300%;
+            top: -100%;
+            left: -100%;
+            background: radial-gradient(
+                ellipse at center, 
+                rgba(255, 255, 255, 0.3) 0%, 
+                rgba(255, 255, 255, 0) 70%
+            );
+            filter: blur(40px);
+            opacity: 0;
+            z-index: 1;
+            animation: fogAnimation 8s infinite alternate;
+            pointer-events: none;
+            mix-blend-mode: overlay;
+        }
+  
+        .fog-2 {
+            animation-delay: 2s;
+            animation-duration: 10s;
+            background: radial-gradient(
+                ellipse at center, 
+                rgba(200, 230, 255, 0.2) 0%, 
+                rgba(255, 255, 255, 0) 70%
+            );
+        }
+  
+        .fog-3 {
+            animation-delay: 4s;
+            animation-duration: 12s;
+            background: radial-gradient(
+                ellipse at center, 
+                rgba(173, 216, 230, 0.2) 0%, 
+                rgba(255, 255, 255, 0) 70%
+            );
+        }
+  
+        @keyframes fogAnimation {
+            0% {
+                opacity: 0;
+                transform: translateX(-10%) translateY(5%) scale(0.9) rotate(-2deg);
+            }
+            50% {
+                opacity: 0.4;
+            }
+            100% {
+                opacity: 0;
+                transform: translateX(10%) translateY(-5%) scale(1.1) rotate(2deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="fog-container">
+        <div class="fog"></div>
+        <div class="fog fog-2"></div>
+        <div class="fog fog-3"></div>
+        <button class="fog-button">Niebla Atmosférica</button>
+    </div>
+
+    <script>
+        const fogButton = document.querySelector('.fog-button');
+        const fogs = document.querySelectorAll('.fog');
+
+        fogButton.addEventListener('mouseover', function() {
+            fogs.forEach(fog => {
+                fog.style.opacity = '0.5';
+            });
+        });
+
+        fogButton.addEventListener('mouseout', function() {
+            fogs.forEach(fog => {
+                fog.style.opacity = '';
+            });
+        });
+
+        // Efecto adicional de movimiento
+        document.addEventListener('mousemove', (e) => {
+            const { clientX, clientY } = e;
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+            
+            const moveX = (clientX - centerX) / 50;
+            const moveY = (clientY - centerY) / 50;
+            
+            fogButton.style.transform = `translateZ(50px) translateX(${-moveX}px) translateY(${-moveY}px)`;
+        });
+    </script>
+</body>
+</html>

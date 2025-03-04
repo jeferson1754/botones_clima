@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!--   
+    <link rel="stylesheet" href="../style.css">
+ -->
+</head>
+<style>
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f5f7fa;
+    color: #333;
+}
+
+
+/* Contenedor principal del botón */
+.wx-clear-container {
+    display: inline-block;
+    position: relative;
+}
+
+/* Estilo base del botón de cielo despejado */
+.wx-clear-btn {
+    position: relative;
+    width: 200px;
+    height: 60px;
+    background: linear-gradient(to bottom, #87CEEB, #1E90FF);
+    border-radius: 30px;
+    border: none;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+/* Efecto hover del botón */
+.wx-clear-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* Sol central */
+.wx-clear-sun {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle, #FFEF00, #FFA500);
+    border-radius: 50%;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+    animation: wx-clear-sun-pulse 4s infinite alternate;
+}
+
+/* Rayos de sol */
+.wx-clear-ray {
+    position: absolute;
+    background: linear-gradient(to right, rgba(255, 215, 0, 0.8), rgba(255, 215, 0, 0));
+    height: 3px;
+    width: 30px;
+    top: 60px;
+    left: 50%;
+    transform-origin: left center;
+}
+
+.wx-clear-ray-1 {
+    transform: translateX(-1px) rotate(0deg);
+}
+
+.wx-clear-ray-2 {
+    transform: translateX(-1px) rotate(45deg);
+}
+
+.wx-clear-ray-3 {
+    transform: translateX(-1px) rotate(90deg);
+}
+
+.wx-clear-ray-4 {
+    transform: translateX(-1px) rotate(135deg);
+}
+
+.wx-clear-ray-5 {
+    transform: translateX(-1px) rotate(180deg);
+}
+
+.wx-clear-ray-6 {
+    transform: translateX(-1px) rotate(225deg);
+}
+
+.wx-clear-ray-7 {
+    transform: translateX(-1px) rotate(270deg);
+}
+
+.wx-clear-ray-8 {
+    transform: translateX(-1px) rotate(315deg);
+}
+
+/* Pequeñas estrellas (representando el brillo y claridad) */
+.wx-clear-sparkle {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background-color: white;
+    border-radius: 50%;
+}
+
+.wx-clear-sparkle-1 {
+    top: 20px;
+    left: 40px;
+    animation: wx-clear-twinkle 2s infinite 0.2s;
+}
+
+.wx-clear-sparkle-2 {
+    top: 35px;
+    left: 110px;
+    animation: wx-clear-twinkle 2s infinite 0.5s;
+}
+
+.wx-clear-sparkle-3 {
+    top: 70px;
+    left: 30px;
+    animation: wx-clear-twinkle 2s infinite 0.8s;
+}
+
+.wx-clear-sparkle-4 {
+    top: 60px;
+    left: 120px;
+    animation: wx-clear-twinkle 2s infinite 1.1s;
+}
+
+.wx-clear-sparkle-5 {
+    top: 90px;
+    left: 80px;
+    animation: wx-clear-twinkle 2s infinite 1.4s;
+}
+
+/* Texto del botón */
+.wx-clear-text {
+    position: absolute;
+    bottom: 15px;
+    width: 100%;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+    left: 0;
+}
+
+/* Animaciones */
+@keyframes wx-clear-sun-pulse {
+    0% {
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
+        transform: translateX(-50%) scale(1);
+    }
+
+    100% {
+        box-shadow: 0 0 40px rgba(255, 215, 0, 0.9);
+        transform: translateX(-50%) scale(1.05);
+    }
+}
+
+@keyframes wx-clear-twinkle {
+    0% {
+        opacity: 0.2;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.5);
+    }
+
+    100% {
+        opacity: 0.2;
+        transform: scale(1);
+    }
+}
+</style>
+<body>
+    <div>
+
+        <div class="wx-clear-container">
+            <button class="wx-clear-btn" >
+                <div class="wx-clear-sun"></div>
+                <div class="wx-clear-ray wx-clear-ray-1"></div>
+                <div class="wx-clear-ray wx-clear-ray-2"></div>
+                <div class="wx-clear-ray wx-clear-ray-3"></div>
+                <div class="wx-clear-ray wx-clear-ray-4"></div>
+                <div class="wx-clear-ray wx-clear-ray-5"></div>
+                <div class="wx-clear-ray wx-clear-ray-6"></div>
+                <div class="wx-clear-ray wx-clear-ray-7"></div>
+                <div class="wx-clear-ray wx-clear-ray-8"></div>
+
+                <div class="wx-clear-sparkle wx-clear-sparkle-1"></div>
+                <div class="wx-clear-sparkle wx-clear-sparkle-2"></div>
+                <div class="wx-clear-sparkle wx-clear-sparkle-3"></div>
+                <div class="wx-clear-sparkle wx-clear-sparkle-4"></div>
+                <div class="wx-clear-sparkle wx-clear-sparkle-5"></div>
+
+                <span class="wx-clear-text">Cielo Despejado</span>
+            </button>
+        </div>
+
+    </div>
+</body>
+</html>

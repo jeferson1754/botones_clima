@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f5f7fa;
+    color: #333;
+}
+
+.sunny-button {
+    position: relative;
+    width: 200px;
+    height: 60px;
+    border: none;
+    border-radius: 30px;
+    overflow: hidden;
+    cursor: pointer;
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    font-size: 18px;
+    color: #663300;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
+    box-shadow: 0 7px 20px rgba(255, 180, 0, 0.4);
+    transform: translateY(-3px);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.sunny-button:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg,
+            #FFEB3B,
+            /* Amarillo brillante */
+            #FFD700,
+            /* Dorado */
+            #FFC107,
+            /* Ámbar */
+            #FF9800
+            /* Naranja */
+        );
+    z-index: -1;
+}
+
+.sunny-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 3px 10px rgba(255, 180, 0, 0.3);
+}
+
+.sun-rays {
+    position: absolute;
+    top: 50%;
+    left: 30px;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 30px;
+}
+
+.sun-center {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: #FF9800;
+    border-radius: 50%;
+    left: 9px;
+    top: 5px;
+    box-shadow: 0 0 15px 5px rgba(255, 152, 0, 0.7);
+}
+
+.ray {
+    position: absolute;
+    background: #FFEB3B;
+    height: 3px;
+    width: 14px;
+    top: 13px;
+    left: 13px;
+    box-shadow: 0 0 5px 1px rgba(255, 235, 59, 0.6);
+}
+
+.ray:nth-child(1) {
+    transform: rotate(0deg) translateX(-20px);
+}
+
+.ray:nth-child(2) {
+    transform: rotate(45deg) translateX(-20px);
+}
+
+.ray:nth-child(3) {
+    transform: rotate(90deg) translateX(-20px);
+}
+
+.ray:nth-child(4) {
+    transform: rotate(135deg) translateX(-20px);
+}
+
+.ray:nth-child(5) {
+    transform: rotate(180deg) translateX(-20px);
+}
+
+.ray:nth-child(6) {
+    transform: rotate(225deg) translateX(-20px);
+}
+
+.ray:nth-child(7) {
+    transform: rotate(270deg) translateX(-20px);
+}
+
+.ray:nth-child(8) {
+    transform: rotate(315deg) translateX(-20px);
+}
+
+.button-text {
+    margin-left: 35px;
+}
+
+.heat-wave {
+    position: absolute;
+    opacity: 0.3;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 70%);
+    border-radius: 50%;
+    animation: pulse 3s infinite alternate;
+}
+
+.heat-wave-1 {
+    width: 100px;
+    height: 100px;
+    top: -20px;
+    right: -20px;
+}
+
+.heat-wave-2 {
+    width: 70px;
+    height: 70px;
+    bottom: -10px;
+    right: 40px;
+}
+
+@keyframes pulse {
+    from {
+        transform: scale(0.8);
+        opacity: 0.2;
+    }
+
+    to {
+        transform: scale(1.1);
+        opacity: 0.4;
+    }
+}
+</style>
+<body>
+    <div>
+        <button class="sunny-button">
+            <div class="sun-rays">
+                <div class="ray"></div>
+                <div class="ray"></div>
+                <div class="ray"></div>
+                <div class="ray"></div>
+                <div class="ray"></div>
+                <div class="ray"></div>
+                <div class="ray"></div>
+                <div class="ray"></div>
+                <div class="sun-center"></div>
+            </div>
+            <span class="button-text">Soleado</span>
+            <div class="heat-wave heat-wave-1"></div>
+            <div class="heat-wave heat-wave-2"></div>
+        </button>
+    </div>
+</body>
+</html>

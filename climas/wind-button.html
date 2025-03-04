@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!--    
+    <link rel="stylesheet" href="../style.css">
+-->
+</head>
+<style>
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f5f7fa;
+    color: #333;
+}
+
+
+/* Contenedor principal del botón */
+.wx-wind-btn-container {
+    display: inline-block;
+    position: relative;
+}
+
+/* Estilo base del botón de viento */
+.wx-wind-btn {
+    position: relative;
+    width: 200px;
+    height: 60px;
+    background: linear-gradient(to right, #e8f4f8, #c9e6f2);
+    border-radius: 30px;
+    border: none;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+/* Efecto hover del botón */
+.wx-wind-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* Contenedor de los elementos de viento */
+.wx-wind-elements {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+/* Líneas de viento */
+.wx-wind-line {
+    position: absolute;
+    height: 2px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 4px;
+}
+
+.wx-wind-line-1 {
+    width: 60px;
+    top: 30px;
+    left: 20px;
+    animation: wx-wind-blow 3s infinite;
+}
+
+.wx-wind-line-2 {
+    width: 40px;
+    top: 50px;
+    left: 15px;
+    animation: wx-wind-blow 3s infinite 0.2s;
+}
+
+.wx-wind-line-3 {
+    width: 70px;
+    top: 70px;
+    left: 25px;
+    animation: wx-wind-blow 3s infinite 0.4s;
+}
+
+.wx-wind-line-4 {
+    width: 50px;
+    top: 90px;
+    left: 10px;
+    animation: wx-wind-blow 3s infinite 0.6s;
+}
+
+/* Hojas flotando en el viento */
+.wx-wind-leaf {
+    position: absolute;
+    width: 10px;
+    height: 6px;
+    background-color: #8BC34A;
+    border-radius: 50% 20% 50% 20%;
+    opacity: 0.7;
+}
+
+.wx-wind-leaf-1 {
+    top: 40px;
+    left: -10px;
+    animation: wx-wind-leaf-blow 6s infinite linear;
+}
+
+.wx-wind-leaf-2 {
+    top: 65px;
+    left: -10px;
+    animation: wx-wind-leaf-blow 7s infinite 1s linear;
+    transform: rotate(30deg);
+}
+
+.wx-wind-leaf-3 {
+    top: 85px;
+    left: -10px;
+    animation: wx-wind-leaf-blow 8s infinite 2s linear;
+    transform: rotate(-20deg);
+}
+
+/* Texto del botón */
+.wx-wind-btn-text {
+    position: absolute;
+    bottom: 15px;
+    width: 100%;
+    text-align: center;
+    color: #546E7A;
+    font-weight: bold;
+    left: 0;
+    font-size: 14px;
+}
+
+/* Animaciones */
+@keyframes wx-wind-blow {
+    0% {
+        transform: translateX(0) scaleX(1);
+        opacity: 0;
+    }
+
+    5% {
+        opacity: 0.8;
+    }
+
+    95% {
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: translateX(100px) scaleX(1.2);
+        opacity: 0;
+    }
+}
+
+@keyframes wx-wind-leaf-blow {
+    0% {
+        transform: translateX(0) translateY(0) rotate(0deg);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 0.7;
+    }
+
+    90% {
+        opacity: 0.7;
+    }
+
+    100% {
+        transform: translateX(160px) translateY(10px) rotate(360deg);
+        opacity: 0;
+    }
+}
+</style>
+<body>
+    <div>
+
+        <div class="wx-wind-btn-container">
+            <button class="wx-wind-btn">
+                <div class="wx-wind-elements">
+                    <div class="wx-wind-line wx-wind-line-1"></div>
+                    <div class="wx-wind-line wx-wind-line-2"></div>
+                    <div class="wx-wind-line wx-wind-line-3"></div>
+                    <div class="wx-wind-line wx-wind-line-4"></div>
+
+                    <div class="wx-wind-leaf wx-wind-leaf-1"></div>
+                    <div class="wx-wind-leaf wx-wind-leaf-2"></div>
+                    <div class="wx-wind-leaf wx-wind-leaf-3"></div>
+                </div>
+                <span class="wx-wind-btn-text">Ventoso</span>
+            </button>
+        </div>
+    </div>
+</body>
+</html>

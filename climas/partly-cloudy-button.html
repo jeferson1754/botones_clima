@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Botón Parcialmente Nublado</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+
+
+        .partly-cloudy-button {
+            position: relative;
+            width: 200px;
+            height: 60px;
+            background: linear-gradient(135deg, #4AB3FF, #1E90FF);
+            border: none;
+            border-radius: 35px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+
+        .partly-cloudy-button:active {
+            transform: scale(0.95);
+        }
+
+        .sun-container {
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            width: 50px;
+            height: 50px;
+        }
+
+        .sun-center {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: #FFC107;
+            border-radius: 50%;
+            top: 10px;
+            left: 10px;
+            box-shadow: 0 0 20px rgba(255, 193, 7, 0.8);
+            animation: glow 3s infinite alternate;
+        }
+
+        .ray {
+            position: absolute;
+            background-color: #FFC107;
+            height: 3px;
+            width: 20px;
+            top: 23.5px;
+            left: 45px;
+            transform-origin: left center;
+            opacity: 0.7;
+        }
+
+        .cloud {
+            position: absolute;
+            background-color: white;
+            border-radius: 50px;
+            filter: drop-shadow(2px 5px 5px rgba(0, 0, 0, 0.2));
+            animation: float 5s infinite alternate ease-in-out;
+        }
+
+        .cloud-1 {
+            width: 70px;
+            height: 30px;
+            top: 40px;
+            right: 20px;
+        }
+
+        .cloud-2 {
+            width: 40px;
+            height: 20px;
+            top: 30px;
+            right: 30px;
+            opacity: 0.8;
+            animation-delay: 0.5s;
+        }
+
+        .cloud-3 {
+            width: 60px;
+            height: 25px;
+            top: 60px;
+            right: 40px;
+            opacity: 0.9;
+            animation-delay: 1s;
+        }
+
+        .cloud:before,
+        .cloud:after {
+            content: '';
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+        }
+
+        .cloud-1:before {
+            width: 25px;
+            height: 25px;
+            top: -10px;
+            left: 15px;
+        }
+
+        .cloud-1:after {
+            width: 25px;
+            height: 25px;
+            top: -8px;
+            right: 15px;
+        }
+
+        .button-text {
+            position: absolute;
+            bottom: 15px;
+            width: 100%;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+            left: 0;
+            font-size: 16px;
+        }
+
+        @keyframes glow {
+            0% { box-shadow: 0 0 10px rgba(255, 193, 7, 0.6); }
+            100% { box-shadow: 0 0 25px rgba(255, 193, 7, 0.9); }
+        }
+
+        @keyframes float {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-10px); }
+        }
+    </style>
+</head>
+<body>
+    <button id="weatherButton" class="partly-cloudy-button">
+        <div class="sun-container">
+            <div class="ray"></div>
+            <div class="ray"></div>
+            <div class="ray"></div>
+            <div class="ray"></div>
+            <div class="ray"></div>
+            <div class="ray"></div>
+            <div class="ray"></div>
+            <div class="ray"></div>
+            <div class="sun-center"></div>
+        </div>
+
+        <div class="cloud cloud-1"></div>
+        <div class="cloud cloud-2"></div>
+        <div class="cloud cloud-3"></div>
+        <span class="button-text">Parcialmente nublado</span>
+    </button>
+
+    <script>
+        const button = document.getElementById('weatherButton');
+        
+        button.addEventListener('mouseenter', () => {
+            button.style.transform = 'scale(1.05)';
+        });
+
+        button.addEventListener('mouseleave', () => {
+            button.style.transform = 'scale(1)';
+        });
+
+        button.addEventListener('click', () => {
+            // Efecto de parpadeo al hacer clic
+            button.style.filter = 'brightness(1.2)';
+            setTimeout(() => {
+                button.style.filter = 'brightness(1)';
+            }, 100);
+        });
+    </script>
+</body>
+</html>

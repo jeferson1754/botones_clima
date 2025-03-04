@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Botón Chubasco Mejorado</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+
+        .boton-chubasco {
+            position: relative;
+            width: 200px;
+            height: 60px;
+            border: none;
+            border-radius: 35px;
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            color: white;
+            font-family: 'Arial', sans-serif;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(52, 152, 219, 0.4);
+            transition: all 0.3s ease;
+            outline: none;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .boton-chubasco:hover {
+            transform: translateY(-5px) rotate(1deg);
+            box-shadow: 0 15px 30px rgba(52, 152, 219, 0.5);
+        }
+
+        .boton-chubasco:active {
+            transform: scale(0.95) rotate(-1deg);
+        }
+
+        .gotas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .gota {
+            position: absolute;
+            width: 3px;
+            height: 15px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.7), rgba(255,255,255,0.2));
+            border-radius: 50% 50% 50% 50% / 80% 80% 20% 20%;
+            box-shadow: 0 0 5px rgba(255,255,255,0.3);
+            animation: caer-lluvia 1s linear infinite;
+        }
+
+        @keyframes caer-lluvia {
+            0% {
+                transform: translateY(-20px) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(70px) translateX(15px) rotate(20deg);
+                opacity: 0;
+            }
+        }
+
+        /* Efecto adicional de nubes de fondo */
+        .cloud {
+            position: absolute;
+            background: white;
+            border-radius: 50px;
+            opacity: 0.4;
+            filter: blur(3px);
+        }
+
+        .cloud-1 {
+            width: 100px;
+            height: 30px;
+            top: 10px;
+            left: -50px;
+            animation: float-cloud 10s linear infinite;
+        }
+
+        .cloud-2 {
+            width: 80px;
+            height: 25px;
+            top: 50px;
+            right: -50px;
+            animation: float-cloud 12s linear infinite reverse;
+        }
+
+        @keyframes float-cloud {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(100vw); }
+        }
+    </style>
+</head>
+<body>
+    <button class="boton-chubasco">
+        Chubasco
+        <div class="gotas"></div>
+        <div class="cloud cloud-1"></div>
+        <div class="cloud cloud-2"></div>
+    </button>
+
+    <script>
+        function crearGotas(boton) {
+            const contGotas = boton.querySelector('.gotas');
+            contGotas.innerHTML = '';
+
+            // Crear gotas de lluvia más dinámicas
+            for (let i = 0; i < 20; i++) {
+                const gota = document.createElement('div');
+                gota.className = 'gota';
+                
+                // Posición horizontal aleatoria
+                gota.style.left = Math.random() * 100 + '%';
+                
+                // Variaciones en delay y duración
+                gota.style.animationDelay = Math.random() * 1 + 's';
+                gota.style.animationDuration = (0.5 + Math.random() * 0.5) + 's';
+                
+                // Variaciones en tamaño
+                const tamano = 2 + Math.random() * 5;
+                gota.style.width = tamano + 'px';
+                gota.style.height = tamano * 3 + 'px';
+                
+                contGotas.appendChild(gota);
+            }
+        }
+
+        const boton = document.querySelector('.boton-chubasco');
+        
+        // Inicializar gotas al cargar
+        document.addEventListener('DOMContentLoaded', () => crearGotas(boton));
+        
+        // Recrear gotas al hacer hover
+        boton.addEventListener('mouseenter', () => crearGotas(boton));
+    </script>
+</body>
+</html>

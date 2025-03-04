@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!--   --> 
+    <link rel="stylesheet" href="../style.css">
+
+</head>
+<style>
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f5f7fa;
+    color: #333;
+}
+
+
+</style>
+<body>
+    <div>
+
+        <button id="botonNiebla" class="boton-niebla">
+            <span class="texto">Niebla espesa</span>
+            <div class="niebla-contenedor"></div>
+        </button>
+        <button>Parche de niebla</button>
+        <button>Tormenta de nieve</button>
+        <button>Aguacero congelado</button>
+        <button>Llovizna</button>
+        <button>Lluvia helada</button>
+        <button>Tornado</button>
+        <button>Huracán</button>
+        <button>Sequía</button>
+        <button>Polvo</button>
+        <button>Tormenta de arena</button>
+        <button>Hielo</button>
+        <button>Ráfaga</button>
+        <button>Tormenta tropical</button>
+        <button>Frío</button>
+        <button>Caluroso</button>
+        <button>Tormenta</button>
+        <button>Ola de calor</button>
+
+
+  
+
+    <script>
+        document.querySelector('.fog-button').addEventListener('mouseover', function() {
+            document.querySelectorAll('.fog').forEach(fog => {
+                fog.style.opacity = '0.5';
+            });
+        });
+
+        document.querySelector('.fog-button').addEventListener('mouseout', function() {
+            document.querySelectorAll('.fog').forEach(fog => {
+                fog.style.opacity = '';
+            });
+        });
+    </script>
+    <script>
+        const boton2 = document.getElementById('botonNiebla');
+        const contenedor = boton2.querySelector('.niebla-contenedor');
+
+        function crearNiebla() {
+            // Limpiar niebla anterior
+            contenedor.innerHTML = '';
+
+            // Crear capas de niebla
+            const numCapas = 15;
+
+            for (let i = 0; i < numCapas; i++) {
+                const niebla = document.createElement('div');
+                niebla.className = 'niebla';
+
+                // Tamaño aleatorio
+                const tamaño = 30 + Math.random() * 100;
+
+                // Posición aleatoria
+                const izquierda = -20 + Math.random() * 240;
+                const arriba = -20 + Math.random() * 100;
+
+                niebla.style.width = tamaño + 'px';
+                niebla.style.height = tamaño + 'px';
+                niebla.style.left = izquierda + 'px';
+                niebla.style.top = arriba + 'px';
+
+                // Animación
+                niebla.style.transition = 'transform ' + (5 + Math.random() * 5) + 's linear, opacity ' + (3 + Math.random() * 3) + 's ease-in-out';
+                niebla.style.opacity = 0.1 + Math.random() * 0.5;
+
+                contenedor.appendChild(niebla);
+
+                // Animar después de un pequeño retraso para que la transición funcione
+                setTimeout(() => {
+                    const desplazamientoX = -30 + Math.random() * 60;
+                    const desplazamientoY = -10 + Math.random() * 20;
+                    niebla.style.transform = `translate(${desplazamientoX}px, ${desplazamientoY}px)`;
+
+                    if (Math.random() > 0.5) {
+                        niebla.style.opacity = 0.05 + Math.random() * 0.3;
+                    } else {
+                        niebla.style.opacity = 0.3 + Math.random() * 0.4;
+                    }
+                }, 10);
+            }
+
+            // Reiniciar niebla periódicamente
+            setTimeout(crearNiebla, 4000);
+        }
+
+        // Iniciar efectos de niebla
+        document.addEventListener('DOMContentLoaded', crearNiebla);
+
+        // Reiniciar al hacer clic
+        boton2.addEventListener('click', () => {
+            crearNiebla();
+        });
+    </script>
+    </div>
+</body>
+</html>

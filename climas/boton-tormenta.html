@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Botón Tormenta Eléctrica</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+
+        .boton-tormenta {
+            position: relative;
+            width: 200px;
+            height: 60px;
+            border: none;
+            border-radius: 40px;
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
+            outline: none;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+
+        .boton-tormenta:hover {
+            transform: translateY(-5px) rotate(1deg);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .boton-tormenta:active {
+            transform: scale(0.95) rotate(-1deg);
+        }
+
+        .boton-tormenta::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(
+                circle at center, 
+                rgba(255,255,255,0.1) 0%, 
+                transparent 70%
+            );
+            opacity: 0;
+            transition: opacity 0.3s;
+            transform: rotate(45deg);
+        }
+
+        .boton-tormenta:hover::before {
+            opacity: 1;
+        }
+
+        .relampago {
+            position: absolute;
+            background: linear-gradient(
+                to bottom, 
+                rgba(255,255,255,0.9), 
+                rgba(135,206,250,0.6)
+            );
+            border-radius: 50% 50% 0 0;
+            box-shadow: 
+                0 0 10px rgba(135,206,250,0.7), 
+                0 0 20px rgba(255,255,255,0.5);
+            transform: rotate(20deg);
+            opacity: 0;
+            z-index: 1;
+        }
+
+        @keyframes flash {
+            0%, 100% { opacity: 0; }
+            10%, 15% { opacity: 1; }
+            20%, 80% { opacity: 0; }
+            85%, 90% { opacity: 0.6; }
+        }
+
+        @keyframes background-pulse {
+            0% { background-color: #1a2238; }
+            50% { background-color: #273c75; }
+            100% { background-color: #1a2238; }
+        }
+
+        .texto {
+            position: relative;
+            z-index: 2;
+        }
+
+        .fondo-nubes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            opacity: 0.3;
+        }
+
+        .nube {
+            position: absolute;
+            background: white;
+            border-radius: 100px;
+            filter: blur(3px);
+            opacity: 0.2;
+        }
+    </style>
+</head>
+<body>
+    <button id="botonTormenta" class="boton-tormenta">
+        <div class="fondo-nubes"></div>
+        <span class="texto">Tormenta eléctrica</span>
+    </button>
+
+    <script>
+        const boton1 = document.getElementById('botonTormenta');
+        const fondoNubes = boton1.querySelector('.fondo-nubes');
+
+        function crearNubes() {
+            for (let i = 0; i < 5; i++) {
+                const nube = document.createElement('div');
+                nube.className = 'nube';
+                
+                const ancho = 50 + Math.random() * 100;
+                const alto = 20 + Math.random() * 30;
+                
+                nube.style.width = `${ancho}px`;
+                nube.style.height = `${alto}px`;
+                nube.style.top = `${-10 + Math.random() * 100}%`;
+                nube.style.left = `${-50 + Math.random() * 200}%`;
+                
+                // Animación de movimiento de nubes
+                nube.style.animation = `float ${5 + Math.random() * 5}s linear infinite`;
+                
+                fondoNubes.appendChild(nube);
+            }
+        }
+
+        function crearRelampagos() {
+            // Eliminar relámpagos anteriores
+            const relampagosExistentes = document.querySelectorAll('.relampago');
+            relampagosExistentes.forEach(rel => rel.remove());
+
+            // Crear nuevos relámpagos
+            const numRelampagos = 3 + Math.floor(Math.random() * 3);
+
+            for (let i = 0; i < numRelampagos; i++) {
+                const relampago = document.createElement('div');
+                relampago.className = 'relampago';
+
+                // Posición y tamaño aleatorios
+                const ancho = 3 + Math.random() * 6;
+                const alto = 15 + Math.random() * 40;
+                const izquierda = 20 + Math.random() * 240;
+                const arriba = 5 + Math.random() * 60;
+                const rotacion = -30 + Math.random() * 60;
+
+                relampago.style.width = `${ancho}px`;
+                relampago.style.height = `${alto}px`;
+                relampago.style.left = `${izquierda}px`;
+                relampago.style.top = `${arriba}px`;
+                relampago.style.transform = `rotate(${rotacion}deg)`;
+
+                // Animación
+                relampago.style.animation = `flash ${1 + Math.random() * 2}s ease-out`;
+                relampago.style.animationDelay = `${Math.random() * 0.5}s`;
+
+                boton1.appendChild(relampago);
+            }
+
+            // Programar siguiente destello
+            setTimeout(crearRelampagos, 3000 + Math.random() * 2000);
+        }
+
+        // Iniciar animaciones cuando la página cargue
+        document.addEventListener('DOMContentLoaded', () => {
+            crearNubes();
+            crearRelampagos();
+        });
+
+        // Reiniciar animación al hacer clic
+        boton1.addEventListener('click', () => {
+            crearRelampagos();
+        });
+    </script>
+</body>
+</html>

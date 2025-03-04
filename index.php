@@ -1,164 +1,165 @@
 <?php
 // Definir la ciudad y la URL de la API
-$city = $_POST['city'] ?? 'Santiago';
-$api_key = "410f454b9ebb63e2a46e6dc2aa04554e";
-$api_url = "https://api.weatherstack.com/current?access_key=$api_key&query=$city";
+$weather_buttons = [
+    "Soleado" => "sunny-button",
+    "Lluvia" => "rainy-button",
+    "Nublado" => "cloudy-button",
+    "Nieve" => "snowy-button",
+    "Parcialmente nublado" => "partly-cloudy-button",
+    "Viento" => "wind-button",
+    "Despejado" => "clear-sky-button",
+    "Cubierto" => "overcast-sky-button",
+    "Chubascos" => "boton-chubasco",
+    "Tormenta eléctrica" => "boton-tormenta",
+    "Niebla espesa" => "boton-niebla-espesa",
+    "Granizo" => "boton-granizo",
+    "Parche de niebla" => "",
+    "Tormenta de nieve" => "",
+    "Aguacero congelado" => "",
+    "Llovizna" => "",
+    "Lluvia helada" => "",
+    "Tornado" => "",
+    "Huracán" => "",
+    "Sequía" => "",
+    "Polvo" => "",
+    "Tormenta de arena" => "",
+    "Hielo" => "",
+    "Ráfaga" => "",
+    "Tormenta tropical" => "",
+    "Frío" => "",
+    "Caluroso" => "",
+    "Tormenta" => "",
+    "Ola de calor" => "",
+];
 
-// Obtener los datos JSON de la API
-$response = @file_get_contents($api_url);
-if ($response === FALSE) {
-    die('Error al obtener datos de la API');
-}
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $city = $_POST['city'] ?? 'Santiago';
+    $api_key = "410f454b9ebb63e2a46e6dc2aa04554e";
+    $api_url = "https://api.weatherstack.com/current?access_key=$api_key&query=$city";
 
-$weather_data = json_decode($response, true);
-
-// Verificar que la respuesta de la API contenga los datos necesarios
-if (isset($weather_data['current'])) {
-    // Extraer la información de la temperatura, el icono y la descripción
-    $temperature = $weather_data['current']['temperature'] ?? 'N/A';
-    $weather_icon = $weather_data['current']['weather_icons'][0] ?? '';
-    $weather_description = $weather_data['current']['weather_descriptions'][0] ?? 'No disponible';
-
-    // Obtener la hora actual de la API o asignar valor predeterminado
-    $hora_actual = $weather_data['location']['localtime'] ?? '00-00-0000 00:00';
-
-    // Crear objeto DateTime desde el formato adecuado
-    $date = DateTime::createFromFormat('Y-m-d H:i', $hora_actual);
-
-    // Verificar si la fecha fue creada correctamente
-    if ($date) {
-        // Hora actual en formato 24h
-        $current_time = $date->format('H:i');
-
-        // Fecha formateada en formato 12h
-        $formatted_date = $date->format('d-m-Y h:i A');
-    } else {
-        // Si la fecha no es válida, asignar valores predeterminados
-        $current_time = '00:00';
-        $formatted_date = '00-00-0000 00:00 AM';
+    // Obtener los datos JSON de la API
+    $response = @file_get_contents($api_url);
+    if ($response === FALSE) {
+        die('Error al obtener datos de la API');
     }
 
-    // Definir los rangos de tiempo
-    $time_ranges = [
-        "06:00-12:00" => "sunrise-button",
-        "12:00-18:00" => "day-button",
-        "18:00-20:00" => "sunset-button",
-        "20:00-06:00" => "night-button"
-    ];
 
-    // Función para verificar si la hora actual está dentro de un rango específico
-    function isTimeInRange($current_time, $range)
-    {
-        list($start, $end) = explode("-", $range);
 
-        // Convertir horas a minutos para comparación más fácil
-        $start_minutes = strtotime($start);
-        $end_minutes = strtotime($end);
-        $current_minutes = strtotime($current_time);
+    $weather_data = json_decode($response, true);
+    // Verificar que la respuesta de la API contenga los datos necesarios
+    if (isset($weather_data['current'])) {
+        // Extraer la información de la temperatura, el icono y la descripción
+        $temperature = $weather_data['current']['temperature'] ?? 'N/A';
+        $weather_icon = $weather_data['current']['weather_icons'][0] ?? '';
+        $weather_description = $weather_data['current']['weather_descriptions'][0] ?? 'No disponible';
 
-        // Manejo de los rangos que cruzan medianoche (20:00-06:00)
-        if ($start_minutes > $end_minutes) {
-            // Si el rango cruza medianoche, compararlo
-            return ($current_minutes >= $start_minutes || $current_minutes < $end_minutes);
+        // Obtener la hora actual de la API o asignar valor predeterminado
+        $hora_actual = $weather_data['location']['localtime'] ?? '00-00-0000 00:00';
+
+        // Crear objeto DateTime desde el formato adecuado
+        $date = DateTime::createFromFormat('Y-m-d H:i', $hora_actual);
+
+        // Verificar si la fecha fue creada correctamente
+        if ($date) {
+            // Hora actual en formato 24h
+            $current_time = $date->format('H:i');
+
+            // Fecha formateada en formato 12h
+            $formatted_date = $date->format('d-m-Y h:i A');
         } else {
-            return ($current_minutes >= $start_minutes && $current_minutes < $end_minutes);
+            // Si la fecha no es válida, asignar valores predeterminados
+            $current_time = '00:00';
+            $formatted_date = '00-00-0000 00:00 AM';
         }
-    }
 
-    // Verificar cuál es el rango actual
-    $current_button = '';
-    foreach ($time_ranges as $range => $button_class) {
-        if (isTimeInRange($current_time, $range)) {
-            $current_button = $button_class;
-            break;
+        // Definir los rangos de tiempo
+        $time_ranges = [
+            "06:00-12:00" => "sunrise-button",
+            "12:00-18:00" => "day-button",
+            "18:00-20:00" => "sunset-button",
+            "20:00-06:00" => "night-button"
+        ];
+
+        // Función para verificar si la hora actual está dentro de un rango específico
+        function isTimeInRange($current_time, $range)
+        {
+            list($start, $end) = explode("-", $range);
+
+            // Convertir horas a minutos para comparación más fácil
+            $start_minutes = strtotime($start);
+            $end_minutes = strtotime($end);
+            $current_minutes = strtotime($current_time);
+
+            // Manejo de los rangos que cruzan medianoche (20:00-06:00)
+            if ($start_minutes > $end_minutes) {
+                // Si el rango cruza medianoche, compararlo
+                return ($current_minutes >= $start_minutes || $current_minutes < $end_minutes);
+            } else {
+                return ($current_minutes >= $start_minutes && $current_minutes < $end_minutes);
+            }
         }
+
+        // Verificar cuál es el rango actual
+        $current_button = '';
+        foreach ($time_ranges as $range => $button_class) {
+            if (isTimeInRange($current_time, $range)) {
+                $current_button = $button_class;
+                break;
+            }
+        }
+
+        // Aquí puedes utilizar $temperature, $weather_icon, $weather_description, etc., según lo necesites
+
+        // Mapa de traducciones
+        $translations = [
+            'Sunny' => 'Soleado',  // Despejado, con sol directo. Temperatura alta, típicamente entre 25°C y 35°C.
+            'Partly cloudy' => 'Parcialmente nublado',  // Algunas nubes, pero con sol. Temperatura moderada, generalmente entre 18°C y 28°C.
+            'Cloudy' => 'Nublado',  // El cielo está completamente cubierto de nubes. Temperatura moderada, usualmente entre 15°C y 25°C.
+            'Rainy' => 'Lluvia',  // Precipitación continua. Temperatura variable, entre 10°C y 20°C.
+            'Windy' => 'Viento',  // Condiciones ventosas, sin necesariamente lluvia o sol. Temperatura entre 10°C y 20°C.
+            'Clear' => 'Despejado',  // Sin nubes, con cielo completamente visible. Temperatura generalmente entre 20°C y 30°C.
+            'Overcast' => 'Cubierto',  // Cielo completamente gris, sin sol visible. Temperatura entre 15°C y 22°C.
+            'Showers' => 'Chubascos',  // Lluvias breves pero intensas. Temperatura generalmente entre 10°C y 20°C.
+            'Thunderstorm' => 'Tormenta eléctrica',  // Lluvias con rayos y truenos. Temperatura entre 15°C y 30°C.
+            'Mist' => 'Niebla',  // Visibilidad reducida por niebla densa. Temperatura entre 5°C y 15°C.
+            'Fog' => 'Niebla espesa',  // Niebla densa que reduce visibilidad. Temperatura entre 5°C y 15°C.
+            'Snow' => 'Nieve',  // Precipitación en forma de nieve. Temperatura generalmente entre -5°C y 5°C.
+            'Hail' => 'Granizo',  // Lluvia con granizo (bultos de hielo). Temperatura generalmente entre 0°C y 10°C.
+            'Patches Of Fog' => 'Parche de niebla',  // Niebla en áreas limitadas. Temperatura entre 0°C y 15°C.
+            'Blizzard' => 'Tormenta de nieve',  // Nieve fuerte acompañada de vientos intensos. Temperatura entre -10°C y -20°C.
+            'Sleet' => 'Aguacero congelado',  // Lluvia congelada o nieve derretida que se congela al caer. Temperatura entre -1°C y 2°C.
+            'Drizzle' => 'Llovizna',  // Lluvia ligera y continua. Temperatura entre 5°C y 15°C.
+            'Freezing rain' => 'Lluvia helada',  // Lluvia que se congela al tocar superficies frías. Temperatura entre 0°C y 5°C.
+            'Tornado' => 'Tornado',  // Viento extremadamente fuerte y en espiral. Temperatura variable, entre 15°C y 30°C.
+            'Hurricane' => 'Huracán',  // Tormenta tropical con vientos muy fuertes. Temperatura entre 20°C y 30°C.
+            'Drought' => 'Sequía',  // Falta de lluvias durante un largo período. Temperatura muy alta, entre 30°C y 40°C.
+            'Dust' => 'Polvo',  // Tormentas de polvo, normalmente en áreas áridas. Temperatura entre 20°C y 35°C.
+            'Sandstorm' => 'Tormenta de arena',  // Tormentas con partículas de arena suspendidas. Temperatura entre 20°C y 40°C.
+            'Ice' => 'Hielo',  // Temperaturas muy frías con superficies congeladas. Temperatura entre -10°C y -5°C.
+            'Squall' => 'Ráfaga',  // Viento fuerte y repentino con lluvia o nieve ligera. Temperatura entre 5°C y 15°C.
+            'Tropical storm' => 'Tormenta tropical',  // Tormenta en áreas tropicales, con lluvias intensas. Temperatura entre 25°C y 30°C.
+            'Cold' => 'Frío',  // Temperatura baja, generalmente por debajo de los 10°C.
+            'Hot' => 'Caluroso',  // Temperatura alta, generalmente por encima de los 30°C.
+            'Storm' => 'Tormenta',  // Condiciones meteorológicas extremas, incluyendo lluvia, viento y relámpagos. Temperatura variable.
+            'Heatwave' => 'Ola de calor',  // Período de calor extremo. Temperatura generalmente por encima de los 35°C.
+            'Light snow' => 'Nieve ligera', // Caída suave de nieve, sin acumulación significativa. Rango de temperatura: -5°C a 2°C.
+
+        ];
+
+
+
+        // Traducir la descripción
+        $weather_description_es = $translations[$weather_description] ?? $weather_description;  // Si no está en el mapa, se mantiene la descripción original
+
+        // Determinar qué botón se debe mostrar
+        $current_button_class = isset($weather_buttons[$weather_description_es]) ? $weather_buttons[$weather_description_es] : null;
+
+        $slider_active = $current_button_class;
     }
-
-    // Aquí puedes utilizar $temperature, $weather_icon, $weather_description, etc., según lo necesites
-
-    // Mapa de traducciones
-    $translations = [
-        'Sunny' => 'Soleado',  // Despejado, con sol directo. Temperatura alta, típicamente entre 25°C y 35°C.
-        'Partly cloudy' => 'Parcialmente nublado',  // Algunas nubes, pero con sol. Temperatura moderada, generalmente entre 18°C y 28°C.
-        'Cloudy' => 'Nublado',  // El cielo está completamente cubierto de nubes. Temperatura moderada, usualmente entre 15°C y 25°C.
-        'Rainy' => 'Lluvia',  // Precipitación continua. Temperatura variable, entre 10°C y 20°C.
-        'Windy' => 'Viento',  // Condiciones ventosas, sin necesariamente lluvia o sol. Temperatura entre 10°C y 20°C.
-        'Clear' => 'Despejado',  // Sin nubes, con cielo completamente visible. Temperatura generalmente entre 20°C y 30°C.
-        'Overcast' => 'Cubierto',  // Cielo completamente gris, sin sol visible. Temperatura entre 15°C y 22°C.
-        'Showers' => 'Chubascos',  // Lluvias breves pero intensas. Temperatura generalmente entre 10°C y 20°C.
-        'Thunderstorm' => 'Tormenta eléctrica',  // Lluvias con rayos y truenos. Temperatura entre 15°C y 30°C.
-        'Mist' => 'Niebla',  // Visibilidad reducida por niebla densa. Temperatura entre 5°C y 15°C.
-        'Fog' => 'Niebla espesa',  // Niebla densa que reduce visibilidad. Temperatura entre 5°C y 15°C.
-        'Snow' => 'Nieve',  // Precipitación en forma de nieve. Temperatura generalmente entre -5°C y 5°C.
-        'Hail' => 'Granizo',  // Lluvia con granizo (bultos de hielo). Temperatura generalmente entre 0°C y 10°C.
-        'Patches Of Fog' => 'Parche de niebla',  // Niebla en áreas limitadas. Temperatura entre 0°C y 15°C.
-        'Blizzard' => 'Tormenta de nieve',  // Nieve fuerte acompañada de vientos intensos. Temperatura entre -10°C y -20°C.
-        'Sleet' => 'Aguacero congelado',  // Lluvia congelada o nieve derretida que se congela al caer. Temperatura entre -1°C y 2°C.
-        'Drizzle' => 'Llovizna',  // Lluvia ligera y continua. Temperatura entre 5°C y 15°C.
-        'Freezing rain' => 'Lluvia helada',  // Lluvia que se congela al tocar superficies frías. Temperatura entre 0°C y 5°C.
-        'Tornado' => 'Tornado',  // Viento extremadamente fuerte y en espiral. Temperatura variable, entre 15°C y 30°C.
-        'Hurricane' => 'Huracán',  // Tormenta tropical con vientos muy fuertes. Temperatura entre 20°C y 30°C.
-        'Drought' => 'Sequía',  // Falta de lluvias durante un largo período. Temperatura muy alta, entre 30°C y 40°C.
-        'Dust' => 'Polvo',  // Tormentas de polvo, normalmente en áreas áridas. Temperatura entre 20°C y 35°C.
-        'Sandstorm' => 'Tormenta de arena',  // Tormentas con partículas de arena suspendidas. Temperatura entre 20°C y 40°C.
-        'Ice' => 'Hielo',  // Temperaturas muy frías con superficies congeladas. Temperatura entre -10°C y -5°C.
-        'Squall' => 'Ráfaga',  // Viento fuerte y repentino con lluvia o nieve ligera. Temperatura entre 5°C y 15°C.
-        'Tropical storm' => 'Tormenta tropical',  // Tormenta en áreas tropicales, con lluvias intensas. Temperatura entre 25°C y 30°C.
-        'Cold' => 'Frío',  // Temperatura baja, generalmente por debajo de los 10°C.
-        'Hot' => 'Caluroso',  // Temperatura alta, generalmente por encima de los 30°C.
-        'Storm' => 'Tormenta',  // Condiciones meteorológicas extremas, incluyendo lluvia, viento y relámpagos. Temperatura variable.
-        'Heatwave' => 'Ola de calor',  // Período de calor extremo. Temperatura generalmente por encima de los 35°C.
-        'Light snow' => 'Nieve ligera', // Caída suave de nieve, sin acumulación significativa. Rango de temperatura: -5°C a 2°C.
-
-    ];
-
-
-
-    // Traducir la descripción
-    $weather_description_es = $translations[$weather_description] ?? $weather_description;  // Si no está en el mapa, se mantiene la descripción original
-
-    $weather_buttons = [
-        "Soleado" => "sunny-button",
-        "Lluvia" => "rainy-button",
-        "Nublado" => "cloudy-button",
-        "Nieve" => "snowy-button",
-        "Parcialmente nublado" => "partly-cloudy-button",
-        "Viento" => "wind-button",
-        "Despejado" => "clear-sky-button",
-        "Cubierto" => "overcast-sky-button",
-        "Chubascos" => "boton-chubasco",
-        "Tormenta eléctrica" => "boton-tormenta",
-        "Niebla" => "boton-niebla",
-        "Niebla espesa" => "boton-niebla-espesa",
-        "Granizo" => "",
-        "Parche de niebla" => "",
-        "Tormenta de nieve" => "",
-        "Aguacero congelado" => "",
-        "Llovizna" => "",
-        "Lluvia helada" => "",
-        "Tornado" => "",
-        "Huracán" => "",
-        "Sequía" => "",
-        "Polvo" => "",
-        "Tormenta de arena" => "",
-        "Hielo" => "",
-        "Ráfaga" => "",
-        "Tormenta tropical" => "",
-        "Frío" => "",
-        "Caluroso" => "",
-        "Tormenta" => "",
-        "Ola de calor" => "",
-    ];
-
-    // Determinar qué botón se debe mostrar
-    $current_button_class = isset($weather_buttons[$weather_description_es]) ? $weather_buttons[$weather_description_es] : null;
-
-    $slider_active = $current_button_class;
 } else {
     $slider_active = "";
-    $current_button_class = "";
+    $current_button_class = null;
 }
-
 
 ?>
 
@@ -284,319 +285,30 @@ if (isset($weather_data['current'])) {
             </form>
         </div>
         <div class="weather-results">
-            <div class="slider-container">
-                <div class="<?php echo ($slider_active != '') ? 'day-moments' : 'slider'; ?>">
-                    <button class="sunny-button" style="<?php echo ($current_button_class == 'sunny-button') ? '' : 'display: none;'; ?>">
-                        <div class="sun-rays">
-                            <div class="ray"></div>
-                            <div class="ray"></div>
-                            <div class="ray"></div>
-                            <div class="ray"></div>
-                            <div class="ray"></div>
-                            <div class="ray"></div>
-                            <div class="ray"></div>
-                            <div class="ray"></div>
-                            <div class="sun-center"></div>
-                        </div>
-                        <span class="button-text">Soleado</span>
-                        <div class="heat-wave heat-wave-1"></div>
-                        <div class="heat-wave heat-wave-2"></div>
-                    </button>
 
-                    <button class="rainy-button" style="<?php echo ($current_button_class == 'rainy-button') ? '' : 'display: none;'; ?>">
-                        <div class="cloud"></div>
-                        <div class="rain rain-1"></div>
-                        <div class="rain rain-2"></div>
-                        <div class="rain rain-3"></div>
-                        <div class="rain rain-4"></div>
-                        <div class="puddle"></div>
-                        <div class="splash splash-1"></div>
-                        <div class="splash splash-2"></div>
-                        <div class="splash splash-3"></div>
-                        <span class="button-text">Lluvioso</span>
-                    </button>
 
-                    <button class="cloudy-button" style="<?php echo ($current_button_class == 'cloudy-button') ? '' : 'display: none;'; ?>">
-                        <div class="cloud-group">
-                            <div class="cloud-1"></div>
-                            <div class="cloud-2"></div>
-                            <div class="cloud-3"></div>
-                        </div>
-                        <span class="button-text">Nublado</span>
-                        <div class="light-beam"></div>
-                    </button>
+            <?php
 
-                    <button class="snowy-button" style="<?php echo ($current_button_class == 'snowy-button') ? '' : 'display: none;'; ?>">
-                        <div class="snow-pile"></div>
-                        <span class="snowflake snow-1">❄</span>
-                        <span class="snowflake snow-2">❅</span>
-                        <span class="snowflake snow-3">❆</span>
-                        <span class="snowflake snow-4">❄</span>
-                        <span class="snowflake snow-5">❅</span>
-                        <span class="snowflake snow-6">❆</span>
-                        <span class="button-text"><span class="winter-icon"></span>Nevado</span>
-                    </button>
+            echo '<div class="iframes-container">';
 
-                    <button class="partly-cloudy-button" style="<?php echo ($current_button_class == 'partly-cloudy-button') ? '' : 'display: none;'; ?>">
-                        <div class="sun-container">
-                            <div class="ray"></div>
-                            <div class="ray"></div>
-                            <div class="ray"></div>
-                            <div class="ray"></div>
-                            <div class="ray"></div>
-                            <div class="ray"></div>
-                            <div class="ray"></div>
-                            <div class="ray"></div>
-                            <div class="sun-center"></div>
-                        </div>
+            // Recorremos el arreglo y mostramos el iframe para cada botón no vacío
+            foreach ($weather_buttons as $clima => $button_id) {
+                if (!empty($button_id)) {
 
-                        <div class="cloud cloud-1"></div>
-                        <div class="cloud cloud-2"></div>
-                        <div class="cloud cloud-3"></div>
-                        <span class="button-text">Parcialmente nublado</span>
-                    </button>
 
-                    <div class="wx-wind-btn-container">
-                        <button class="wx-wind-btn" style="<?php echo ($current_button_class == 'wind-button') ? '' : 'display: none;'; ?>">
-                            <div class="wx-wind-elements">
-                                <div class="wx-wind-line wx-wind-line-1"></div>
-                                <div class="wx-wind-line wx-wind-line-2"></div>
-                                <div class="wx-wind-line wx-wind-line-3"></div>
-                                <div class="wx-wind-line wx-wind-line-4"></div>
-
-                                <div class="wx-wind-leaf wx-wind-leaf-1"></div>
-                                <div class="wx-wind-leaf wx-wind-leaf-2"></div>
-                                <div class="wx-wind-leaf wx-wind-leaf-3"></div>
-                            </div>
-                            <span class="wx-wind-btn-text">Ventoso</span>
-                        </button>
-                    </div>
-
-                    <div class="wx-clear-container">
-                        <button class="wx-clear-btn" style="<?php echo ($current_button_class == 'clear-sky-button') ? '' : 'display: none;'; ?>">
-                            <div class="wx-clear-sun"></div>
-                            <div class="wx-clear-ray wx-clear-ray-1"></div>
-                            <div class="wx-clear-ray wx-clear-ray-2"></div>
-                            <div class="wx-clear-ray wx-clear-ray-3"></div>
-                            <div class="wx-clear-ray wx-clear-ray-4"></div>
-                            <div class="wx-clear-ray wx-clear-ray-5"></div>
-                            <div class="wx-clear-ray wx-clear-ray-6"></div>
-                            <div class="wx-clear-ray wx-clear-ray-7"></div>
-                            <div class="wx-clear-ray wx-clear-ray-8"></div>
-
-                            <div class="wx-clear-sparkle wx-clear-sparkle-1"></div>
-                            <div class="wx-clear-sparkle wx-clear-sparkle-2"></div>
-                            <div class="wx-clear-sparkle wx-clear-sparkle-3"></div>
-                            <div class="wx-clear-sparkle wx-clear-sparkle-4"></div>
-                            <div class="wx-clear-sparkle wx-clear-sparkle-5"></div>
-
-                            <span class="wx-clear-text">Cielo Despejado</span>
-                        </button>
-                    </div>
-
-                    <div class="wx-overcast-container">
-                        <button class="wx-overcast-btn" style="<?php echo ($current_button_class == 'overcast-sky-button') ? '' : 'display: none;'; ?>">
-                            <div class="wx-overcast-cloud wx-overcast-cloud-1"></div>
-                            <div class="wx-overcast-cloud wx-overcast-cloud-2"></div>
-                            <div class="wx-overcast-cloud wx-overcast-cloud-3"></div>
-                            <div class="wx-overcast-cloud wx-overcast-cloud-4"></div>
-                            <span class="wx-overcast-text">Cielo Cubierto</span>
-                        </button>
-                    </div>
-
-                    <button class="boton-chubasco" style="<?php echo ($current_button_class == 'boton-chubasco') ? '' : 'display: none;'; ?>" onclick="animarChubasco(this)">
-                        Chubasco
-                        <div class="gotas"></div>
-                    </button>
-
-                    <button id="botonTormenta" class="boton-tormenta" style="<?php echo ($current_button_class == 'boton-tormenta') ? '' : 'display: none;'; ?>">
-                        <span class="texto">Tormenta eléctrica</span>
-                    </button>
-                    <div class="fog-container" style="<?php echo ($current_button_class == 'boton-niebla') ? '' : 'display: none;'; ?>">
-                        <div class="fog"></div>
-                        <div class="fog fog-2"></div>
-                        <div class="fog fog-3"></div>
-                        <button class="fog-button">Niebla</button>
-                    </div>
-                    <button id="botonNiebla" class="boton-niebla" style="<?php echo ($current_button_class == 'boton-niebla-espesa') ? '' : 'display: none;'; ?>">
-                        <span class="texto">Niebla espesa</span>
-                        <div class="niebla-contenedor"></div>
-                    </button>
-                    <button>Granizo</button>
-                    <button>Parche de niebla</button>
-                    <button>Tormenta de nieve</button>
-                    <button>Aguacero congelado</button>
-                    <button>Llovizna</button>
-                    <button>Lluvia helada</button>
-                    <button>Tornado</button>
-                    <button>Huracán</button>
-                    <button>Sequía</button>
-                    <button>Polvo</button>
-                    <button>Tormenta de arena</button>
-                    <button>Hielo</button>
-                    <button>Ráfaga</button>
-                    <button>Tormenta tropical</button>
-                    <button>Frío</button>
-                    <button>Caluroso</button>
-                    <button>Tormenta</button>
-                    <button>Ola de calor</button>
-
-                </div>
-
-            </div>
-            <script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    let slider = document.querySelector(".slider");
-                    let clone = slider.innerHTML;
-                    slider.innerHTML += clone; // Duplicamos el contenido para el efecto continuo
-                });
-            </script>
-            <script>
-                function crearGotas(boton) {
-                    const contGotas = boton.querySelector('.gotas');
-                    contGotas.innerHTML = '';
-
-                    // Crear gotas de lluvia
-                    for (let i = 0; i < 15; i++) {
-                        const gota = document.createElement('div');
-                        gota.className = 'gota';
-                        gota.style.left = Math.random() * 100 + '%';
-                        gota.style.animationDelay = Math.random() * 1 + 's';
-                        gota.style.animationDuration = 0.5 + Math.random() * 0.5 + 's';
-                        contGotas.appendChild(gota);
-                    }
+                    echo '<iframe src="climas/' . $button_id . '.html" 
+                    title="' . $clima . '" 
+                    width="250" 
+                    height="150" 
+                    frameborder="0" 
+                    style="display: ' . (!isset($current_button) || $current_button === $button_id ? 'inline' : 'none') . ';">
+              </iframe>';
                 }
+            }
 
-                function animarChubasco(boton) {
-                    crearGotas(boton);
-                }
+            echo '</div>';
+            ?>
 
-                // Inicializar gotas al cargar
-                document.addEventListener('DOMContentLoaded', function() {
-                    const boton = document.querySelector('.boton-chubasco');
-                    crearGotas(boton);
-                });
-            </script>
-            <script>
-                const boton1 = document.getElementById('botonTormenta');
-
-                function crearRelampagos() {
-                    // Eliminar relámpagos anteriores
-                    const relampagosExistentes = document.querySelectorAll('.relampago');
-                    relampagosExistentes.forEach(rel => rel.remove());
-
-                    // Crear nuevos relámpagos
-                    const numRelampagos = 3 + Math.floor(Math.random() * 3);
-
-                    for (let i = 0; i < numRelampagos; i++) {
-                        const relampago = document.createElement('div');
-                        relampago.className = 'relampago';
-
-                        // Posición y tamaño aleatorios
-                        const ancho = 3 + Math.random() * 4;
-                        const alto = 10 + Math.random() * 30;
-                        const izquierda = 20 + Math.random() * 160;
-                        const arriba = 5 + Math.random() * 40;
-                        const rotacion = -30 + Math.random() * 60;
-
-                        relampago.style.width = ancho + 'px';
-                        relampago.style.height = alto + 'px';
-                        relampago.style.left = izquierda + 'px';
-                        relampago.style.top = arriba + 'px';
-                        relampago.style.transform = `rotate(${rotacion}deg)`;
-
-                        // Animación
-                        relampago.style.animation = `flash ${1 + Math.random() * 2}s ease-out`;
-                        relampago.style.animationDelay = `${Math.random() * 0.5}s`;
-
-                        boton1.appendChild(relampago);
-                    }
-
-                    // Programar siguiente destello
-                    setTimeout(crearRelampagos, 3000 + Math.random() * 2000);
-                }
-
-                // Iniciar animación cuando la página cargue
-                document.addEventListener('DOMContentLoaded', crearRelampagos);
-
-                // Reiniciar animación al hacer clic
-                boton1.addEventListener('click', () => {
-                    crearRelampagos();
-                });
-            </script>
-            <script>
-                document.querySelector('.fog-button').addEventListener('mouseover', function() {
-                    document.querySelectorAll('.fog').forEach(fog => {
-                        fog.style.opacity = '0.5';
-                    });
-                });
-
-                document.querySelector('.fog-button').addEventListener('mouseout', function() {
-                    document.querySelectorAll('.fog').forEach(fog => {
-                        fog.style.opacity = '';
-                    });
-                });
-            </script>
-            <script>
-                const boton2 = document.getElementById('botonNiebla');
-                const contenedor = boton2.querySelector('.niebla-contenedor');
-
-                function crearNiebla() {
-                    // Limpiar niebla anterior
-                    contenedor.innerHTML = '';
-
-                    // Crear capas de niebla
-                    const numCapas = 15;
-
-                    for (let i = 0; i < numCapas; i++) {
-                        const niebla = document.createElement('div');
-                        niebla.className = 'niebla';
-
-                        // Tamaño aleatorio
-                        const tamaño = 30 + Math.random() * 100;
-
-                        // Posición aleatoria
-                        const izquierda = -20 + Math.random() * 240;
-                        const arriba = -20 + Math.random() * 100;
-
-                        niebla.style.width = tamaño + 'px';
-                        niebla.style.height = tamaño + 'px';
-                        niebla.style.left = izquierda + 'px';
-                        niebla.style.top = arriba + 'px';
-
-                        // Animación
-                        niebla.style.transition = 'transform ' + (5 + Math.random() * 5) + 's linear, opacity ' + (3 + Math.random() * 3) + 's ease-in-out';
-                        niebla.style.opacity = 0.1 + Math.random() * 0.5;
-
-                        contenedor.appendChild(niebla);
-
-                        // Animar después de un pequeño retraso para que la transición funcione
-                        setTimeout(() => {
-                            const desplazamientoX = -30 + Math.random() * 60;
-                            const desplazamientoY = -10 + Math.random() * 20;
-                            niebla.style.transform = `translate(${desplazamientoX}px, ${desplazamientoY}px)`;
-
-                            if (Math.random() > 0.5) {
-                                niebla.style.opacity = 0.05 + Math.random() * 0.3;
-                            } else {
-                                niebla.style.opacity = 0.3 + Math.random() * 0.4;
-                            }
-                        }, 10);
-                    }
-
-                    // Reiniciar niebla periódicamente
-                    setTimeout(crearNiebla, 4000);
-                }
-
-                // Iniciar efectos de niebla
-                document.addEventListener('DOMContentLoaded', crearNiebla);
-
-                // Reiniciar al hacer clic
-                boton2.addEventListener('click', () => {
-                    crearNiebla();
-                });
-            </script>
-        </div>
     </section>
 </body>
 
