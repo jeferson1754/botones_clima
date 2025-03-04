@@ -30,6 +30,7 @@ $weather_buttons = [
     "Caluroso" => "",
     "Tormenta" => "",
     "Ola de calor" => "",
+    "Lluvia ligera, niebla" => "",
 ];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -143,7 +144,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             'Storm' => 'Tormenta',  // Condiciones meteorológicas extremas, incluyendo lluvia, viento y relámpagos. Temperatura variable.
             'Heatwave' => 'Ola de calor',  // Período de calor extremo. Temperatura generalmente por encima de los 35°C.
             'Light snow' => 'Nieve ligera', // Caída suave de nieve, sin acumulación significativa. Rango de temperatura: -5°C a 2°C.
-
+            'Light Rain, Mist' => 'Lluvia ligera, niebla',
         ];
 
 
@@ -158,8 +159,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 } else {
     $slider_active = "";
-    $current_button_class = null;
+    $weather_description_es = null;
 }
+
 
 ?>
 
@@ -301,7 +303,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     width="250" 
                     height="150" 
                     frameborder="0" 
-                    style="display: ' . (!isset($current_button) || $current_button === $button_id ? 'inline' : 'none') . ';">
+                    style="display: ' . (!isset($weather_description_es) || $weather_description_es === $clima ? 'inline' : 'none') . ';">
               </iframe>';
                 }
             }
