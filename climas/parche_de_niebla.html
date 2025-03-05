@@ -1,125 +1,120 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <!--   --> 
-    <link rel="stylesheet" href="../style.css">
-
-</head>
-<style>
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f5f7fa;
-    color: #333;
-}
-
-
-</style>
-<body>
-    <div>
-
-        <button id="botonNiebla" class="boton-niebla">
-            <span class="texto">Niebla espesa</span>
-            <div class="niebla-contenedor"></div>
-        </button>
-        <button>Parche de niebla</button>
-        <button>Tormenta de nieve</button>
-        <button>Aguacero congelado</button>
-        <button>Llovizna</button>
-        <button>Lluvia helada</button>
-        <button>Tornado</button>
-        <button>Huracán</button>
-        <button>Sequía</button>
-        <button>Polvo</button>
-        <button>Tormenta de arena</button>
-        <button>Hielo</button>
-        <button>Ráfaga</button>
-        <button>Tormenta tropical</button>
-        <button>Frío</button>
-        <button>Caluroso</button>
-        <button>Tormenta</button>
-        <button>Ola de calor</button>
-
-
-  
-
-    <script>
-        document.querySelector('.fog-button').addEventListener('mouseover', function() {
-            document.querySelectorAll('.fog').forEach(fog => {
-                fog.style.opacity = '0.5';
-            });
-        });
-
-        document.querySelector('.fog-button').addEventListener('mouseout', function() {
-            document.querySelectorAll('.fog').forEach(fog => {
-                fog.style.opacity = '';
-            });
-        });
-    </script>
-    <script>
-        const boton2 = document.getElementById('botonNiebla');
-        const contenedor = boton2.querySelector('.niebla-contenedor');
-
-        function crearNiebla() {
-            // Limpiar niebla anterior
-            contenedor.innerHTML = '';
-
-            // Crear capas de niebla
-            const numCapas = 15;
-
-            for (let i = 0; i < numCapas; i++) {
-                const niebla = document.createElement('div');
-                niebla.className = 'niebla';
-
-                // Tamaño aleatorio
-                const tamaño = 30 + Math.random() * 100;
-
-                // Posición aleatoria
-                const izquierda = -20 + Math.random() * 240;
-                const arriba = -20 + Math.random() * 100;
-
-                niebla.style.width = tamaño + 'px';
-                niebla.style.height = tamaño + 'px';
-                niebla.style.left = izquierda + 'px';
-                niebla.style.top = arriba + 'px';
-
-                // Animación
-                niebla.style.transition = 'transform ' + (5 + Math.random() * 5) + 's linear, opacity ' + (3 + Math.random() * 3) + 's ease-in-out';
-                niebla.style.opacity = 0.1 + Math.random() * 0.5;
-
-                contenedor.appendChild(niebla);
-
-                // Animar después de un pequeño retraso para que la transición funcione
-                setTimeout(() => {
-                    const desplazamientoX = -30 + Math.random() * 60;
-                    const desplazamientoY = -10 + Math.random() * 20;
-                    niebla.style.transform = `translate(${desplazamientoX}px, ${desplazamientoY}px)`;
-
-                    if (Math.random() > 0.5) {
-                        niebla.style.opacity = 0.05 + Math.random() * 0.3;
-                    } else {
-                        niebla.style.opacity = 0.3 + Math.random() * 0.4;
-                    }
-                }, 10);
-            }
-
-            // Reiniciar niebla periódicamente
-            setTimeout(crearNiebla, 4000);
+    <title>Parche de Niebla</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f7fa;
+            color: #333;
         }
 
-        // Iniciar efectos de niebla
-        document.addEventListener('DOMContentLoaded', crearNiebla);
 
-        // Reiniciar al hacer clic
-        boton2.addEventListener('click', () => {
-            crearNiebla();
-        });
-    </script>
+        .fog-button {
+            position: relative;
+            width: 200px;
+            height: 60px;
+            background: linear-gradient(145deg, #a0b4c6, #c0d0e0);
+            border: 2px solid #8093a8;
+            border-radius: 30px;
+            box-shadow: 
+                6px 6px 12px #8093a8, 
+                -6px -6px 12px #c0d0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .fog-button::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                transparent,
+                transparent 10px,
+                rgba(255,255,255,0.1) 10px,
+                rgba(255,255,255,0.1) 20px
+            );
+            animation: fog-movement 10s linear infinite;
+            opacity: 0.5;
+            transform: rotate(-45deg);
+        }
+
+        @keyframes fog-movement {
+            0% {
+                transform: rotate(-45deg) translateX(-100%);
+            }
+            100% {
+                transform: rotate(-45deg) translateX(100%);
+            }
+        }
+
+        .fog-button-text {
+            position: relative;
+            z-index: 1;
+            color: #2c3e50;
+            font-weight: bold;
+            font-size: 18px;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.3);
+        }
+
+        .weather-icons {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            color: #2c3e50;
+            opacity: 0.7;
+        }
+
+        .fog-button:hover {
+            transform: scale(1.05);
+            box-shadow: 
+                8px 8px 16px #8093a8, 
+                -8px -8px 16px #c0d0e0;
+        }
+
+        .fog-button:active {
+            transform: scale(0.95);
+            box-shadow: 
+                4px 4px 8px #8093a8, 
+                -4px -4px 8px #c0d0e0;
+        }
+    </style>
+</head>
+<body>
+    <div class="fog-button" onclick="activateFogPatch()">
+        <span class="fog-button-text">Parche de niebla</span>
     </div>
+
+    <script>
+        function activateFogPatch() {
+            const button = document.querySelector('.fog-button');
+            button.style.transform = 'scale(0.95)';
+            
+            // Simular efecto de activación
+            setTimeout(() => {
+                button.style.transform = 'scale(1)';
+                // Aquí podrías agregar lógica adicional de activación
+                console.log('Parche de niebla activado');
+                
+                // Efecto visual temporal
+                button.style.background = 'linear-gradient(145deg, #8093a8, #a0b4c6)';
+                setTimeout(() => {
+                    button.style.background = 'linear-gradient(145deg, #a0b4c6, #c0d0e0)';
+                }, 200);
+            }, 100);
+        }
+    </script>
 </body>
 </html>
