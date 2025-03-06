@@ -1,52 +1,184 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <!--   --> 
-    <link rel="stylesheet" href="../style.css">
+    <title>Tormenta de Nieve</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f7fa;
+            color: #333;
+        }
 
+        .snowstorm-button {
+            position: relative;
+            width: 200px;
+            height: 60px;
+            border-radius: 30px; 
+            background: linear-gradient(145deg, #a8c5e0, #d4e6f7);
+            border: 2px solid #7ba5cc;
+            box-shadow: 
+                6px 6px 12px #7ba5cc, 
+                -6px -6px 12px #d4e6f7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .snow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        .snowflake {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation-name: fall-rotate;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+        }
+
+        @keyframes fall-rotate {
+            0% {
+                transform: translateY(-20px) rotate(0deg);
+            }
+            100% {
+                transform: translateY(120px) rotate(360deg);
+            }
+        }
+
+        .button-text {
+            position: relative;
+            z-index: 1;
+            color: #1a365d;
+            font-weight: bold;
+            font-size: 20px;
+            text-shadow: 1px 1px 3px rgba(255,255,255,0.7);
+        }
+
+        .weather-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            color: #1a365d;
+            z-index: 1;
+        }
+
+        .wind-effect {
+            position: absolute;
+            width: 300px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(-45deg);
+            animation: wind 3s linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes wind {
+            0% {
+                transform: rotate(-45deg) translateX(-300px);
+                opacity: 0.5;
+            }
+            100% {
+                transform: rotate(-45deg) translateX(300px);
+                opacity: 0;
+            }
+        }
+
+        .snowstorm-button:hover {
+            transform: scale(1.05);
+            box-shadow: 
+                8px 8px 16px #7ba5cc, 
+                -8px -8px 16px #d4e6f7;
+        }
+
+        .snowstorm-button:active {
+            transform: scale(0.95);
+            box-shadow: 
+                4px 4px 8px #7ba5cc, 
+                -4px -4px 8px #d4e6f7;
+            background: linear-gradient(145deg, #97b4cf, #c3d5e6);
+        }
+    </style>
 </head>
-<style>
-    body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 20px;
-        background-color: #f5f7fa;
-        color: #333;
-    }
-
-    .button {
-        position: relative;
-        width: 200px;
-        height: 60px;
-        border-radius: 30px; 
-    }
-
-
-</style>
 <body>
-    <div>
-        <button>Tormenta de nieve</button>
-        <button>Aguacero congelado</button>
-        <button>Llovizna</button>
-        <button>Lluvia helada</button>
-        <button>Tornado</button>
-        <button>Huracán</button>
-        <button>Sequía</button>
-        <button>Polvo</button>
-        <button>Tormenta de arena</button>
-        <button>Hielo</button>
-        <button>Ráfaga</button>
-        <button>Tormenta tropical</button>
-        <button>Frío</button>
-        <button>Caluroso</button>
-        <button>Tormenta</button>
-        <button>Ola de calor</button>
-        <button>Lluvia ligera, niebla</button>
-
+    <div class="snowstorm-button" id="snowstormButton">
+        <span class="button-text">Tormenta de nieve</span>
+        <div class="snow" id="snow"></div>
+        <div class="wind-effect"></div>
+        <div class="wind-effect" style="top: 30px; animation-delay: 0.5s;"></div>
+        <div class="wind-effect" style="top: 60px; animation-delay: 1s;"></div>
+        <div class="wind-effect" style="top: 90px; animation-delay: 1.5s;"></div>
     </div>
+
+    <script>
+        // Crear copos de nieve
+        const snow = document.getElementById('snow');
+        const snowstormButton = document.getElementById('snowstormButton');
+        
+        function createSnowflakes(count) {
+            snow.innerHTML = '';
+            for (let i = 0; i < count; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.className = 'snowflake';
+                
+                // Tamaño aleatorio
+                const size = Math.random() * 5 + 2;
+                snowflake.style.width = `${size}px`;
+                snowflake.style.height = `${size}px`;
+                
+                // Posición aleatoria
+                snowflake.style.left = `${Math.random() * 100}%`;
+                
+                // Duración y retraso aleatorios
+                const duration = Math.random() * 2 + 1;
+                const delay = Math.random() * 2;
+                snowflake.style.animationDuration = `${duration}s`;
+                snowflake.style.animationDelay = `${delay}s`;
+                
+                snow.appendChild(snowflake);
+            }
+        }
+
+        // Inicialmente con pocos copos
+        createSnowflakes(15);
+        
+        // Aumentar copos al pasar el ratón
+        snowstormButton.addEventListener('mouseenter', () => {
+            createSnowflakes(40);
+        });
+        
+        // Volver a pocos copos al salir
+        snowstormButton.addEventListener('mouseleave', () => {
+            setTimeout(() => {
+                createSnowflakes(15);
+            }, 500);
+        });
+        
+        // Efecto al hacer clic
+        snowstormButton.addEventListener('click', () => {
+            // Crear más copos por un momento
+            createSnowflakes(60);
+            
+            setTimeout(() => {
+                createSnowflakes(15);
+            }, 1500);
+            
+            console.log('¡Tormenta de nieve activada!');
+        });
+    </script>
 </body>
 </html>
