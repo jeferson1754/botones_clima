@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Llovizna</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+
+        .drizzle-button {
+            position: relative;
+            width: 200px;
+            height: 60px;
+            border-radius: 30px; 
+            background: linear-gradient(145deg, #b5c7d3, #d8e1e8);
+            border: 2px solid #a0b0bd;
+            box-shadow: 
+                6px 6px 12px rgba(160, 176, 189, 0.5), 
+                -6px -6px 12px rgba(255, 255, 255, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .button-text {
+            position: relative;
+            z-index: 3;
+            color: #455a64;
+            font-weight: bold;
+            font-size: 20px;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7);
+        }
+
+        .weather-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            color: #455a64;
+            z-index: 3;
+        }
+
+        .drizzle-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .drizzle-drop {
+            position: absolute;
+            background-color: rgba(176, 206, 223, 0.6);
+            width: 1px;
+            height: 5px;
+            border-radius: 1px;
+            animation-name: drizzleFall;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+        }
+
+        .cloud {
+            position: absolute;
+            background-color: rgba(235, 242, 250, 0.8);
+            border-radius: 50%;
+            z-index: 2;
+        }
+
+        .cloud-1 {
+            width: 60px;
+            height: 20px;
+            top: 15px;
+            left: 20px;
+        }
+
+        .cloud-2 {
+            width: 80px;
+            height: 25px;
+            top: 10px;
+            left: 80px;
+        }
+
+        .cloud-3 {
+            width: 70px;
+            height: 22px;
+            top: 20px;
+            left: 150px;
+        }
+
+        @keyframes drizzleFall {
+            0% {
+                transform: translateY(-5px) translateX(0px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(105px) translateX(-10px);
+                opacity: 0;
+            }
+        }
+
+        .drizzle-button:hover {
+            transform: scale(1.03);
+            box-shadow: 
+                8px 8px 16px rgba(160, 176, 189, 0.5), 
+                -8px -8px 16px rgba(255, 255, 255, 0.8);
+        }
+
+        .drizzle-button:active {
+            transform: scale(0.97);
+            box-shadow: 
+                4px 4px 8px rgba(160, 176, 189, 0.5), 
+                -4px -4px 8px rgba(255, 255, 255, 0.8);
+            background: linear-gradient(145deg, #a6b8c4, #c9d2d9);
+        }
+
+        .humidity {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                rgba(255, 255, 255, 0.05),
+                rgba(176, 206, 223, 0.1)
+            );
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="drizzle-button" id="drizzleButton">
+        <span class="button-text">Llovizna</span>
+        <div class="humidity"></div>
+        <div class="cloud cloud-1"></div>
+        <div class="cloud cloud-2"></div>
+        <div class="cloud cloud-3"></div>
+        <div class="drizzle-container" id="drizzleContainer"></div>
+    </div>
+
+    <script>
+        const drizzleContainer = document.getElementById('drizzleContainer');
+        const drizzleButton = document.getElementById('drizzleButton');
+        
+        // Crear gotas de llovizna
+        function createDrizzle(count) {
+            drizzleContainer.innerHTML = '';
+            
+            for (let i = 0; i < count; i++) {
+                const drop = document.createElement('div');
+                drop.className = 'drizzle-drop';
+                
+                // Posición horizontal aleatoria
+                drop.style.left = `${Math.random() * 100}%`;
+                
+                // Duración y retraso aleatorios
+                const duration = Math.random() * 1.5 + 1.0;
+                const delay = Math.random() * 3;
+                drop.style.animationDuration = `${duration}s`;
+                drop.style.animationDelay = `${delay}s`;
+                
+                // Altura variable pero pequeña (llovizna)
+                const height = Math.random() * 3 + 3;
+                drop.style.height = `${height}px`;
+                
+                drizzleContainer.appendChild(drop);
+            }
+        }
+
+        // Inicialmente con poca llovizna
+        createDrizzle(30);
+        
+        // Aumentar llovizna al pasar el ratón
+        drizzleButton.addEventListener('mouseenter', () => {
+            createDrizzle(50);
+        });
+        
+        
+        // Efecto al hacer clic
+        drizzleButton.addEventListener('click', () => {
+            // Intensificar llovizna momentáneamente
+            createDrizzle(70);
+            
+            setTimeout(() => {
+                createDrizzle(30);
+            }, 1500);
+            
+            console.log('¡Llovizna activada!');
+        });
+    </script>
+</body>
+</html>

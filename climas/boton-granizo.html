@@ -103,7 +103,6 @@
       });
       
       // Efecto de ripple al hacer clic
-      button.addEventListener('click', function(e) {
         const rect = button.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
@@ -118,7 +117,7 @@
         setTimeout(() => {
           ripple.remove();
         }, 800);
-      });
+
       
       function createHailEffect() {
         for (let i = 0; i < 8; i++) {

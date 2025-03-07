@@ -15,8 +15,8 @@ $weather_buttons = [
     "Granizo" => "boton-granizo",
     "Parche de niebla" => "parche_de_niebla",
     "Tormenta de nieve" => "tormenta_de_nieve",
-    "Aguacero congelado" => "",
-    "Llovizna" => "",
+    "Aguacero congelado" => "aguacero_congelado",
+    "Llovizna" => "llovizna",
     "Lluvia helada" => "",
     "Tornado" => "",
     "Huracán" => "",
@@ -31,6 +31,7 @@ $weather_buttons = [
     "Tormenta" => "",
     "Ola de calor" => "",
     "Lluvia ligera, niebla" => "",
+    "Lluvia ligera" => "",
 ];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -145,6 +146,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             'Heatwave' => 'Ola de calor',  // Período de calor extremo. Temperatura generalmente por encima de los 35°C.
             'Light snow' => 'Nieve ligera', // Caída suave de nieve, sin acumulación significativa. Rango de temperatura: -5°C a 2°C.
             'Light Rain, Mist' => 'Lluvia ligera, niebla',
+            'Light Rain' => 'Lluvia ligera',
         ];
 
 

@@ -1,14 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <!--   --> 
-    <link rel="stylesheet" href="../style.css">
-
-</head>
-<style>
+    <title>Aguacero Congelado</title>
+    <style>
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         max-width: 800px;
@@ -18,34 +13,197 @@
         color: #333;
     }
 
-    .button {
-        position: relative;
-        width: 200px;
-        height: 60px;
-        border-radius: 30px; 
-    }
+        .frozen-rain-button {
+            position: relative;
+            width: 200px;
+            height: 60px;
+            border-radius: 30px; 
+            background: linear-gradient(145deg, #708fa4, #a6c1d7);
+            border: 2px solid #5a768a;
+            box-shadow: 
+                6px 6px 12px #5a768a, 
+                -6px -6px 12px #cfe0ec;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
 
+        .button-text {
+            position: relative;
+            z-index: 3;
+            color: #fff;
+            font-weight: bold;
+            font-size: 20px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
 
-</style>
+        .weather-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            color: #fff;
+            z-index: 3;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+
+        .rain-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .raindrop {
+            position: absolute;
+            background-color: rgba(173, 216, 230, 0.6);
+            width: 2px;
+            border-radius: 2px;
+            animation-name: falling;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+        }
+
+        .ice-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                -45deg,
+                rgba(255, 255, 255, 0.1),
+                rgba(255, 255, 255, 0.1) 10px,
+                rgba(220, 240, 255, 0.2) 10px,
+                rgba(220, 240, 255, 0.2) 20px
+            );
+            z-index: 2;
+        }
+
+        .ice-crystal {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            z-index: 2;
+            pointer-events: none;
+            animation: sparkle 3s ease-in-out infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.5); }
+        }
+
+        @keyframes falling {
+            0% {
+                transform: translateY(-10px) rotate(0deg);
+            }
+            100% {
+                transform: translateY(110px) rotate(0deg);
+            }
+        }
+
+        .frozen-rain-button:hover {
+            transform: scale(1.05);
+            box-shadow: 
+                8px 8px 16px #5a768a, 
+                -8px -8px 16px #cfe0ec;
+        }
+
+        .frozen-rain-button:active {
+            transform: scale(0.95);
+            box-shadow: 
+                4px 4px 8px #5a768a, 
+                -4px -4px 8px #cfe0ec;
+            background: linear-gradient(145deg, #5a768a, #90abbe);
+        }
+    </style>
+</head>
 <body>
-    <div>
-        <button>Aguacero congelado</button>
-        <button>Llovizna</button>
-        <button>Lluvia helada</button>
-        <button>Tornado</button>
-        <button>Huracán</button>
-        <button>Sequía</button>
-        <button>Polvo</button>
-        <button>Tormenta de arena</button>
-        <button>Hielo</button>
-        <button>Ráfaga</button>
-        <button>Tormenta tropical</button>
-        <button>Frío</button>
-        <button>Caluroso</button>
-        <button>Tormenta</button>
-        <button>Ola de calor</button>
-        <button>Lluvia ligera, niebla</button>
-
+    <div class="frozen-rain-button" id="frozenRainButton">
+        <span class="button-text">Aguacero congelado</span>
+        <div class="rain-container" id="rainContainer"></div>
+        <div class="ice-layer"></div>
     </div>
+
+    <script>
+        const rainContainer = document.getElementById('rainContainer');
+        const frozenRainButton = document.getElementById('frozenRainButton');
+        
+        // Crear gotas de lluvia congelada
+        function createRaindrops(count) {
+            rainContainer.innerHTML = '';
+            
+            for (let i = 0; i < count; i++) {
+                const raindrop = document.createElement('div');
+                raindrop.className = 'raindrop';
+                
+                // Posición horizontal aleatoria
+                raindrop.style.left = `${Math.random() * 100}%`;
+                
+                // Duración y retraso aleatorios
+                const duration = Math.random() * 0.7 + 0.5; // Gotas más rápidas
+                const delay = Math.random() * 1.5;
+                raindrop.style.animationDuration = `${duration}s`;
+                raindrop.style.animationDelay = `${delay}s`;
+                
+                // Altura aleatoria
+                const height = Math.random() * 10 + 10;
+                raindrop.style.height = `${height}px`;
+                
+                rainContainer.appendChild(raindrop);
+            }
+            
+            // Añadir cristales de hielo
+            for (let i = 0; i < 15; i++) {
+                const crystal = document.createElement('div');
+                crystal.className = 'ice-crystal';
+                
+                // Posición aleatoria
+                crystal.style.left = `${Math.random() * 90 + 5}%`;
+                crystal.style.top = `${Math.random() * 90 + 5}%`;
+                
+                // Retraso aleatorio para que brillen en momentos diferentes
+                crystal.style.animationDelay = `${Math.random() * 3}s`;
+                
+                rainContainer.appendChild(crystal);
+            }
+        }
+
+        // Inicialmente con poca lluvia
+        createRaindrops(15);
+        
+        // Aumentar lluvia al pasar el ratón
+        frozenRainButton.addEventListener('mouseenter', () => {
+            createRaindrops(30);
+        });
+        
+        // Volver a poca lluvia al salir
+        frozenRainButton.addEventListener('mouseleave', () => {
+            setTimeout(() => {
+                createRaindrops(15);
+            }, 500);
+        });
+        
+        // Efecto al hacer clic
+        frozenRainButton.addEventListener('click', () => {
+            // Intensificar aguacero momentáneamente
+            createRaindrops(45);
+            
+            setTimeout(() => {
+                createRaindrops(15);
+            }, 1500);
+            
+            console.log('¡Aguacero congelado activado!');
+        });
+    </script>
 </body>
 </html>
