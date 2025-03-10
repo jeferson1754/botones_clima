@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Botón con Huracán</title>
+    <style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f5f7fa;
+        color: #333;
+    }
+
+        .hurricane-button {
+            position: relative;
+            width: 200px;
+            height: 60px;
+            background: linear-gradient(135deg, #2980b9, #1a5276);
+            color: white;
+            border: none;
+            border-radius: 30px; 
+            font-size: 22px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .hurricane-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .hurricane-button:active {
+            transform: translateY(1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .button-text {
+            position: relative;
+            z-index: 10;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        .hurricane-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+        }
+
+        .hurricane-eye {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 30px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.7);
+            z-index: 2;
+        }
+
+        .hurricane-band {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            border-radius: 50%;
+            border-style: solid;
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            animation: rotate-hurricane linear infinite;
+        }
+
+        .band-1 {
+            width: 180px;
+            height: 180px;
+            border-width: 5px 5px 5px 0;
+            animation-duration: 3s;
+        }
+
+        .band-2 {
+            width: 150px;
+            height: 150px;
+            border-width: 4px 4px 4px 0;
+            animation-duration: 2.5s;
+        }
+
+        .band-3 {
+            width: 120px;
+            height: 120px;
+            border-width: 3px 3px 3px 0;
+            animation-duration: 2s;
+        }
+
+        .band-4 {
+            width: 90px;
+            height: 90px;
+            border-width: 3px 3px 3px 0;
+            animation-duration: 1.5s;
+        }
+
+        .band-5 {
+            width: 60px;
+            height: 60px;
+            border-width: 2px 2px 2px 0;
+            animation-duration: 1s;
+        }
+
+        .spiral {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 170px;
+            height: 170px;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+        }
+
+        .spiral::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at center, transparent 25px, rgba(255, 255, 255, 0) 26px, rgba(255, 255, 255, 0.1) 27px, rgba(255, 255, 255, 0) 32px),
+                conic-gradient(
+                    from 0deg,
+                    rgba(255, 255, 255, 0.2) 0%,
+                    rgba(255, 255, 255, 0.1) 10%,
+                    rgba(255, 255, 255, 0.0) 20%,
+                    rgba(255, 255, 255, 0.0) 30%, 
+                    rgba(255, 255, 255, 0.1) 40%,
+                    rgba(255, 255, 255, 0.2) 50%,
+                    rgba(255, 255, 255, 0.1) 60%,
+                    rgba(255, 255, 255, 0.0) 70%,
+                    rgba(255, 255, 255, 0.0) 80%,
+                    rgba(255, 255, 255, 0.1) 90%,
+                    rgba(255, 255, 255, 0.2) 100%
+                );
+            border-radius: 50%;
+            animation: rotate-hurricane 4s linear infinite;
+        }
+
+        .cloud {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            filter: blur(4px);
+            z-index: 0;
+            animation: cloud-rotate linear infinite;
+        }
+
+        .cloud-1 {
+            width: 40px;
+            height: 15px;
+            top: 10px;
+            left: 30px;
+            animation-duration: 7s;
+        }
+
+        .cloud-2 {
+            width: 50px;
+            height: 18px;
+            bottom: 15px;
+            right: 20px;
+            animation-duration: 9s;
+        }
+
+        .cloud-3 {
+            width: 35px;
+            height: 12px;
+            bottom: 20px;
+            left: 25px;
+            animation-duration: 8s;
+        }
+
+        .cloud-4 {
+            width: 45px;
+            height: 16px;
+            top: 15px;
+            right: 30px;
+            animation-duration: 10s;
+        }
+
+        .rain {
+            position: absolute;
+            width: 2px;
+            height: 7px;
+            background: rgba(255, 255, 255, 0.6);
+            z-index: 0;
+            animation: rain-fall linear infinite;
+        }
+
+        .rain-1 {
+            top: -7px;
+            left: 30%;
+            animation-duration: 0.7s;
+        }
+
+        .rain-2 {
+            top: -7px;
+            left: 50%;
+            animation-duration: 0.5s;
+            animation-delay: 0.2s;
+        }
+
+        .rain-3 {
+            top: -7px;
+            left: 70%;
+            animation-duration: 0.6s;
+            animation-delay: 0.3s;
+        }
+
+        .rain-4 {
+            top: -7px;
+            left: 40%;
+            animation-duration: 0.8s;
+            animation-delay: 0.1s;
+        }
+
+        .rain-5 {
+            top: -7px;
+            left: 60%;
+            animation-duration: 0.7s;
+            animation-delay: 0.4s;
+        }
+
+        @keyframes rotate-hurricane {
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+        @keyframes cloud-rotate {
+            0% {
+                transform: rotate(0deg) translateX(60px) rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg) translateX(60px) rotate(-360deg);
+            }
+        }
+
+        @keyframes rain-fall {
+            0% {
+                transform: translateY(0) rotate(15deg);
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(80px) rotate(25deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="hurricane-button">
+        <span class="button-text">Huracán</span>
+        
+        <div class="hurricane-container">
+            <div class="hurricane-eye"></div>
+            
+            <div class="hurricane-band band-1"></div>
+            <div class="hurricane-band band-2"></div>
+            <div class="hurricane-band band-3"></div>
+            <div class="hurricane-band band-4"></div>
+            <div class="hurricane-band band-5"></div>
+            
+            <div class="spiral"></div>
+            
+            <div class="cloud cloud-1"></div>
+            <div class="cloud cloud-2"></div>
+            <div class="cloud cloud-3"></div>
+            <div class="cloud cloud-4"></div>
+            
+            <div class="rain rain-1"></div>
+            <div class="rain rain-2"></div>
+            <div class="rain rain-3"></div>
+            <div class="rain rain-4"></div>
+            <div class="rain rain-5"></div>
+        </div>
+    </button>
+</body>
+</html>

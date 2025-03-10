@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Botón con Tornado Interno</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+
+        .tornado-button {
+            position: relative;
+            width: 200px;
+            height: 60px;
+            background: linear-gradient(to bottom, #336699, #204060);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 22px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .tornado-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .tornado-button:active {
+            transform: translateY(1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .button-text {
+            position: relative;
+            z-index: 10;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .tornado-container {
+            position: absolute;
+            width: 60px;
+            height: 150px;
+            top: -35px;
+            left: 60px;
+            transform: rotateX(75deg) scale(1.6);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Círculos del tornado */
+        .circle {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            box-shadow: 1px 8px 0px 0px rgba(0,0,0,0.5) inset, 3px 3px 0px 10px rgba(255,255,255,0.2) inset;
+            animation: spin 0.4s infinite linear;
+            background: rgba(30,60,100,0.6);
+            position: absolute;
+        }
+
+        .circle-two {
+            position: absolute;
+            z-index: -10;
+            top: 20px;
+            left: 5px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(40,70,110,0.5);
+            box-shadow: 1px 5px 0px 0px rgba(50,50,50,0.5) inset, 2px 1px 0px 10px rgba(255,255,255,0.2) inset;
+            animation: spin 0.3s infinite linear;
+        }
+
+        .circle-three {
+            position: absolute;
+            z-index: -20;
+            top: 40px;
+            left: 10px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            box-shadow: 1px 5px 0px 0px rgba(0,0,0,0.5) inset, 2px 1px 0px 10px rgba(255,255,255,0.2) inset;
+            animation: spin 0.35s infinite linear;
+            background: rgba(50,80,120,0.5);
+        }
+
+        .circle-four {
+            position: absolute;
+            z-index: -30;
+            top: 60px;
+            left: 15px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            box-shadow: 1px 3px 0px 0px rgba(0,0,0,0.5) inset, 2px 1px 0px 8px rgba(255,255,255,0.2) inset;
+            animation: spin 0.25s infinite linear;
+            background: rgba(60,90,130,0.5);
+        }
+
+        .circle-five {
+            position: absolute;
+            z-index: -40;
+            top: 80px;
+            left: 20px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            box-shadow: 1px 2px 0px 1px rgba(70,70,70,0.5) inset, 2px 1px 0px 6px rgba(255,255,255,0.2) inset;
+            animation: spin 0.3s infinite linear;
+            background: rgba(70,100,140,0.5);
+        }
+
+        .circle-six {
+            position: absolute;
+            z-index: -50;
+            top: 95px;
+            left: 25px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            box-shadow: 1px 2px 0px 0px rgba(0,0,0,0.5) inset, 1px 1px 0px 4px rgba(255,255,255,0.2) inset;
+            animation: spin 0.2s infinite linear;
+            background: rgba(80,110,150,0.5);
+        }
+
+        /* Efecto de nubes en el fondo del botón */
+        .cloud-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            opacity: 0.3;
+        }
+
+        .cloud {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            filter: blur(5px);
+            animation: cloud-float 8s infinite ease-in-out;
+        }
+
+        .cloud:nth-child(1) {
+            width: 40px;
+            height: 15px;
+            top: 15px;
+            right: 20px;
+        }
+
+        .cloud:nth-child(2) {
+            width: 50px;
+            height: 20px;
+            bottom: 15px;
+            right: 40px;
+            animation-delay: 2s;
+        }
+
+        .cloud:nth-child(3) {
+            width: 35px;
+            height: 14px;
+            top: 25px;
+            right: 80px;
+            animation-delay: 4s;
+        }
+
+        /* Animaciones */
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes cloud-float {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            50% {
+                transform: translateX(15px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="tornado-button">
+        <span class="button-text">Tornado</span>
+        
+        <div class="cloud-bg">
+            <div class="cloud"></div>
+            <div class="cloud"></div>
+            <div class="cloud"></div>
+        </div>
+        
+        <div class="tornado-container">
+            <div class="circle"></div>
+            <div class="circle-two"></div>
+            <div class="circle-three"></div>
+            <div class="circle-four"></div>
+            <div class="circle-five"></div>
+            <div class="circle-six"></div>
+        </div>
+    </button>
+</body>
+</html>

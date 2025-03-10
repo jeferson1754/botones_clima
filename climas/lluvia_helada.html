@@ -1,51 +1,235 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <!--   --> 
-    <link rel="stylesheet" href="../style.css">
+    <title>Lluvia Helada</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f7fa;
+            color: #333;
+        }
 
+        .freezing-rain-button {
+            position: relative;
+            width: 200px;
+            height: 60px;
+            border-radius: 30px; 
+            background: linear-gradient(145deg, #86a8c3, #b9d0e6);
+            border: 2px solid #6c8da3;
+            box-shadow: 
+                6px 6px 12px rgba(108, 141, 163, 0.7), 
+                -6px -6px 12px rgba(255, 255, 255, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .button-text {
+            position: relative;
+            z-index: 3;
+            color: #203648;
+            font-weight: bold;
+            font-size: 20px;
+            text-shadow: 0px 0px 4px rgba(255, 255, 255, 0.6);
+        }
+
+        .weather-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            color: #203648;
+            z-index: 3;
+            text-shadow: 0px 0px 4px rgba(255, 255, 255, 0.6);
+        }
+
+        .rain-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .raindrop {
+            position: absolute;
+            background-color: rgba(173, 216, 230, 0.6);
+            width: 2px;
+            height: 12px;
+            border-radius: 2px;
+            animation-name: freezingRain;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+        }
+
+        .ice-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.15) 25%,
+                transparent 25%,
+                transparent 50%,
+                rgba(255, 255, 255, 0.15) 50%,
+                rgba(255, 255, 255, 0.15) 75%,
+                transparent 75%
+            );
+            background-size: 10px 10px;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .ice-build {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 15px;
+            background: linear-gradient(
+                to top,
+                rgba(255, 255, 255, 0.5),
+                rgba(173, 216, 230, 0.3)
+            );
+            z-index: 2;
+        }
+
+        .ice-shine {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            z-index: 2;
+            animation: shine 4s ease-in-out infinite;
+        }
+
+        @keyframes shine {
+            0%, 100% { opacity: 0.1; }
+            50% { opacity: 0.7; }
+        }
+
+        @keyframes freezingRain {
+            0% {
+                transform: translateY(-10px) translateX(-2px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(110px) translateX(-8px);
+                opacity: 0;
+            }
+        }
+
+        .freezing-rain-button:hover {
+            transform: scale(1.05);
+            box-shadow: 
+                8px 8px 16px rgba(108, 141, 163, 0.7), 
+                -8px -8px 16px rgba(255, 255, 255, 0.7);
+        }
+
+        .freezing-rain-button:active {
+            transform: scale(0.97);
+            box-shadow: 
+                4px 4px 8px rgba(108, 141, 163, 0.7), 
+                -4px -4px 8px rgba(255, 255, 255, 0.7);
+            background: linear-gradient(145deg, #7a9bb6, #a8bfd5);
+        }
+    </style>
 </head>
-<style>
-    body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 20px;
-        background-color: #f5f7fa;
-        color: #333;
-    }
-
-    .button {
-        position: relative;
-        width: 200px;
-        height: 60px;
-        border-radius: 30px; 
-    }
-
-
-</style>
 <body>
-    <div>
-        <button>Llovizna</button>
-        <button>Lluvia helada</button>
-        <button>Tornado</button>
-        <button>Huracán</button>
-        <button>Sequía</button>
-        <button>Polvo</button>
-        <button>Tormenta de arena</button>
-        <button>Hielo</button>
-        <button>Ráfaga</button>
-        <button>Tormenta tropical</button>
-        <button>Frío</button>
-        <button>Caluroso</button>
-        <button>Tormenta</button>
-        <button>Ola de calor</button>
-        <button>Lluvia ligera, niebla</button>
-        <button>Lluvia ligera</button>
-
+    <div class="freezing-rain-button" id="freezingRainButton">
+        <span class="button-text">Lluvia helada</span>
+        <div class="ice-layer"></div>
+        <div class="ice-build"></div>
+        <div class="rain-container" id="rainContainer"></div>
     </div>
+
+    <script>
+        const rainContainer = document.getElementById('rainContainer');
+        const freezingRainButton = document.getElementById('freezingRainButton');
+        
+        // Crear gotas de lluvia helada
+        function createRaindrops(count) {
+            rainContainer.innerHTML = '';
+            
+            for (let i = 0; i < count; i++) {
+                const raindrop = document.createElement('div');
+                raindrop.className = 'raindrop';
+                
+                // Posición horizontal aleatoria
+                raindrop.style.left = `${Math.random() * 100}%`;
+                
+                // Duración y retraso aleatorios
+                const duration = Math.random() * 1.2 + 0.8;
+                const delay = Math.random() * 2;
+                raindrop.style.animationDuration = `${duration}s`;
+                raindrop.style.animationDelay = `${delay}s`;
+                
+                rainContainer.appendChild(raindrop);
+            }
+            
+            // Añadir brillos de hielo
+            for (let i = 0; i < 10; i++) {
+                const iceShine = document.createElement('div');
+                iceShine.className = 'ice-shine';
+                
+                // Tamaño aleatorio
+                const size = Math.random() * 4 + 2;
+                iceShine.style.width = `${size}px`;
+                iceShine.style.height = `${size}px`;
+                
+                // Posición aleatoria
+                iceShine.style.left = `${Math.random() * 90 + 5}%`;
+                iceShine.style.top = `${Math.random() * 50 + 45}%`; // Más hacia la parte inferior
+                
+                // Retraso aleatorio
+                iceShine.style.animationDelay = `${Math.random() * 4}s`;
+                
+                rainContainer.appendChild(iceShine);
+            }
+        }
+
+        // Inicialmente con lluvia moderada
+        createRaindrops(25);
+        
+        // Aumentar lluvia al pasar el ratón
+        freezingRainButton.addEventListener('mouseenter', () => {
+            createRaindrops(40);
+        });
+        
+        // Volver a lluvia moderada al salir
+        freezingRainButton.addEventListener('mouseleave', () => {
+            setTimeout(() => {
+                createRaindrops(25);
+            }, 500);
+        });
+        
+        // Efecto al hacer clic
+        freezingRainButton.addEventListener('click', () => {
+            // Intensificar lluvia helada momentáneamente
+            createRaindrops(60);
+            
+            setTimeout(() => {
+                createRaindrops(25);
+            }, 1500);
+            
+            console.log('¡Lluvia helada activada!');
+        });
+    </script>
 </body>
 </html>
