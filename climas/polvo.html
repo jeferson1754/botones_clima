@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Polvo</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+
+        .dust-button {
+            position: relative;
+            width: 200px;
+            height: 60px;
+            border-radius: 30px; 
+            background: linear-gradient(145deg, #c2c2c2, #e0e0e0);
+            border: 2px solid #a8a8a8;
+            box-shadow: 
+                6px 6px 12px rgba(168, 168, 168, 0.7), 
+                -6px -6px 12px rgba(255, 255, 255, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .button-text {
+            position: relative;
+            z-index: 5;
+            color: #4b4b4b;
+            font-weight: bold;
+            font-size: 20px;
+            text-shadow: 0px 1px 2px rgba(255, 255, 255, 0.6);
+        }
+
+        .dust-cloud-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .dust-particle {
+            position: absolute;
+            background-color: rgba(180, 180, 180, 0.6);
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            animation: floatingDust linear infinite;
+        }
+
+        .dust-cloud {
+            position: absolute;
+            border-radius: 50%;
+            background-color: rgba(200, 200, 200, 0.3);
+            filter: blur(4px);
+            animation: cloudPulse 4s ease-in-out infinite;
+        }
+
+        .dusty-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 30% 40%, rgba(255, 255, 255, 0.4) 0%, transparent 70%),
+                radial-gradient(circle at 70% 60%, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
+            z-index: 2;
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .dust-swirl {
+            position: absolute;
+            border: 2px solid rgba(200, 200, 200, 0.3);
+            border-radius: 50%;
+            border-top-color: transparent;
+            border-bottom-color: transparent;
+            animation: swirl 6s linear infinite;
+        }
+
+        @keyframes cloudPulse {
+            0%, 100% { transform: scale(0.9); opacity: 0.2; }
+            50% { transform: scale(1.1); opacity: 0.4; }
+        }
+
+        @keyframes floatingDust {
+            0% {
+                transform: translate(0, 0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty));
+                opacity: 0;
+            }
+        }
+
+        @keyframes swirl {
+            0% { transform: rotate(0deg) scale(0.8); opacity: 0.2; }
+            50% { opacity: 0.6; }
+            100% { transform: rotate(720deg) scale(1.2); opacity: 0.2; }
+        }
+
+        .dust-button:hover {
+            transform: scale(1.05);
+            box-shadow: 
+                8px 8px 16px rgba(168, 168, 168, 0.7), 
+                -8px -8px 16px rgba(255, 255, 255, 0.7);
+        }
+
+        .dust-button:active {
+            transform: scale(0.97);
+            box-shadow: 
+                4px 4px 8px rgba(168, 168, 168, 0.7), 
+                -4px -4px 8px rgba(255, 255, 255, 0.7);
+            background: linear-gradient(145deg, #b8b8b8, #d0d0d0);
+        }
+    </style>
+</head>
+<body>
+    <div class="dust-button" id="dustButton">
+        <span class="button-text">Polvo</span>
+        <div class="dusty-layer"></div>
+        <div class="dust-cloud-container" id="dustCloudContainer"></div>
+    </div>
+
+    <script>
+        const dustCloudContainer = document.getElementById('dustCloudContainer');
+        const dustButton = document.getElementById('dustButton');
+        
+        // Crear partículas y nubes de polvo
+        function createDustEffects(particleCount, cloudCount, swirlCount) {
+            dustCloudContainer.innerHTML = '';
+            
+            // Partículas de polvo
+            for (let i = 0; i < particleCount; i++) {
+                const dustParticle = document.createElement('div');
+                dustParticle.className = 'dust-particle';
+                
+                // Posición aleatoria
+                dustParticle.style.left = `${Math.random() * 100}%`;
+                dustParticle.style.top = `${Math.random() * 100}%`;
+                
+                // Desplazamiento aleatorio
+                const tx = (Math.random() - 0.5) * 60;
+                const ty = (Math.random() - 0.5) * 60;
+                dustParticle.style.setProperty('--tx', `${tx}px`);
+                dustParticle.style.setProperty('--ty', `${ty}px`);
+                
+                // Duración y retraso aleatorios
+                const duration = Math.random() * 2 + 2;
+                const delay = Math.random() * 3;
+                dustParticle.style.animationDuration = `${duration}s`;
+                dustParticle.style.animationDelay = `${delay}s`;
+                
+                // Tamaño aleatorio
+                const size = Math.random() * 2 + 1;
+                dustParticle.style.width = `${size}px`;
+                dustParticle.style.height = `${size}px`;
+                
+                dustCloudContainer.appendChild(dustParticle);
+            }
+            
+            // Nubes de polvo
+            for (let i = 0; i < cloudCount; i++) {
+                const dustCloud = document.createElement('div');
+                dustCloud.className = 'dust-cloud';
+                
+                // Tamaño aleatorio
+                const size = Math.random() * 30 + 20;
+                dustCloud.style.width = `${size}px`;
+                dustCloud.style.height = `${size}px`;
+                
+                // Posición aleatoria
+                dustCloud.style.left = `${Math.random() * 70 + 15}%`;
+                dustCloud.style.top = `${Math.random() * 70 + 15}%`;
+                
+                // Retraso aleatorio
+                dustCloud.style.animationDelay = `${Math.random() * 4}s`;
+                
+                dustCloudContainer.appendChild(dustCloud);
+            }
+            
+            // Remolinos de polvo
+            for (let i = 0; i < swirlCount; i++) {
+                const dustSwirl = document.createElement('div');
+                dustSwirl.className = 'dust-swirl';
+                
+                // Tamaño aleatorio
+                const size = Math.random() * 40 + 20;
+                dustSwirl.style.width = `${size}px`;
+                dustSwirl.style.height = `${size}px`;
+                
+                // Posición aleatoria
+                dustSwirl.style.left = `${Math.random() * 70 + 15}%`;
+                dustSwirl.style.top = `${Math.random() * 70 + 15}%`;
+                
+                // Retraso aleatorio
+                dustSwirl.style.animationDelay = `${Math.random() * 3}s`;
+                dustSwirl.style.animationDuration = `${6 + Math.random() * 4}s`;
+                
+                dustCloudContainer.appendChild(dustSwirl);
+            }
+        }
+
+        // Inicializar efectos
+        createDustEffects(25, 3, 2);
+        
+        // Aumentar efectos al pasar el ratón
+        dustButton.addEventListener('mouseenter', () => {
+            createDustEffects(40, 5, 3);
+        });
+        
+        // Volver a efectos moderados al salir
+        dustButton.addEventListener('mouseleave', () => {
+            setTimeout(() => {
+                createDustEffects(25, 3, 2);
+            }, 500);
+        });
+        
+        // Efecto al hacer clic
+        dustButton.addEventListener('click', () => {
+            // Intensificar efectos momentáneamente
+            createDustEffects(60, 7, 4);
+            
+            setTimeout(() => {
+                createDustEffects(25, 3, 2);
+            }, 1500);
+            
+            console.log('¡Polvo activado!');
+        });
+    </script>
+</body>
+</html>

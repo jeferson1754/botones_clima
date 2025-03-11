@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Sequía</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+
+        .drought-button {
+            position: relative;
+            width: 200px;
+            height: 60px;
+            border-radius: 30px; 
+            background: linear-gradient(145deg, #e6b980, #c69d67);
+            border: 2px solid #a67c3d;
+            box-shadow: 
+                6px 6px 12px rgba(166, 124, 61, 0.7), 
+                -6px -6px 12px rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .button-text {
+            position: relative;
+            z-index: 5;
+            color: #4b3219;
+            font-weight: bold;
+            font-size: 20px;
+            text-shadow: 0px 1px 2px rgba(255, 255, 255, 0.4);
+        }
+
+        .weather-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            color: #4b3219;
+            z-index: 5;
+            text-shadow: 0px 1px 2px rgba(255, 255, 255, 0.4);
+        }
+
+        .dust-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .dust-particle {
+            position: absolute;
+            background-color: rgba(210, 180, 140, 0.6);
+            width: 2px;
+            height: 2px;
+            border-radius: 50%;
+            animation-name: floatingDust;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+        }
+
+        .crack-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(45deg, transparent 48%, rgba(90, 60, 30, 0.4) 49%, transparent 51%) 0 0 / 10px 10px,
+                linear-gradient(-45deg, transparent 48%, rgba(90, 60, 30, 0.4) 49%, transparent 51%) 0 0 / 10px 10px;
+            z-index: 2;
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .dry-soil {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 20px;
+            background: linear-gradient(
+                to top,
+                rgba(110, 70, 40, 0.5),
+                rgba(180, 150, 100, 0.3)
+            );
+            z-index: 2;
+        }
+
+        .heat-wave {
+            position: absolute;
+            background-color: rgba(255, 180, 100, 0.3);
+            border-radius: 50%;
+            z-index: 1;
+            animation: heatWave 4s ease-in-out infinite;
+            filter: blur(5px);
+        }
+
+        /* Estepicursoras (plantas rodadoras) */
+        .tumbleweed-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .tumbleweed {
+            position: absolute;
+            bottom: 5px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 1px solid rgba(150, 120, 90, 0.7);
+            background: radial-gradient(circle, rgba(180, 150, 120, 0.5) 30%, rgba(160, 130, 100, 0.3) 70%);
+            animation: tumbleWeed linear infinite;
+            transform-origin: bottom center;
+        }
+
+        /* Diferentes tamaños de estepicursoras */
+        .tumbleweed.small {
+            width: 8px;
+            height: 8px;
+        }
+
+        .tumbleweed.large {
+            width: 15px;
+            height: 15px;
+        }
+
+        /* Tallos de las plantas */
+        .tumbleweed::before {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 5px;
+            width: 1px;
+            height: 4px;
+            background-color: rgba(120, 100, 70, 0.7);
+            transform: rotate(-10deg);
+        }
+
+        .tumbleweed::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            right: 4px;
+            width: 1px;
+            height: 3px;
+            background-color: rgba(120, 100, 70, 0.7);
+            transform: rotate(15deg);
+        }
+
+        @keyframes heatWave {
+            0%, 100% { opacity: 0.1; transform: scale(0.9); }
+            50% { opacity: 0.3; transform: scale(1.1); }
+        }
+
+        @keyframes floatingDust {
+            0% {
+                transform: translateY(60px) translateX(0px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-10px) translateX(8px);
+                opacity: 0;
+            }
+        }
+
+        @keyframes tumbleWeed {
+            0% {
+                transform: translateX(-30px) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateX(230px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .drought-button:hover {
+            transform: scale(1.05);
+            box-shadow: 
+                8px 8px 16px rgba(166, 124, 61, 0.7), 
+                -8px -8px 16px rgba(255, 255, 255, 0.3);
+        }
+
+        .drought-button:hover .tumbleweed {
+            animation-duration: 3s !important;
+        }
+
+        .drought-button:active {
+            transform: scale(0.97);
+            box-shadow: 
+                4px 4px 8px rgba(166, 124, 61, 0.7), 
+                -4px -4px 8px rgba(255, 255, 255, 0.3);
+            background: linear-gradient(145deg, #d6a970, #b68d57);
+        }
+    </style>
+</head>
+<body>
+    <div class="drought-button" id="droughtButton">
+        <span class="button-text">Sequía</span>
+        <div class="crack-layer"></div>
+        <div class="dry-soil"></div>
+        <div class="dust-container" id="dustContainer"></div>
+        <div class="tumbleweed-container" id="tumbleweedContainer"></div>
+    </div>
+
+    <script>
+        const dustContainer = document.getElementById('dustContainer');
+        const tumbleweedContainer = document.getElementById('tumbleweedContainer');
+        const droughtButton = document.getElementById('droughtButton');
+        
+        // Crear partículas de polvo
+        function createDustParticles(count) {
+            dustContainer.innerHTML = '';
+            
+            for (let i = 0; i < count; i++) {
+                const dustParticle = document.createElement('div');
+                dustParticle.className = 'dust-particle';
+                
+                // Posición horizontal aleatoria
+                dustParticle.style.left = `${Math.random() * 100}%`;
+                
+                // Duración y retraso aleatorios
+                const duration = Math.random() * 3 + 2;
+                const delay = Math.random() * 3;
+                dustParticle.style.animationDuration = `${duration}s`;
+                dustParticle.style.animationDelay = `${delay}s`;
+                
+                dustContainer.appendChild(dustParticle);
+            }
+            
+            // Añadir ondas de calor
+            for (let i = 0; i < 5; i++) {
+                const heatWave = document.createElement('div');
+                heatWave.className = 'heat-wave';
+                
+                // Tamaño aleatorio
+                const size = Math.random() * 40 + 20;
+                heatWave.style.width = `${size}px`;
+                heatWave.style.height = `${size}px`;
+                
+                // Posición aleatoria
+                heatWave.style.left = `${Math.random() * 80 + 10}%`;
+                heatWave.style.top = `${Math.random() * 80 + 10}%`;
+                
+                // Retraso aleatorio
+                heatWave.style.animationDelay = `${Math.random() * 4}s`;
+                
+                dustContainer.appendChild(heatWave);
+            }
+        }
+        
+        // Crear estepicursoras (plantas rodadoras)
+        function createTumbleweeds(count) {
+            tumbleweedContainer.innerHTML = '';
+            
+            for (let i = 0; i < count; i++) {
+                const tumbleweed = document.createElement('div');
+                
+                // Diferentes tamaños
+                const sizeClass = Math.random() > 0.7 ? 'large' : (Math.random() > 0.5 ? 'small' : '');
+                tumbleweed.className = `tumbleweed ${sizeClass}`;
+                
+                // Posición vertical aleatoria
+                tumbleweed.style.bottom = `${Math.random() * 15 + 5}px`;
+                
+                // Duración y retraso aleatorios
+                const duration = Math.random() * 3 + 4;
+                const delay = Math.random() * 6;
+                tumbleweed.style.animationDuration = `${duration}s`;
+                tumbleweed.style.animationDelay = `${delay}s`;
+                
+                tumbleweedContainer.appendChild(tumbleweed);
+            }
+        }
+
+        // Inicializar efectos
+        createDustParticles(15);
+        createTumbleweeds(4);
+        
+        // Aumentar efectos al pasar el ratón
+        droughtButton.addEventListener('mouseenter', () => {
+            createDustParticles(30);
+            createTumbleweeds(7);
+        });
+        
+        // Volver a efectos moderados al salir
+        droughtButton.addEventListener('mouseleave', () => {
+            setTimeout(() => {
+                createDustParticles(15);
+                createTumbleweeds(4);
+            }, 500);
+        });
+        
+        // Efecto al hacer clic
+        droughtButton.addEventListener('click', () => {
+            // Intensificar efectos momentáneamente
+            createDustParticles(50);
+            createTumbleweeds(10);
+            
+            setTimeout(() => {
+                createDustParticles(15);
+                createTumbleweeds(4);
+            }, 1500);
+            
+            console.log('¡Sequía activada!');
+        });
+    </script>
+</body>
+</html>
