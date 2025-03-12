@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Hielo</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+
+        .ice-button {
+            position: relative;
+            width: 200px;
+            height: 60px;
+            border-radius: 30px; 
+            background: linear-gradient(145deg, #d3e5ff, #a5c5e8);
+            border: 2px solid #8eb3d9;
+            box-shadow: 
+                6px 6px 12px rgba(142, 179, 217, 0.7), 
+                -6px -6px 12px rgba(255, 255, 255, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .button-text {
+            position: relative;
+            z-index: 5;
+            color: #1a3c5e;
+            font-weight: bold;
+            font-size: 20px;
+            text-shadow: 0px 1px 2px rgba(255, 255, 255, 0.6);
+        }
+
+        .ice-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(135deg, 
+                    rgba(255, 255, 255, 0.5) 0%, 
+                    rgba(255, 255, 255, 0.2) 50%, 
+                    rgba(210, 235, 255, 0.5) 100%);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .ice-cracks {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, 
+                transparent 45%, 
+                rgba(255, 255, 255, 0.5) 45%, 
+                rgba(255, 255, 255, 0.5) 55%, 
+                transparent 55%) 0 0 / 15px 15px,
+                linear-gradient(-45deg, 
+                transparent 45%, 
+                rgba(255, 255, 255, 0.5) 45%, 
+                rgba(255, 255, 255, 0.5) 55%, 
+                transparent 55%) 0 0 / 15px 15px;
+            opacity: 0.3;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .ice-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .ice-crystal {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            animation: sparkle 4s ease-in-out infinite;
+        }
+
+        .frost-particle {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.8);
+            width: 2px;
+            height: 2px;
+            border-radius: 50%;
+            animation: floatFrost 8s linear infinite;
+        }
+
+        .frost-growth {
+            position: absolute;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0) 70%);
+            border-radius: 50%;
+            animation: frostGrow 4s ease-out infinite;
+            transform-origin: center;
+            opacity: 0;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0.2; transform: scale(0.8); }
+            50% { opacity: 0.8; transform: scale(1.1); }
+        }
+
+        @keyframes floatFrost {
+            0% {
+                transform: translate(-5px, -5px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty));
+                opacity: 0;
+            }
+        }
+
+        @keyframes frostGrow {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0;
+            }
+        }
+
+        .ice-button:hover {
+            transform: scale(1.05);
+            box-shadow: 
+                8px 8px 16px rgba(142, 179, 217, 0.7), 
+                -8px -8px 16px rgba(255, 255, 255, 0.7);
+            background: linear-gradient(145deg, #d3e5ff, #a0c0e8);
+        }
+
+        .ice-button:active {
+            transform: scale(0.97);
+            box-shadow: 
+                4px 4px 8px rgba(142, 179, 217, 0.7), 
+                -4px -4px 8px rgba(255, 255, 255, 0.7);
+            background: linear-gradient(145deg, #c0d5ef, #90b5d8);
+        }
+    </style>
+</head>
+<body>
+    <div class="ice-button" id="iceButton">
+        <span class="button-text">Hielo</span>
+        <div class="ice-layer"></div>
+        <div class="ice-cracks"></div>
+        <div class="ice-container" id="iceContainer"></div>
+    </div>
+
+    <script>
+        const iceContainer = document.getElementById('iceContainer');
+        const iceButton = document.getElementById('iceButton');
+        
+        // Crear efectos de hielo
+        function createIceEffects(crystalCount, particleCount, frostCount) {
+            iceContainer.innerHTML = '';
+            
+            // Cristales de hielo brillantes
+            for (let i = 0; i < crystalCount; i++) {
+                const icecrystal = document.createElement('div');
+                icecrystal.className = 'ice-crystal';
+                
+                // Tamaño aleatorio
+                const size = Math.random() * 5 + 2;
+                icecrystal.style.width = `${size}px`;
+                icecrystal.style.height = `${size}px`;
+                
+                // Posición aleatoria
+                icecrystal.style.left = `${Math.random() * 90 + 5}%`;
+                icecrystal.style.top = `${Math.random() * 90 + 5}%`;
+                
+                // Retraso aleatorio
+                icecrystal.style.animationDelay = `${Math.random() * 4}s`;
+                
+                iceContainer.appendChild(icecrystal);
+            }
+            
+            // Partículas de escarcha
+            for (let i = 0; i < particleCount; i++) {
+                const frostParticle = document.createElement('div');
+                frostParticle.className = 'frost-particle';
+                
+                // Posición aleatoria
+                frostParticle.style.left = `${Math.random() * 100}%`;
+                frostParticle.style.top = `${Math.random() * 100}%`;
+                
+                // Desplazamiento aleatorio
+                const tx = (Math.random() - 0.5) * 20;
+                const ty = (Math.random() - 0.5) * 20;
+                frostParticle.style.setProperty('--tx', `${tx}px`);
+                frostParticle.style.setProperty('--ty', `${ty}px`);
+                
+                // Retraso aleatorio
+                frostParticle.style.animationDelay = `${Math.random() * 8}s`;
+                
+                iceContainer.appendChild(frostParticle);
+            }
+            
+            // Crecimiento de escarcha
+            for (let i = 0; i < frostCount; i++) {
+                const frostGrowth = document.createElement('div');
+                frostGrowth.className = 'frost-growth';
+                
+                // Tamaño aleatorio
+                const size = Math.random() * 40 + 20;
+                frostGrowth.style.width = `${size}px`;
+                frostGrowth.style.height = `${size}px`;
+                
+                // Posición aleatoria
+                frostGrowth.style.left = `${Math.random() * 80 + 10}%`;
+                frostGrowth.style.top = `${Math.random() * 80 + 10}%`;
+                
+                // Retraso aleatorio
+                frostGrowth.style.animationDelay = `${Math.random() * 8}s`;
+                
+                iceContainer.appendChild(frostGrowth);
+            }
+        }
+
+        // Inicializar efectos
+        createIceEffects(20, 30, 5);
+        
+        // Aumentar efectos al pasar el ratón
+        iceButton.addEventListener('mouseenter', () => {
+            createIceEffects(30, 50, 8);
+        });
+        
+        // Volver a efectos moderados al salir
+        iceButton.addEventListener('mouseleave', () => {
+            setTimeout(() => {
+                createIceEffects(20, 30, 5);
+            }, 500);
+        });
+        
+        // Efecto al hacer clic
+        iceButton.addEventListener('click', () => {
+            // Intensificar efectos momentáneamente
+            createIceEffects(40, 70, 12);
+            
+            setTimeout(() => {
+                createIceEffects(20, 30, 5);
+            }, 1500);
+            
+            console.log('¡Hielo activado!');
+        });
+    </script>
+</body>
+</html>

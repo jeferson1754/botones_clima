@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Tormenta de Arena</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+
+        .sandstorm-button {
+            position: relative;
+            width: 200px;
+            height: 60px;
+            border-radius: 30px; 
+            background: linear-gradient(145deg, #d3aa74, #b8935f);
+            border: 2px solid #9e7d4e;
+            box-shadow: 
+                6px 6px 12px rgba(158, 125, 78, 0.7), 
+                -6px -6px 12px rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .button-text {
+            position: relative;
+            z-index: 5;
+            color: #4b3219;
+            font-weight: bold;
+            font-size: 18px;
+            text-shadow: 0px 1px 2px rgba(255, 255, 255, 0.4);
+        }
+
+        .sand-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .sand-particle {
+            position: absolute;
+            background-color: rgba(210, 180, 140, 0.8);
+            width: 2px;
+            height: 2px;
+            border-radius: 50%;
+            animation: blowingSand linear infinite;
+        }
+
+        .sand-wave {
+            position: absolute;
+            height: 8px;
+            background-color: rgba(195, 170, 125, 0.4);
+            filter: blur(3px);
+            animation: sandWave linear infinite;
+            transform-origin: center center;
+        }
+
+        .dust-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                rgba(210, 180, 140, 0.1) 0%, 
+                rgba(210, 180, 140, 0.2) 20%, 
+                rgba(195, 165, 120, 0.3) 50%, 
+                rgba(180, 150, 100, 0.2) 80%, 
+                rgba(210, 180, 140, 0.1) 100%);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .wind-gust {
+            position: absolute;
+            width: 80%;
+            height: 10px;
+            background: linear-gradient(90deg, 
+                rgba(210, 180, 140, 0) 0%, 
+                rgba(210, 180, 140, 0.5) 50%, 
+                rgba(210, 180, 140, 0) 100%);
+            filter: blur(4px);
+            animation: windGust linear infinite;
+            z-index: 3;
+        }
+
+        @keyframes blowingSand {
+            0% {
+                transform: translate(-10px, 0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty));
+                opacity: 0;
+            }
+        }
+
+        @keyframes sandWave {
+            0% {
+                transform: translateX(-100%) scaleY(var(--scale));
+                opacity: 0;
+            }
+            5% {
+                opacity: var(--opacity);
+            }
+            95% {
+                opacity: var(--opacity);
+            }
+            100% {
+                transform: translateX(200%) scaleY(var(--scale));
+                opacity: 0;
+            }
+        }
+
+        @keyframes windGust {
+            0% {
+                transform: translateX(-150%) skewX(-20deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: var(--opacity);
+            }
+            90% {
+                opacity: var(--opacity);
+            }
+            100% {
+                transform: translateX(150%) skewX(-20deg);
+                opacity: 0;
+            }
+        }
+
+        .sandstorm-button:hover {
+            transform: scale(1.05);
+            box-shadow: 
+                8px 8px 16px rgba(158, 125, 78, 0.7), 
+                -8px -8px 16px rgba(255, 255, 255, 0.3);
+        }
+
+        .sandstorm-button:active {
+            transform: scale(0.97);
+            box-shadow: 
+                4px 4px 8px rgba(158, 125, 78, 0.7), 
+                -4px -4px 8px rgba(255, 255, 255, 0.3);
+            background: linear-gradient(145deg, #c39e68, #a88753);
+        }
+    </style>
+</head>
+<body>
+    <div class="sandstorm-button" id="sandstormButton">
+        <span class="button-text">Tormenta de arena</span>
+        <div class="dust-layer"></div>
+        <div class="sand-container" id="sandContainer"></div>
+    </div>
+
+    <script>
+        const sandContainer = document.getElementById('sandContainer');
+        const sandstormButton = document.getElementById('sandstormButton');
+        
+        // Crear efectos de tormenta de arena
+        function createSandstormEffects(particleCount, waveCount, gustCount) {
+            sandContainer.innerHTML = '';
+            
+            // Partículas de arena
+            for (let i = 0; i < particleCount; i++) {
+                const sandParticle = document.createElement('div');
+                sandParticle.className = 'sand-particle';
+                
+                // Posición aleatoria
+                sandParticle.style.left = `${Math.random() * 10}%`;
+                sandParticle.style.top = `${Math.random() * 100}%`;
+                
+                // Dirección principalmente horizontal con ligera variación vertical
+                const tx = 220 + Math.random() * 20;
+                const ty = (Math.random() - 0.5) * 20;
+                sandParticle.style.setProperty('--tx', `${tx}px`);
+                sandParticle.style.setProperty('--ty', `${ty}px`);
+                
+                // Duración y retraso aleatorios
+                const duration = Math.random() * 1 + 0.8;
+                const delay = Math.random() * 2;
+                sandParticle.style.animationDuration = `${duration}s`;
+                sandParticle.style.animationDelay = `${delay}s`;
+                
+                // Tamaño aleatorio
+                const size = Math.random() * 2 + 1;
+                sandParticle.style.width = `${size}px`;
+                sandParticle.style.height = `${size}px`;
+                
+                sandContainer.appendChild(sandParticle);
+            }
+            
+            // Ondas de arena
+            for (let i = 0; i < waveCount; i++) {
+                const sandWave = document.createElement('div');
+                sandWave.className = 'sand-wave';
+                
+                // Tamaño y posición aleatoria
+                sandWave.style.width = `${Math.random() * 50 + 100}px`;
+                sandWave.style.top = `${Math.random() * 80 + 10}%`;
+                
+                // Retraso y duración aleatoria
+                const duration = Math.random() * 2 + 2;
+                const delay = Math.random() * 3;
+                sandWave.style.animationDuration = `${duration}s`;
+                sandWave.style.animationDelay = `${delay}s`;
+                
+                // Escala y opacidad variable
+                const scale = Math.random() * 1.5 + 0.5;
+                const opacity = Math.random() * 0.3 + 0.2;
+                sandWave.style.setProperty('--scale', scale);
+                sandWave.style.setProperty('--opacity', opacity);
+                
+                sandContainer.appendChild(sandWave);
+            }
+            
+            // Ráfagas de viento
+            for (let i = 0; i < gustCount; i++) {
+                const windGust = document.createElement('div');
+                windGust.className = 'wind-gust';
+                
+                // Posición aleatoria
+                windGust.style.top = `${Math.random() * 80 + 10}%`;
+                
+                // Retraso y duración aleatoria
+                const duration = Math.random() * 1.5 + 1.5;
+                const delay = Math.random() * 4;
+                windGust.style.animationDuration = `${duration}s`;
+                windGust.style.animationDelay = `${delay}s`;
+                
+                // Opacidad variable
+                const opacity = Math.random() * 0.3 + 0.1;
+                windGust.style.setProperty('--opacity', opacity);
+                
+                sandContainer.appendChild(windGust);
+            }
+        }
+
+        // Inicializar efectos
+        createSandstormEffects(40, 6, 4);
+        
+        // Aumentar efectos al pasar el ratón
+        sandstormButton.addEventListener('mouseenter', () => {
+            createSandstormEffects(70, 10, 6);
+        });
+        
+        // Volver a efectos moderados al salir
+        sandstormButton.addEventListener('mouseleave', () => {
+            setTimeout(() => {
+                createSandstormEffects(40, 6, 4);
+            }, 500);
+        });
+        
+        // Efecto al hacer clic
+        sandstormButton.addEventListener('click', () => {
+            // Intensificar efectos momentáneamente
+            createSandstormEffects(100, 15, 8);
+            
+            setTimeout(() => {
+                createSandstormEffects(40, 6, 4);
+            }, 1500);
+            
+            console.log('¡Tormenta de arena activada!');
+        });
+    </script>
+</body>
+</html>
