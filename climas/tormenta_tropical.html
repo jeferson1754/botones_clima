@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Botón Tormenta Tropical</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 75vh;
+            max-width: 800px;
+            margin: 0;
+            background-color: #f5f7fa;
+            font-family: Arial, sans-serif;
+        }
+        
+        .container {
+            position: relative;
+            height: 70px;
+            perspective: 800px;
+        }
+        
+        .tormenta-button {
+            position: relative;
+            width: 200px;
+            height: 60px;
+            border-radius: 30px; 
+            padding: 0;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(45deg, #1a3b5c, #1e5f74, #3a6ea5);
+            border: none;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 60, 120, 0.4);
+            z-index: 1;
+        }
+        
+        .tormenta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 60, 120, 0.6);
+        }
+        
+        .tormenta-button:active {
+            transform: translateY(1px);
+            box-shadow: 0 3px 10px rgba(0, 60, 120, 0.4);
+        }
+        
+        .button-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* Efectos de tormenta */
+        .storm-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            border-radius: 50px;
+        }
+        
+        /* Nubes */
+        .cloud {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            filter: blur(5px);
+        }
+        
+        /* Lluvia */
+        .rain-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .rain-drop {
+            position: absolute;
+            width: 2px;
+            height: 10px;
+            background: linear-gradient(transparent, rgba(255, 255, 255, 0.8));
+            border-radius: 0 0 5px 5px;
+        }
+        
+        /* Relámpagos */
+        .lightning {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.8);
+            clip-path: polygon(50% 0, 60% 50%, 100% 50%, 70% 70%, 80% 100%, 50% 85%, 20% 100%, 30% 70%, 0 50%, 40% 50%);
+            transform: scale(0);
+            opacity: 0;
+        }
+        
+        @keyframes flash {
+            0% { transform: scale(0); opacity: 0; }
+            10% { transform: scale(1); opacity: 1; }
+            20% { transform: scale(0.8); opacity: 0.8; }
+            30% { transform: scale(1.2); opacity: 1; }
+            40% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(0); opacity: 0; }
+        }
+        
+        /* Efecto de rotación */
+        .vortex {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, transparent 30%, rgba(0, 0, 0, 0.3) 70%);
+            animation: spin 10s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button class="tormenta-button" onclick="activateTropicalStorm()">
+            <div class="storm-effect">
+                <div class="vortex"></div>
+                <div class="rain-container" id="rain-container"></div>
+                <div id="clouds"></div>
+                <div id="lightning"></div>
+            </div>
+            <div class="button-content">
+                Tormenta tropical
+            </div>
+        </button>
+    </div>
+    
+    <script>
+        function createRain() {
+            const rainContainer = document.getElementById('rain-container');
+            rainContainer.innerHTML = '';
+            
+            for (let i = 0; i < 40; i++) {
+                const drop = document.createElement('div');
+                drop.className = 'rain-drop';
+                
+                const left = Math.random() * 100;
+                const delay = Math.random() * 2;
+                const duration = Math.random() * 0.5 + 0.5;
+                
+                drop.style.left = `${left}%`;
+                drop.style.animationDelay = `${delay}s`;
+                
+                drop.animate([
+                    { top: '-10px', opacity: 0 },
+                    { top: '100%', opacity: 1 }
+                ], {
+                    duration: duration * 1000,
+                    iterations: Infinity
+                });
+                
+                rainContainer.appendChild(drop);
+            }
+        }
+        
+        function createClouds() {
+            const cloudsContainer = document.getElementById('clouds');
+            cloudsContainer.innerHTML = '';
+            
+            for (let i = 0; i < 8; i++) {
+                const cloud = document.createElement('div');
+                cloud.className = 'cloud';
+                
+                const size = Math.random() * 40 + 30;
+                const left = Math.random() * 80 + 10;
+                const top = Math.random() * 40 + 10;
+                const opacity = Math.random() * 0.3 + 0.1;
+                
+                cloud.style.width = `${size}px`;
+                cloud.style.height = `${size * 0.6}px`;
+                cloud.style.left = `${left}%`;
+                cloud.style.top = `${top}%`;
+                cloud.style.opacity = opacity;
+                
+                cloud.animate([
+                    { transform: 'translateX(0)' },
+                    { transform: 'translateX(20px)' },
+                    { transform: 'translateX(0)' }
+                ], {
+                    duration: 5000,
+                    iterations: Infinity,
+                    direction: 'alternate',
+                    easing: 'ease-in-out'
+                });
+                
+                cloudsContainer.appendChild(cloud);
+            }
+        }
+        
+        function createLightning() {
+            const lightningContainer = document.getElementById('lightning');
+            lightningContainer.innerHTML = '';
+            
+            const flash = document.createElement('div');
+            flash.className = 'lightning';
+            
+            const size = Math.random() * 20 + 20;
+            const left = Math.random() * 60 + 20;
+            const top = Math.random() * 40 + 10;
+            
+            flash.style.width = `${size}px`;
+            flash.style.height = `${size}px`;
+            flash.style.left = `${left}%`;
+            flash.style.top = `${top}%`;
+            
+            flash.style.animation = `flash ${Math.random() * 2 + 1}s ease-out`;
+            
+            lightningContainer.appendChild(flash);
+            
+            setTimeout(() => {
+                flash.remove();
+                if (Math.random() > 0.6) {
+                    createLightning();
+                }
+            }, 1000);
+        }
+        
+        function activateTropicalStorm() {
+            createRain();
+            createClouds();
+            createLightning();
+            
+            // Reactivar el rayo periódicamente
+            setInterval(() => {
+                if (Math.random() > 0.7) {
+                    createLightning();
+                }
+            }, 2000);
+        }
+        
+        // Iniciar efectos al cargar la página
+        window.addEventListener('load', activateTropicalStorm);
+    </script>
+</body>
+</html>

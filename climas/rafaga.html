@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Botón Ráfaga de Viento</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 75vh;
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #f5f7fa;
+            font-family: Arial, sans-serif;
+        }
+        
+        .container {
+            position: relative;
+            width: 200px;
+            height: 70px;
+        }
+        
+        .rafaga-button {
+            position: relative;
+            width: 200px;
+            height: 60px;
+            border-radius: 30px; 
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            color: gray;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+            z-index: 1;
+        }
+        
+        .rafaga-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 123, 255, 0.6);
+        }
+        
+        .rafaga-button:active {
+            transform: translateY(1px);
+            box-shadow: 0 3px 10px rgba(0, 123, 255, 0.4);
+        }
+        
+        /* Efecto de viento */
+        .wind {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+        
+        .wind-particle {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        
+        /* Hojas volando */
+        .leaf {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: transparent;
+            border-radius: 50% 0 50% 50%;
+            transform: rotate(45deg);
+            pointer-events: none;
+            z-index: 2;
+        }
+        
+        /* Ondas de viento */
+        .wind-wave {
+            position: absolute;
+            width: 20px;
+            height: 4px;
+            background-color: rgba(255, 255, 255, 0.4);
+            border-radius: 4px;
+            transform-origin: left center;
+            pointer-events: none;
+        }
+        
+        /* Efecto de texto */
+        .text-effect {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .text-effect span {
+            position: relative;
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+        
+        .rafaga-button:hover .text-effect span {
+            animation: waveText 0.5s forwards;
+        }
+        
+        @keyframes waveText {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(2px) translateY(-2px); }
+            50% { transform: translateX(4px) translateY(0); }
+            75% { transform: translateX(2px) translateY(2px); }
+            100% { transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="wind" id="wind"></div>
+        <button class="rafaga-button" onclick="createWindEffect()">
+            <div class="text-effect">
+                <span>R</span><span>á</span><span>f</span><span>a</span><span>g</span><span>a</span>
+            </div>
+        </button>
+    </div>
+    
+    <script>
+        function createWindEffect() {
+            const wind = document.getElementById('wind');
+            wind.innerHTML = '';
+            
+            // Crear partículas de viento
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.className = 'wind-particle';
+                    
+                    // Tamaño aleatorio
+                    const size = Math.random() * 4 + 2;
+                    particle.style.width = `${size}px`;
+                    particle.style.height = `${size}px`;
+                    
+                    // Posición inicial
+                    particle.style.left = `-10px`;
+                    particle.style.top = `${Math.random() * 100}%`;
+                    
+                    // Velocidad aleatoria
+                    const speed = Math.random() * 1 + 1.5;
+                    particle.style.opacity = Math.random() * 0.5 + 0.3;
+                    
+                    // Animación
+                    particle.animate([
+                        { left: '-10px', transform: 'translateY(0)' },
+                        { left: '110%', transform: `translateY(${(Math.random() * 20) - 10}px)` }
+                    ], {
+                        duration: 1000 / speed,
+                        easing: 'ease-out'
+                    });
+                    
+                    wind.appendChild(particle);
+                    
+                    // Eliminar después de la animación
+                    setTimeout(() => {
+                        particle.remove();
+                    }, 1000 / speed);
+                }, i * 50);
+            }
+            
+            // Crear ondas de viento
+            for (let i = 0; i < 8; i++) {
+                setTimeout(() => {
+                    const wave = document.createElement('div');
+                    wave.className = 'wind-wave';
+                    
+                    // Posición inicial
+                    wave.style.left = `10%`;
+                    wave.style.top = `${30 + (i * 5)}%`;
+                    
+                    // Animación
+                    wave.animate([
+                        { left: '10%', width: '20px', opacity: 0.4 },
+                        { left: '90%', width: '40px', opacity: 0 }
+                    ], {
+                        duration: 800,
+                        easing: 'ease-out'
+                    });
+                    
+                    wind.appendChild(wave);
+                    
+                    // Eliminar después de la animación
+                    setTimeout(() => {
+                        wave.remove();
+                    }, 800);
+                }, i * 100);
+            }
+            
+            // Crear hojas volando
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    const leaf = document.createElement('div');
+                    leaf.className = 'leaf';
+                    
+                    // Color aleatorio para las hojas
+                    const colors = ['#76c893', '#52b69a', '#34a0a4', '#168aad', '#1a759f'];
+                    leaf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    // Posición inicial
+                    leaf.style.left = `-10px`;
+                    leaf.style.top = `${Math.random() * 100}%`;
+                    
+                    // Animación
+                    leaf.animate([
+                        { 
+                            left: '-10px', 
+                            transform: 'rotate(45deg) scale(1)', 
+                            top: `${Math.random() * 100}%` 
+                        },
+                        { 
+                            left: '110%', 
+                            transform: 'rotate(405deg) scale(1.2)', 
+                            top: `${Math.random() * 100}%` 
+                        }
+                    ], {
+                        duration: 1500,
+                        easing: 'ease-in-out'
+                    });
+                    
+                    wind.appendChild(leaf);
+                    
+                    // Eliminar después de la animación
+                    setTimeout(() => {
+                        leaf.remove();
+                    }, 1500);
+                }, i * 300);
+            }
+        }
+        
+        // Iniciar animación al cargar la página
+        window.addEventListener('load', () => {
+            createWindEffect(); // Ejecutar al inicio
+            setInterval(createWindEffect, 5000); // Repetir cada 30 segundos
+        });
+
+        
+        // Hacer que los caracteres del texto se muevan ligeramente
+        const text = document.querySelector('.text-effect');
+        const chars = text.innerText.split('');
+        text.innerHTML = '';
+        
+        chars.forEach(char => {
+            const span = document.createElement('span');
+            span.innerText = char;
+            text.appendChild(span);
+        });
+    </script>
+</body>
+</html>
