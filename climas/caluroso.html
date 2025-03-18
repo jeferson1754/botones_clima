@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Botón Caluroso</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        
+        .container {
+            position: relative;
+            width: 180px;
+            height: 60px;
+        }
+        
+        .caluroso-button {
+            position: relative;
+            width: 200px;
+            height: 60px;
+            border-radius: 30px; 
+            padding: 0;
+            font-size: 20px;
+            font-weight: bold;
+            color: #ffffff;
+            background: linear-gradient(135deg, #ff4e00, #ff9500);
+            border: none;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 
+                0 5px 15px rgba(255, 78, 0, 0.4),
+                inset 0 0 10px rgba(255, 255, 255, 0.3);
+            z-index: 1;
+        }
+        
+        .caluroso-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 8px 20px rgba(255, 78, 0, 0.5),
+                inset 0 0 15px rgba(255, 255, 255, 0.4);
+        }
+        
+        .caluroso-button:active {
+            transform: translateY(1px);
+            box-shadow: 
+                0 3px 10px rgba(255, 78, 0, 0.4),
+                inset 0 0 5px rgba(255, 255, 255, 0.2);
+        }
+        
+        .button-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* Efecto de calor */
+        .heat-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+        
+        /* Ondas de calor */
+        .heat-wave {
+            position: absolute;
+            height: 100%;
+            width: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            filter: blur(5px);
+        }
+        
+        /* Partículas de calor */
+        .heat-particle {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+        }
+        
+        /* Efecto de llama */
+        .flame-effect {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40%;
+            background: linear-gradient(to top, rgba(255, 78, 0, 0.5), transparent);
+            border-radius: 0 0 12px 12px;
+        }
+        
+        /* Efecto de sol */
+        .sun {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            background: radial-gradient(circle, #ffdd00, #ff9500);
+            border-radius: 50%;
+            filter: blur(1px);
+            box-shadow: 0 0 10px rgba(255, 221, 0, 0.8);
+        }
+        
+        /* Texto con efecto de calor */
+        .heat-text {
+            background: linear-gradient(to bottom, #ffffff, #ffdd00);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 5px rgba(255, 78, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button class="caluroso-button" onclick="activateHeatEffect()">
+            <div class="heat-effect">
+                <div class="flame-effect"></div>
+                <div id="heat-waves"></div>
+                <div id="heat-particles"></div>
+                <div id="suns"></div>
+            </div>
+            <div class="button-content">
+                <span class="heat-text">Caluroso</span>
+            </div>
+        </button>
+    </div>
+    
+    <script>
+        function createHeatWaves() {
+            const wavesContainer = document.getElementById('heat-waves');
+            wavesContainer.innerHTML = '';
+            
+            for (let i = 0; i < 6; i++) {
+                const wave = document.createElement('div');
+                wave.className = 'heat-wave';
+                
+                const left = Math.random() * 80 + 10;
+                const duration = Math.random() * 2 + 2;
+                const delay = Math.random() * 1;
+                
+                wave.style.left = `${left}%`;
+                
+                wave.animate([
+                    { transform: 'translateY(0) scaleY(0.8)', opacity: 0.1 },
+                    { transform: 'translateY(-20px) scaleY(1.2)', opacity: 0.3 },
+                    { transform: 'translateY(-40px) scaleY(0.8)', opacity: 0.1 }
+                ], {
+                    duration: duration * 1000,
+                    delay: delay * 1000,
+                    iterations: Infinity,
+                    easing: 'ease-in-out'
+                });
+                
+                wavesContainer.appendChild(wave);
+            }
+        }
+        
+        function createHeatParticles() {
+            const particlesContainer = document.getElementById('heat-particles');
+            particlesContainer.innerHTML = '';
+            
+            for (let i = 0; i < 15; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'heat-particle';
+                
+                const size = Math.random() * 4 + 2;
+                const left = Math.random() * 100;
+                const duration = Math.random() * 1.5 + 1;
+                const delay = Math.random() * 2;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${left}%`;
+                
+                particle.animate([
+                    { bottom: '0', opacity: 1 },
+                    { bottom: '100%', opacity: 0 }
+                ], {
+                    duration: duration * 1000,
+                    delay: delay * 1000,
+                    iterations: Infinity,
+                    easing: 'ease-out'
+                });
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        function createSuns() {
+            const sunsContainer = document.getElementById('suns');
+            sunsContainer.innerHTML = '';
+            
+            // Sol principal
+            const mainSun = document.createElement('div');
+            mainSun.className = 'sun';
+            mainSun.style.width = '30px';
+            mainSun.style.height = '30px';
+            mainSun.style.right = '15px';
+            mainSun.style.top = '15px';
+            
+            mainSun.animate([
+                { transform: 'scale(1)', opacity: 0.8 },
+                { transform: 'scale(1.2)', opacity: 1 },
+                { transform: 'scale(1)', opacity: 0.8 }
+            ], {
+                duration: 2000,
+                iterations: Infinity,
+                easing: 'ease-in-out'
+            });
+            
+            sunsContainer.appendChild(mainSun);
+            
+            // Soles pequeños
+            for (let i = 0; i < 3; i++) {
+                const sun = document.createElement('div');
+                sun.className = 'sun';
+                
+                const size = Math.random() * 10 + 8;
+                const left = Math.random() * 70 + 10;
+                const top = Math.random() * 70 + 10;
+                
+                sun.style.width = `${size}px`;
+                sun.style.height = `${size}px`;
+                sun.style.left = `${left}%`;
+                sun.style.top = `${top}%`;
+                
+                sun.animate([
+                    { transform: 'scale(0.8)', opacity: 0.6 },
+                    { transform: 'scale(1.1)', opacity: 0.8 },
+                    { transform: 'scale(0.8)', opacity: 0.6 }
+                ], {
+                    duration: 1500 + (i * 500),
+                    iterations: Infinity,
+                    easing: 'ease-in-out'
+                });
+                
+                sunsContainer.appendChild(sun);
+            }
+        }
+        
+        function activateHeatEffect() {
+            createHeatWaves();
+            createHeatParticles();
+            createSuns();
+        }
+        
+        // Iniciar efectos al cargar la página
+        window.addEventListener('load', activateHeatEffect);
+    </script>
+</body>
+</html>

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Botón Frío</title>
+    <style>
+        body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f5f7fa;
+        color: #333;
+    }
+
+
+        
+        .container {
+            position: relative;
+            width: 180px;
+            height: 60px;
+            perspective: 800px;
+        }
+        
+        .frio-button {
+            position: relative;
+            width: 200px;
+            height: 60px;
+            padding: 0;
+            border-radius: 30px; 
+            font-size: 20px;
+            font-weight: bold;
+            color: #ffffff;
+            background: linear-gradient(135deg, #a8c0ff, #3f5efb);
+            border: none;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 
+                0 5px 15px rgba(63, 94, 251, 0.3),
+                inset 0 0 10px rgba(255, 255, 255, 0.5);
+            z-index: 1;
+        }
+        
+        .frio-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 8px 20px rgba(63, 94, 251, 0.4),
+                inset 0 0 15px rgba(255, 255, 255, 0.6);
+        }
+        
+        .frio-button:active {
+            transform: translateY(1px);
+            box-shadow: 
+                0 3px 10px rgba(63, 94, 251, 0.3),
+                inset 0 0 5px rgba(255, 255, 255, 0.4);
+        }
+        
+        .button-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* Efecto de frío */
+        .cold-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+        
+        /* Copos de nieve */
+        .snowflake {
+            position: absolute;
+            color: white;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+            user-select: none;
+        }
+        
+        /* Efecto de escarcha */
+        .frost {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            filter: blur(1px);
+        }
+        
+        /* Efecto de vapor frío */
+        .cold-vapor {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            filter: blur(8px);
+        }
+        
+        /* Efecto de hielo cristalizado */
+        .ice-crystal {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.7);
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            transform: scale(0);
+            opacity: 0;
+        }
+        
+        @keyframes crystalGrow {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1); opacity: 0.7; }
+            100% { transform: scale(1.2); opacity: 0; }
+        }
+        
+        /* Texto con efecto de hielo */
+        .ice-text {
+            background: linear-gradient(to bottom, #ffffff, #a8c0ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button class="frio-button" onclick="activateColdEffect()">
+            <div class="cold-effect">
+                <div id="snowflakes"></div>
+                <div id="frost"></div>
+                <div id="cold-vapor"></div>
+                <div id="ice-crystals"></div>
+            </div>
+            <div class="button-content">
+                <span class="ice-text">Frío</span>
+            </div>
+        </button>
+    </div>
+    
+    <script>
+        function createSnowflakes() {
+            const snowflakesContainer = document.getElementById('snowflakes');
+            snowflakesContainer.innerHTML = '';
+            
+            const snowflakeChars = ['❄', '❅', '❆', '✻', '✼', '*'];
+            
+            for (let i = 0; i < 15; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.className = 'snowflake';
+                
+                const size = Math.random() * 10 + 8;
+                const left = Math.random() * 100;
+                const duration = Math.random() * 2 + 2;
+                const delay = Math.random() * 2;
+                
+                snowflake.style.fontSize = `${size}px`;
+                snowflake.style.left = `${left}%`;
+                snowflake.style.opacity = Math.random() * 0.7 + 0.3;
+                snowflake.innerHTML = snowflakeChars[Math.floor(Math.random() * snowflakeChars.length)];
+                
+                snowflake.animate([
+                    { top: '-20px', transform: 'rotate(0deg)' },
+                    { top: '110%', transform: 'rotate(360deg)' }
+                ], {
+                    duration: duration * 1000,
+                    delay: delay * 1000,
+                    iterations: Infinity,
+                    easing: 'linear'
+                });
+                
+                snowflakesContainer.appendChild(snowflake);
+            }
+        }
+        
+        function createFrost() {
+            const frostContainer = document.getElementById('frost');
+            frostContainer.innerHTML = '';
+            
+            for (let i = 0; i < 20; i++) {
+                const frost = document.createElement('div');
+                frost.className = 'frost';
+                
+                const size = Math.random() * 10 + 5;
+                const left = Math.random() * 100;
+                const top = Math.random() * 100;
+                
+                frost.style.width = `${size}px`;
+                frost.style.height = `${size}px`;
+                frost.style.left = `${left}%`;
+                frost.style.top = `${top}%`;
+                
+                frostContainer.appendChild(frost);
+            }
+        }
+        
+        function createColdVapor() {
+            const vaporContainer = document.getElementById('cold-vapor');
+            vaporContainer.innerHTML = '';
+            
+            for (let i = 0; i < 4; i++) {
+                const vapor = document.createElement('div');
+                vapor.className = 'cold-vapor';
+                
+                const size = Math.random() * 30 + 20;
+                const left = Math.random() * 70 + 15;
+                const top = Math.random() * 70 + 15;
+                
+                vapor.style.width = `${size}px`;
+                vapor.style.height = `${size}px`;
+                vapor.style.left = `${left}%`;
+                vapor.style.top = `${top}%`;
+                
+                vapor.animate([
+                    { opacity: 0.1, transform: 'scale(0.8)' },
+                    { opacity: 0.4, transform: 'scale(1.2)' },
+                    { opacity: 0.1, transform: 'scale(0.8)' }
+                ], {
+                    duration: 4000,
+                    iterations: Infinity,
+                    direction: 'alternate',
+                    easing: 'ease-in-out'
+                });
+                
+                vaporContainer.appendChild(vapor);
+            }
+        }
+        
+        function createIceCrystals() {
+            const crystalsContainer = document.getElementById('ice-crystals');
+            crystalsContainer.innerHTML = '';
+            
+            for (let i = 0; i < 3; i++) {
+                setTimeout(() => {
+                    const crystal = document.createElement('div');
+                    crystal.className = 'ice-crystal';
+                    
+                    const size = Math.random() * 15 + 10;
+                    const left = Math.random() * 80 + 10;
+                    const top = Math.random() * 80 + 10;
+                    
+                    crystal.style.width = `${size}px`;
+                    crystal.style.height = `${size}px`;
+                    crystal.style.left = `${left}%`;
+                    crystal.style.top = `${top}%`;
+                    
+                    crystal.style.animation = `crystalGrow ${Math.random() * 1 + 1.5}s ease-out`;
+                    
+                    crystalsContainer.appendChild(crystal);
+                    
+                    setTimeout(() => {
+                        crystal.remove();
+                    }, 2000);
+                }, i * 1000);
+            }
+        }
+        
+        function activateColdEffect() {
+            createSnowflakes();
+            createFrost();
+            createColdVapor();
+            createIceCrystals();
+            
+            // Reactivar cristales de hielo periódicamente
+            setInterval(() => {
+                if (Math.random() > 0.7) {
+                    createIceCrystals();
+                }
+            }, 3000);
+        }
+        
+        // Iniciar efectos al cargar la página
+        window.addEventListener('load', activateColdEffect);
+    </script>
+</body>
+</html>
