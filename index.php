@@ -36,7 +36,7 @@ $weather_buttons = [
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $city = $_POST['city'] ?? 'Santiago';
-    $api_key = "410f454b9ebb63e2a46e6dc2aa04554e";
+    $api_key = "54f6b317a9161bd48049210b917f2329";
     $api_url = "https://api.weatherstack.com/current?access_key=$api_key&query=$city";
 
     // Obtener los datos JSON de la API
@@ -147,6 +147,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             'Light snow' => 'Nieve ligera', // Caída suave de nieve, sin acumulación significativa. Rango de temperatura: -5°C a 2°C.
             'Light Rain, Mist' => 'Lluvia ligera, niebla',
             'Light Rain' => 'Lluvia ligera',
+            'Light Rain Shower' => 'Lluvia ligera',
         ];
 
 
