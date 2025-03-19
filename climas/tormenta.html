@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Botón Tormenta</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        
+        .storm-button {
+            position: relative;
+            width: 200px;
+            height: 60px;
+            border: none;
+            border-radius: 30px;
+            overflow: hidden;
+            cursor: pointer;
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
+            font-size: 18px;
+            color: #fff;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 7px 20px rgba(0, 0, 0, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .storm-button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom,
+                    #1a1a2e, /* Azul oscuro casi negro */
+                    #16213e, /* Azul oscuro */
+                    #0f3460  /* Azul medianoche */
+                );
+            z-index: -1;
+        }
+
+        .storm-button:active {
+            transform: translateY(1px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .cloud {
+            position: absolute;
+            left: 16px;
+            top: 38%;
+            transform: translateY(-60%);
+            width: 34px;
+            height: 12px;
+            background: #5c5c5c;
+            border-radius: 12px;
+        }
+
+        .cloud:before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: 6px;
+            width: 12px;
+            height: 12px;
+            background: #5c5c5c;
+            border-radius: 50%;
+        }
+
+        .cloud:after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 16px;
+            width: 16px;
+            height: 16px;
+            background: #5c5c5c;
+            border-radius: 50%;
+        }
+
+        .lightning {
+            position: absolute;
+            top: 25px;
+            left: 30px;
+            width: 2px;
+            height: 15px;
+            background: #ffeb3b;
+            transform: rotate(15deg);
+            opacity: 0;
+            box-shadow: 0 0 10px 2px rgba(255, 235, 59, 0.8);
+            animation: lightning-flash 3s infinite;
+        }
+
+        .lightning:before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: -3px;
+            width: 6px;
+            height: 2px;
+            background: #ffeb3b;
+            box-shadow: 0 0 10px 2px rgba(255, 235, 59, 0.8);
+        }
+
+        .lightning:after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 0;
+            width: 2px;
+            height: 8px;
+            background: #ffeb3b;
+            transform: rotate(-30deg);
+            box-shadow: 0 0 10px 2px rgba(255, 235, 59, 0.8);
+        }
+
+        .lightning-2 {
+            left: 40px;
+            top: 22px;
+            transform: rotate(-10deg) scale(0.8);
+            animation-delay: 1.2s;
+        }
+
+        .lightning-3 {
+            left: 20px;
+            top: 26px;
+            transform: rotate(25deg) scale(0.7);
+            animation-delay: 2.1s;
+        }
+
+        @keyframes lightning-flash {
+            0%, 45%, 52%, 70%, 100% {
+                opacity: 0;
+            }
+            48%, 50%, 65% {
+                opacity: 1;
+            }
+        }
+
+        .thunder-shine {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30px 30px, rgba(255, 255, 255, 0.4), transparent 70%);
+            opacity: 0;
+            animation: thunder-glow 3s infinite;
+        }
+
+        @keyframes thunder-glow {
+            0%, 47%, 52%, 69%, 100% {
+                opacity: 0;
+            }
+            48%, 50%, 67% {
+                opacity: 1;
+            }
+        }
+
+        .button-text {
+            margin-left: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <button class="storm-button">
+            <div class="cloud"></div>
+            <div class="lightning lightning-1"></div>
+            <div class="lightning lightning-2"></div>
+            <div class="lightning lightning-3"></div>
+            <div class="thunder-shine"></div>
+            <span class="button-text">Tormenta</span>
+        </button>
+    </div>
+</body>
+</html>

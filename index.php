@@ -28,10 +28,10 @@ $weather_buttons = [
     "Tormenta tropical" => "tormenta_tropical",
     "Frío" => "frio",
     "Caluroso" => "caluroso",
-    "Tormenta" => "",
-    "Ola de calor" => "",
-    "Lluvia ligera, niebla" => "",
-    "Lluvia ligera" => "",
+    "Tormenta" => "tormenta",
+    "Ola de calor" => "ola_calor",
+    "Lluvia ligera, niebla" => "lluvia_ligera_niebla",
+    "Lluvia ligera" => "lluvia_ligera",
 ];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

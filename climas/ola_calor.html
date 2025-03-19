@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Botón Ola de Calor</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        
+        .heatwave-button {
+            position: relative;
+            width: 200px;
+            height: 60px;
+            border: none;
+            border-radius: 30px;
+            overflow: hidden;
+            cursor: pointer;
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
+            font-size: 18px;
+            color: #fff;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 7px 20px rgba(0, 0, 0, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .heatwave-button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom,
+                    #ff4e50, /* Rojo intenso */
+                    #ff9966, /* Naranja */
+                    #ff7e5f  /* Naranja-rojizo */
+                );
+            z-index: -1;
+        }
+
+        .heatwave-button:active {
+            transform: translateY(1px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .sun {
+            position: absolute;
+            left: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 24px;
+            background: #ffcc00;
+            border-radius: 50%;
+            box-shadow: 0 0 8px 4px rgba(255, 204, 0, 0.5);
+        }
+
+        .sun:after {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: -8px;
+            width: 40px;
+            height: 40px;
+            background: transparent;
+            border-radius: 50%;
+            animation: sun-pulse 2s infinite;
+        }
+
+        @keyframes sun-pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 204, 0, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(255, 204, 0, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 204, 0, 0);
+            }
+        }
+
+        .heat-wave {
+            position: absolute;
+            width: 3px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 1.5px;
+            opacity: 0.7;
+            animation: heat-rise linear infinite;
+        }
+
+        .wave-1 {
+            left: 15px;
+            top: 18px;
+            height: 8px;
+            animation-duration: 2.2s;
+            animation-delay: 0.1s;
+        }
+
+        .wave-2 {
+            left: 27px;
+            top: 15px;
+            height: 12px;
+            animation-duration: 2.5s;
+            animation-delay: 0.4s;
+        }
+
+        .wave-3 {
+            left: 37px;
+            top: 20px;
+            height: 10px;
+            animation-duration: 1.8s;
+            animation-delay: 0.7s;
+        }
+
+        .wave-4 {
+            left: 20px;
+            top: 17px;
+            height: 9px;
+            animation-duration: 2.0s;
+            animation-delay: 1.0s;
+        }
+
+        @keyframes heat-rise {
+            0% {
+                transform: translateY(0) scaleY(1) scaleX(1);
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-20px) scaleY(1.5) scaleX(0.5);
+                opacity: 0;
+            }
+        }
+
+        .heat-mirage {
+            position: absolute;
+            bottom: 10px;
+            left: 15px;
+            width: 40px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            filter: blur(1px);
+            animation: mirage-effect 3s infinite;
+        }
+
+        @keyframes mirage-effect {
+            0%, 100% {
+                transform: scaleX(1);
+                opacity: 0.2;
+            }
+            50% {
+                transform: scaleX(1.2);
+                opacity: 0.3;
+            }
+        }
+
+        .button-text {
+            margin-left: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <button class="heatwave-button">
+            <div class="sun"></div>
+            <div class="heat-wave wave-1"></div>
+            <div class="heat-wave wave-2"></div>
+            <div class="heat-wave wave-3"></div>
+            <div class="heat-wave wave-4"></div>
+            <div class="heat-mirage"></div>
+            <span class="button-text">Ola de calor</span>
+        </button>
+    </div>
+</body>
+</html>
