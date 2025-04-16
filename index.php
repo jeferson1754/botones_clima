@@ -32,7 +32,7 @@ $weather_buttons = [
     "Ola de calor" => "ola_calor",
     "Lluvia ligera, niebla" => "lluvia_ligera_niebla",
     "Lluvia ligera" => "lluvia_ligera",
-    "Nieve ligera" => " ",
+    "Nieve ligera" => "nieve_ligera",
 ];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

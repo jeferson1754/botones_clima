@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Botón con Efecto de Nieve</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+
+        .snow-button {
+            position: relative;
+            width: 200px;
+            height: 60px;
+            border-radius: 30px;
+            border: none;
+            background: linear-gradient(145deg, #e6f2ff, #c5e3ff);
+            color: #1e3a5c;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .snow-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .snow-button:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .snow-button::before {
+            content: "";
+            position: absolute;
+            top: -10px;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background-image: 
+                radial-gradient(circle, white 1px, transparent 1px),
+                radial-gradient(circle, white 1px, transparent 1px),
+                radial-gradient(circle, white 1px, transparent 1px);
+            background-size: 6px 6px;
+            background-position: 0 0, 3px 3px, 6px 6px;
+            animation: snowfall 3s linear infinite;
+        }
+
+        .snow-particle {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            opacity: 0;
+            animation: snow-particle-fall 3s ease-in infinite;
+        }
+
+        @keyframes snowfall {
+            0% {
+                transform: translateY(-10px);
+            }
+            100% {
+                transform: translateY(70px);
+            }
+        }
+
+        @keyframes snow-particle-fall {
+            0% {
+                opacity: 0;
+                transform: translateY(-5px);
+            }
+            20% {
+                opacity: 0.8;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(65px) translateX(10px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="snow-button" id="snowButton">Nieve Ligera</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const button = document.getElementById('snowButton');
+            
+            // Crear copos de nieve
+            function createSnowParticles() {
+                for(let i = 0; i < 15; i++) {
+                    setTimeout(() => {
+                        const particle = document.createElement('div');
+                        particle.classList.add('snow-particle');
+                        
+                        // Tamaño aleatorio
+                        const size = Math.random() * 3 + 1;
+                        particle.style.width = `${size}px`;
+                        particle.style.height = `${size}px`;
+                        
+                        // Posición aleatoria
+                        const posX = Math.random() * 200;
+                        particle.style.left = `${posX}px`;
+                        particle.style.top = '0';
+                        
+                        // Duración aleatoria
+                        const duration = Math.random() * 2 + 2;
+                        particle.style.animationDuration = `${duration}s`;
+                        
+                        // Retraso aleatorio
+                        const delay = Math.random() * 2;
+                        particle.style.animationDelay = `${delay}s`;
+                        
+                        button.appendChild(particle);
+                        
+                        // Eliminar después de la animación
+                        setTimeout(() => {
+                            particle.remove();
+                        }, (duration + delay) * 1000);
+                    }, i * 100);
+                }
+            }
+            
+            // Iniciar animación al cargar
+            createSnowParticles();
+            
+            // Reiniciar animación periódicamente
+            setInterval(createSnowParticles, 3000);
+            
+            // También activar al pasar el mouse
+            button.addEventListener('mouseenter', createSnowParticles);
+        });
+    </script>
+</body>
+</html>
