@@ -9,6 +9,7 @@ $weather_buttons = [
     "Viento" => "wind-button",
     "Despejado" => "clear-sky-button",
     "Cubierto" => "overcast-sky-button",
+    "Niebla" => "overcast-sky-button",
     "Chubascos" => "boton-chubasco",
     "Tormenta eléctrica" => "boton-tormenta",
     "Niebla espesa" => "boton-niebla-espesa",
@@ -33,6 +34,7 @@ $weather_buttons = [
     "Lluvia ligera, niebla" => "lluvia_ligera_niebla",
     "Lluvia ligera" => "lluvia_ligera",
     "Nieve ligera" => "nieve_ligera",
+    "Lluvia dispersa cercana" => "lluvia_dispersa_cercana",
 ];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -124,7 +126,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             'Overcast' => 'Cubierto',  // Cielo completamente gris, sin sol visible. Temperatura entre 15°C y 22°C.
             'Showers' => 'Chubascos',  // Lluvias breves pero intensas. Temperatura generalmente entre 10°C y 20°C.
             'Thunderstorm' => 'Tormenta eléctrica',  // Lluvias con rayos y truenos. Temperatura entre 15°C y 30°C.
-            'Mist' => 'Niebla',  // Visibilidad reducida por niebla densa. Temperatura entre 5°C y 15°C.
+            'Mist' => 'Niebla',
+            'Haze' => 'Niebla',  // Visibilidad reducida por niebla densa. Temperatura entre 5°C y 15°C.
             'Fog' => 'Niebla espesa',  // Niebla densa que reduce visibilidad. Temperatura entre 5°C y 15°C.
             'Snow' => 'Nieve',  // Precipitación en forma de nieve. Temperatura generalmente entre -5°C y 5°C.
             'Hail' => 'Granizo',  // Lluvia con granizo (bultos de hielo). Temperatura generalmente entre 0°C y 10°C.
@@ -149,6 +152,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             'Light Rain, Mist' => 'Lluvia ligera, niebla',
             'Light Rain' => 'Lluvia ligera',
             'Light Rain Shower' => 'Lluvia ligera',
+            'Patchy Rain Nearby' => 'Lluvia dispersa cercana',
         ];
 
 
